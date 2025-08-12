@@ -1,4 +1,4 @@
-package ecomm.capstone.model;
+package com.capstone.model;
 
 public class User {
 
