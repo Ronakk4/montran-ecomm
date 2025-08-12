@@ -1,4 +1,4 @@
-package ecomm.capstone;
+package com.capstone;
 
 public class test {
 

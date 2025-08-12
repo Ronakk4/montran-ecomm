@@ -1,1 +1,1 @@
-package ecomm.capstone.controller;
+package com.capstone.controller;

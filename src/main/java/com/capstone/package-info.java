@@ -1,1 +1,1 @@
-package ecomm.capstone;
+package com.capstone;
