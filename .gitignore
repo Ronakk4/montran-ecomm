@@ -1,0 +1,54 @@
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+hs_err_pid*.log
+*.log
+*.lock
+*.data
+*.properties # Be careful if you have properties files that should be tracked, like application.properties
+             # If application.properties should be tracked, remove this line and add specific untracked ones.
+             # For example, if you want to ignore only local database connection properties:
+             # src/main/resources/database.properties
+
+# Eclipse/STS (Common for Spring projects)
+.project
+.classpath
+.settings/
+.idea/             # IntelliJ IDEA
+*.iml              # IntelliJ IDEA module files
+*.ipr
+*.iws
+
+# OS
+.DS_Store
+.localized
+Thumbs.db
+
+# Logs and temporary files
+*.log
+log/
+temp/
+tmp/
+
+# External dependencies (often included in webapps, but sources aren't part of the project)
+/WEB-INF/lib/
+
+# IDE-specific (add your IDE's specific ignores if not covered above)
+# e.g., for VS Code:
+.vscode/
