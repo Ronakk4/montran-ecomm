@@ -1,1 +1,1 @@
-package ecomm.capstone.dao.imp;
+package com.capstone.dao.imp;
