@@ -17,6 +17,7 @@
 		<mapping class="com.capstone.model.Buyer"/>
 		<mapping class="com.capstone.model.Seller"/>
 		<mapping class="com.capstone.model.User"/>
+		<mapping class="com.capstone.model.Product"/>
 		
    	</session-factory>
    
