@@ -20,4 +20,36 @@ public class Seller extends User{
 		this.shopDescription = shopDescription;
 		this.gstNumber = gstNumber;
 	}
+
+
+	public String getShopName() {
+		return shopName;
+	}
+
+
+	public void setShopName(String shopName) {
+		this.shopName = shopName;
+	}
+
+
+	public String getShopDescription() {
+		return shopDescription;
+	}
+
+
+	public void setShopDescription(String shopDescription) {
+		this.shopDescription = shopDescription;
+	}
+
+
+	public String getGstNumber() {
+		return gstNumber;
+	}
+
+
+	public void setGstNumber(String gstNumber) {
+		this.gstNumber = gstNumber;
+	}
+	
+	
 }
