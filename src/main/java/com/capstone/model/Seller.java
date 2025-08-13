@@ -19,13 +19,13 @@ public class Seller extends User{
 	private List<Product> products = new ArrayList<Product>();
 	
 	
-	public Seller( String name, String email, String password, String role, LocalDateTime createdAt,
-			LocalDateTime updatedAt, String shopName, String shopDescription, String gstNumber) {
-		super(name, email, password, role, createdAt, updatedAt);
-		this.shopName = shopName;
-		this.shopDescription = shopDescription;
-		this.gstNumber = gstNumber;
-	}
+//	public Seller( String name, String email, String password, String role, LocalDateTime createdAt,
+//			LocalDateTime updatedAt, String shopName, String shopDescription, String gstNumber) {
+//		super(name, email, password, role, createdAt, updatedAt);
+//		this.shopName = shopName;
+//		this.shopDescription = shopDescription;
+//		this.gstNumber = gstNumber;
+//	}
 
 
 	public String getShopName() {
@@ -72,7 +72,7 @@ public class Seller extends User{
 	@Override
 	public String toString() {
 		return "Seller [shopName=" + shopName + ", shopDescription=" + shopDescription + ", gstNumber=" + gstNumber
-				+ ", products=" + products + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
+				+ ", products=" + products + "]";
 	}
 	
 	
