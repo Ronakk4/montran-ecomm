@@ -4,7 +4,7 @@ import com.capstone.model.User;
 
 public interface UserDao {
 	User findUser(long id);
-	User findUserByEmail(String email);
+	User findByEmail(String email);
 	void saveUser(User u);
 	void updateUser(User u);
     void deleteUser(User u);	
