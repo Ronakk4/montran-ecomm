@@ -17,7 +17,13 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
+    
+    @PostMapping
+    public void registerUser(@RequestBody User user) {
+        userService.registerUser(user);
+    }
+    
+    
     @GetMapping
     public List<User> getAllUsers() {
         return userService.getAllUsers();
