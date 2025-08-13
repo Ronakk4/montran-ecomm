@@ -4,15 +4,16 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.capstone.service.Order;
+import com.capstone.model.Order;
 import com.capstone.service.OrderService;
 
 @Service
 public class OrderServiceImpl implements OrderService{
 	
-	@AutoWired
+	@Autowired
 	private OrderDao orderDao;
 
 	@Override
