@@ -22,23 +22,35 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	@Transactional
-	public void registerUser(User u) {
+	public boolean registerUser(User user) {
 		// TODO Auto-generated method stub
-		userDao.save(u);
+		 if (user.getEmail() != null && userDao.findByEmail(user.getEmail().trim()) != null) {
+	            return false; 
+	        }
+	        userDao.save(user);
+	        return true;
 		
 	}
 
 	@Override
-	public void updateUser(User u) {
+	@Transactional
+	public void updateUser(User user) {
 		// TODO Auto-generated method stub
-		userDao.update(u);
+		 if (userDao.findByEmail(user.getEmail()) != null) {
+	            userDao.update(user);
+	        }
 		
 	}
 
 	@Override
-	public void loginUser(User u) {
+	@Transactional
+	public boolean loginUser(User user) {
 		// TODO Auto-generated method stub
-		userDao.login(u);
+		 if (userDao.findByEmail(user.getEmail()) != null) {
+	            return userDao.login(user);
+	        }
+		 return false;
+			
 		
 	}
 
