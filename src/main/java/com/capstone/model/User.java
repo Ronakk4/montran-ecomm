@@ -18,6 +18,7 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
+	
 	private String name;
 	private String email;
 	private String password;
@@ -26,4 +27,16 @@ public class User {
 	LocalDateTime updatedAt;
 	
 	
+	public User(String name, String email, String password, String role, LocalDateTime createdAt,
+			LocalDateTime updatedAt) {
+		super();
+		
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.role = role;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+	}
+		
 }
