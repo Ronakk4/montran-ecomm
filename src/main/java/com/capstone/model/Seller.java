@@ -15,7 +15,7 @@ public class Seller extends User{
 	private String shopDescription;
 	private String gstNumber;
 	
-	@OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Product> products = new ArrayList<Product>();
 	
 	
