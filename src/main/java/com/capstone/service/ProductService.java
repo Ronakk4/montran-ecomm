@@ -2,6 +2,8 @@ package com.capstone.service;
 
 import java.util.List;
 
+import com.capstone.model.Product;
+
 public interface ProductService {
 	List<Product> getAllProducts();
 	Product getProduct(long id);
