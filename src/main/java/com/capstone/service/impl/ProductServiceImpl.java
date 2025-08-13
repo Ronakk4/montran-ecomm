@@ -33,7 +33,7 @@
 //
 //	@Override
 //	@Transactional
-//	public void saveProduct(Product p) {
+//	public Product saveProduct(Product p) {
 //		// TODO Auto-generated method stub
 //		return productDao.save(p);
 //	}

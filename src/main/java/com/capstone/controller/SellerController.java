@@ -4,9 +4,9 @@
 package com.capstone.controller;
 
 import com.capstone.model.Product;
-import com.capstone.model.Order;
+//import com.capstone.model.Order;
 import com.capstone.service.ProductService;
-import com.capstone.service.OrderService;
+//import com.capstone.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +19,8 @@ public class SellerController {
     @Autowired
     private ProductService productService;
 
-    @Autowired
-    private OrderService orderService;
+//    @Autowired
+//    private OrderService orderService;
 
 
     @GetMapping("/products")
@@ -56,9 +56,9 @@ public class SellerController {
     }
 
 
-    @GetMapping("/orders")
-    public List<Order> getAllOrders(@RequestParam("sellerId") long sellerId) {
-        return orderService.getAllOrders(sellerId);
-    }
+//    @GetMapping("/orders")
+//    public List<Order> getAllOrders(@RequestParam("sellerId") long sellerId) {
+//        return orderService.getAllOrders(sellerId);
+//    }
 }
 
