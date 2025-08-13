@@ -1,1 +1,1 @@
-package ecomm.capstone.dao;
+package com.capstone.dao;
