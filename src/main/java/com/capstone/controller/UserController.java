@@ -1,50 +1,65 @@
 package com.capstone.controller;
 
+import com.capstone.model.Buyer;
 
-import com.capstone.dao.UserDAO;
 import com.capstone.model.User;
-
+import com.capstone.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.stereotype.Controller;
-
-import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
-	
-	@Autowired
+
+    @Autowired
     private UserService userService;
-	
-//	@GetMapping
-//	public void getUser(id) {
-//		
-//	}
+
 
     @PostMapping
-    public void registerUser(@RequestBody User user) {
+    public String registerUser(@RequestBody Buyer user) {
+
         userService.registerUser(user);
+        return "User registered successfully";
+    }
+
+    
+    
+//    @GetMapping
+//    public List<User> getAllUsers() {
+//        return userService.getAllUsers();
+//    }
+
+
+ 
+
+
+
+    @PostMapping("/login")
+    public String loginUser(@RequestBody User user) {
+        userService.loginUser(user);
+        return "User login processed";
+    }
+
+
+    @GetMapping("/{id}")
+    public User findUser(@PathVariable long id) {
+
+        return userService.findUser(id);
+    }
+
+    @PutMapping("/{id}")
+    public String updateUser(@PathVariable long id, @RequestBody User updatedUser) {
+        updatedUser.setId(id);
+        userService.updateUser(updatedUser);
+        return "User updated successfully";
     }
 
 
 
-//    @GetMapping
-//    public List<User> listUsers() {
-//        return userDao.list();
-//    }
-
-//    @PutMapping("/{id}")
-//    public void updateDepartment(@PathVariable Long id, @RequestBody User user) {
-//        user.setid(id);
-//        userDao.update(user);
-//    }
-
 //    @DeleteMapping("/{id}")
-//    public void deleteUser(@PathVariable Long id) {
-//        userDao.delete(id);
+//    public String deleteUser(@PathVariable Long id) {
+//        userService.deleteUser(id);
+//        return "User deleted successfully";
 //    }
-//	
-	
 
 }
