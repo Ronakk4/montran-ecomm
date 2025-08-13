@@ -1,52 +1,41 @@
 package com.capstone.controller;
 
-
-import com.capstone.dao.UserDao;
 import com.capstone.model.User;
 import com.capstone.service.UserService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.stereotype.Controller;
 
-import java.util.List;
-	
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
     @Autowired
     private UserService userService;
-    
-    @PostMapping
-    public void registerUser(@RequestBody User user) {
+
+
+    @PostMapping("/register")
+    public String registerUser(@RequestBody User user) {
         userService.registerUser(user);
+        return "User registered successfully";
     }
-    
-    
-    @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+
+
+    @PostMapping("/login")
+    public String loginUser(@RequestBody User user) {
+        userService.loginUser(user);
+        return "User login processed";
     }
 
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id) {
-        return userService.getUserById(id);
+    public User findUser(@PathVariable long id) {
+        return userService.findUser(id);
     }
 
-
     @PutMapping("/{id}")
-    public String updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
+    public String updateUser(@PathVariable long id, @RequestBody User updatedUser) {
         updatedUser.setId(id);
         userService.updateUser(updatedUser);
         return "User updated successfully";
-    }
-
-
-    @DeleteMapping("/{id}")
-    public String deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
-        return "User deleted successfully";
     }
 }
