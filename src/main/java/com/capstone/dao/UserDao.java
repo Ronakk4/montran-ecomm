@@ -3,7 +3,7 @@ package com.capstone.dao;
 import com.capstone.model.User;
 
 public interface UserDao {
-	User findUser(long id);
+	User findUserById(long id);
 	User findUserByEmail(String email);
 	void saveUser(User u);
 	void updateUser(User u);

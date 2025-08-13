@@ -13,13 +13,13 @@ public class Seller extends User{
 	// products
 	
 	
-	public Seller( String name, String email, String password, String role, LocalDateTime createdAt,
-			LocalDateTime updatedAt, String shopName, String shopDescription, String gstNumber) {
-		super(name, email, password, role, createdAt, updatedAt);
-		this.shopName = shopName;
-		this.shopDescription = shopDescription;
-		this.gstNumber = gstNumber;
-	}
+//	public Seller( String name, String email, String password, String role, LocalDateTime createdAt,
+//			LocalDateTime updatedAt, String shopName, String shopDescription, String gstNumber) {
+//		super(name, email, password, role, createdAt, updatedAt);
+//		this.shopName = shopName;
+//		this.shopDescription = shopDescription;
+//		this.gstNumber = gstNumber;
+//	}
 
 
 	public String getShopName() {

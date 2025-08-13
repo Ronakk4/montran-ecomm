@@ -4,6 +4,8 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.capstone.dao.UserDao;
+import com.capstone.model.Buyer;
 import com.capstone.model.User;
 import com.capstone.service.UserService;
 
@@ -17,18 +19,19 @@ public class UserServiceImpl implements UserService{
 	@Transactional
 	public User findUser(long id) {
 		// TODO Auto-generated method stub
-		return userDao.findById(id);
+		return userDao.findUserById(id);
 	}
 
 	@Override
 	@Transactional
-	public boolean registerUser(User user) {
+	public void registerUser(Buyer user) {
 		// TODO Auto-generated method stub
-		 if (user.getEmail() != null && userDao.findByEmail(user.getEmail().trim()) != null) {
-	            return false; 
+		 if (user.getEmail() != null && userDao.findUserByEmail(user.getEmail().trim()) != null) {
+			 System.out.println("user exists");
 	        }
-	        userDao.save(user);
-	        return true;
+		 	
+	        userDao.saveUser(user);
+	        System.out.println("user created");
 		
 	}
 
@@ -36,20 +39,20 @@ public class UserServiceImpl implements UserService{
 	@Transactional
 	public void updateUser(User user) {
 		// TODO Auto-generated method stub
-		 if (userDao.findByEmail(user.getEmail()) != null) {
-	            userDao.update(user);
+		 if (userDao.findUserByEmail(user.getEmail()) != null) {
+	            userDao.saveUser(user);
 	        }
 		
 	}
 
 	@Override
 	@Transactional
-	public boolean loginUser(User user) {
+	public void loginUser(User user) {
 		// TODO Auto-generated method stub
-		 if (userDao.findByEmail(user.getEmail()) != null) {
-	            return userDao.login(user);
+		 if (userDao.findUserByEmail(user.getEmail()) != null) {
+	             userDao.saveUser(user);
 	        }
-		 return false;
+		 
 			
 		
 	}
