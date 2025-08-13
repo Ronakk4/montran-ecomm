@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.capstone.service.Product;
@@ -27,20 +28,21 @@ public class ProductServiceImpl implements ProductService{
 	@Transactional
 	public Product getProduct(long id) {
 		// TODO Auto-generated method stub
-		return productDao.findById();
+		return productDao.findById(id);
 	}
 
 	@Override
 	@Transactional
 	public Product saveProduct(Product p) {
 		// TODO Auto-generated method stub
-		return productDao.save();
+		return productDao.save(p);
 	}
 
 	@Override
 	@Transactional
 	public void deleteProduct(long id) {
 		// TODO Auto-generated method stub
+		productDao.delete(id);
 		
 	}
 

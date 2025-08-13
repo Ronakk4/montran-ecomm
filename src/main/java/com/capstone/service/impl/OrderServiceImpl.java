@@ -19,20 +19,21 @@ public class OrderServiceImpl implements OrderService{
 	@Transactional
 	public List<Order> getAllOrders(long id) {
 		// TODO Auto-generated method stub
-		return null;
+		return orderdao.findAll(id);
 	}
 
 	@Override
 	@Transactional
 	public Order getOrder(long id) {
 		// TODO Auto-generated method stub
-		return null;
+		return orderDao.find(id);
 	}
 
 	@Override
 	@Transactional
 	public void deleteOrder(long id) {
 		// TODO Auto-generated method stub
+		orderDao.delete(id);
 		
 	}
 
@@ -40,6 +41,7 @@ public class OrderServiceImpl implements OrderService{
 	@Transactional
 	public void saveOrder(Order o) {
 		// TODO Auto-generated method stub
+		orderDao.save(o);
 		
 	}
 
