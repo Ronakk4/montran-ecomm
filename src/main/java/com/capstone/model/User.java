@@ -1,6 +1,5 @@
 package com.capstone.model;
 
-
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
