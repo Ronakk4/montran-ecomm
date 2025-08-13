@@ -1,4 +1,4 @@
-package com.capstone.dao.imp;
+package com.capstone.dao.impl;
 
 import javax.transaction.Transactional;
 
@@ -59,6 +59,7 @@ public class UserDaoImpl implements UserDao{
 	@Override
 	public void updateUser(User u) {
 		// TODO Auto-generated method stub
+		sessionFactory.getCurrentSession().merge(u);
 		
 	}
 
