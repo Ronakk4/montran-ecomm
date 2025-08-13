@@ -1,4 +1,4 @@
-package com.capstone.dao.imp;
+package com.capstone.dao.impl;
 
 import java.util.List;
 

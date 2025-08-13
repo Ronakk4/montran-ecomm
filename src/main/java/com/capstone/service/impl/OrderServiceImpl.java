@@ -1,49 +1,46 @@
 
-//package com.capstone.service.impl;
-//
-//import java.util.List;
-//
-//import javax.transaction.Transactional;
-//
-//import org.springframework.stereotype.Service;
-//
-//import com.capstone.service.Order;
-//import com.capstone.service.OrderService;
-//
-//@Service
-//public class OrderServiceImpl implements OrderService{
-//	
-//	@AutoWired
-//	private OrderDao orderDao;
-//
-//	@Override
-//	@Transactional
-//	public List<Order> getAllOrders(long id) {
-//		// TODO Auto-generated method stub
-//		return orderdao.findAll(id);
-//	}
-//
-//	@Override
-//	@Transactional
-//	public Order getOrder(long id) {
-//		// TODO Auto-generated method stub
-//		return orderDao.find(id);
-//	}
-//
-//	@Override
-//	@Transactional
-//	public void deleteOrder(long id) {
-//		// TODO Auto-generated method stub
-//		orderDao.delete(id);
-//		
-//	}
-//
-//	@Override
-//	@Transactional
-//	public void saveOrder(Order o) {
-//		// TODO Auto-generated method stub
-//		orderDao.save(o);
-//		
-//	}
-//
-//}
+package com.capstone.service.impl;
+
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.capstone.dao.OrderDao;
+import com.capstone.model.OrderHeader;
+import com.capstone.service.OrderService;
+
+@Service
+public class OrderServiceImpl implements OrderService{
+	
+	@Autowired
+	private OrderDao orderDao;  // choose camel case 'orderDao'
+
+	@Override
+	@Transactional
+	public List<OrderHeader> getAllOrders(long id) {
+	    return orderDao.getAllOrders(id);
+	}
+
+	@Override
+	@Transactional
+	public OrderHeader getOrder(long id) {
+	    return orderDao.getOrder(id);
+	}
+
+	@Override
+	@Transactional
+	public void deleteOrder(long id) {
+	    orderDao.deleteOrder(id);
+	}
+
+	@Override
+	@Transactional
+	public void saveOrder(OrderHeader o) {
+	    orderDao.saveOrder(o);
+	}
+
+
+}

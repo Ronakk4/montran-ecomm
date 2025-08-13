@@ -4,6 +4,9 @@ import com.capstone.model.Buyer;
 
 import com.capstone.model.User;
 import com.capstone.service.UserService;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +29,7 @@ public class UserController {
     
 //    @GetMapping
 //    public List<User> getAllUsers() {
-//        return userService.getAllUsers();
+//        return userService
 //    }
 
 

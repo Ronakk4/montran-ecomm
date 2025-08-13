@@ -1,7 +1,7 @@
 
 package com.capstone.controller;
 
-import com.capstone.model.Order;
+import com.capstone.model.OrderHeader;
 import com.capstone.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,18 +17,18 @@ public class BuyerController {
 
 
     @GetMapping("/orders")
-    public List<Order> getAllOrders(@RequestParam("buyerId") long buyerId) {
+    public List<OrderHeader> getAllOrders(@RequestParam("buyerId") long buyerId) {
         return orderService.getAllOrders(buyerId);
     }
 
     @GetMapping("/orders/{id}")
-    public Order getOrder(@PathVariable long id) {
+    public OrderHeader getOrder(@PathVariable long id) {
         return orderService.getOrder(id);
     }
 
 
     @PostMapping("/orders")
-    public String placeOrder(@RequestBody Order order) {
+    public String placeOrder(@RequestBody OrderHeader order) {
         orderService.saveOrder(order);
         return "Order placed successfully";
     }
