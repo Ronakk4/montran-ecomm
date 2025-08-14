@@ -8,16 +8,18 @@ import com.capstone.model.Buyer;
 
 import com.capstone.model.User;
 import com.capstone.service.UserService;
+import com.capstone.util.JwtUtil;
 
-
-
+import java.io.IOException;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 @RequestMapping("/users")
 public class UserController {
 
@@ -39,13 +41,25 @@ public class UserController {
 
 
     @PostMapping("/login")
-    public String loginUser(@RequestBody LoginRequestDTO user) {
-        userService.loginUser(user);
-        return "User login processed";
+    public String loginUser(@RequestBody LoginRequestDTO user,HttpServletResponse response) throws IOException {
+        if(userService.loginUser(user)) {
+        	String token=JwtUtil.generateToken(user.getEmail());
+        	  response.setContentType("text/plain");
+              response.getWriter().write("token=  "+token);
+              return "User login processed";
+        	
+        } response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid credentials");
+        return "login";
+       
     }
 
 
-    @GetMapping("/{id}")
+    @GetMapping("/email/{email}")
+    public User findUserByEmail(@PathVariable String email) {
+    	return userService.findUserByEmail(email);
+    }
+    
+    @GetMapping("/id/{id}")
     public User findUser(@PathVariable long id) {
 
         return userService.findUser(id);
