@@ -150,9 +150,17 @@
     <version>0.11.5</version>
     <scope>runtime</scope>
 </dependency>
+
+<dependency>
+    <groupId>jakarta.servlet.jsp</groupId>
+    <artifactId>jakarta.servlet.jsp-api</artifactId>
+    <version>3.0.0</version> <!-- or match your Tomcat version -->
+    <scope>provided</scope>
+</dependency>
+
 </dependencies>
  
-    <build>
+  <build>
 <finalName>ecomm.capstone</finalName>
 </build>
 </project>
