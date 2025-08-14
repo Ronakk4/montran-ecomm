@@ -10,4 +10,5 @@ public interface UserService {
 	void updateUser(Long id ,UserDTO u);
 	void loginUser(LoginRequestDTO u);
 	void registerUser(Buyer u);
+	User findUserByEmail(String email);
 }
