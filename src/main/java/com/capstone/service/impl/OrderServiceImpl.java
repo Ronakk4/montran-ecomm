@@ -10,13 +10,14 @@ import org.springframework.stereotype.Service;
 
 import com.capstone.dao.OrderDao;
 import com.capstone.model.OrderHeader;
+import com.capstone.model.OrderItem;
 import com.capstone.service.OrderService;
 
 @Service
 public class OrderServiceImpl implements OrderService{
 	
 	@Autowired
-	private OrderDao orderDao;  // choose camel case 'orderDao'
+	private OrderDao orderDao;// choose camel case 'orderDao'
 
 	@Override
 	@Transactional
@@ -38,8 +39,14 @@ public class OrderServiceImpl implements OrderService{
 
 	@Override
 	@Transactional
-	public void saveOrder(OrderHeader o) {
-	    orderDao.saveOrder(o);
+	public void saveOrder(OrderHeader orderHeader) {
+	    // Set the back-reference for all items
+	    if (orderHeader.getItems() != null) {
+	        for (OrderItem item : orderHeader.getItems()) {
+	            item.setOrderHeader(orderHeader);
+	        }
+	    }
+	    orderDao.saveOrder(orderHeader);
 	}
 
 
