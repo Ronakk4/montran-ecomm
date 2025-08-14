@@ -28,7 +28,7 @@ public class OrderHeader {
     @JoinColumn(name = "buyer_id")
     private Buyer buyer;
 
-    @OneToMany(mappedBy = "orderHeader", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "orderHeader", cascade = CascadeType.PERSIST)
     private List<OrderItem> items;
 
 	public OrderHeader(String status, double totalAmount, Buyer buyer, List<OrderItem> items) {
@@ -36,6 +36,39 @@ public class OrderHeader {
 		this.status = status;
 		this.totalAmount = totalAmount;
 		this.buyer = buyer;
+		this.items = items;
+	}
+	OrderHeader(){
+		
+	}
+	public Long getOrderId() {
+		return orderId;
+	}
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public double getTotalAmount() {
+		return totalAmount;
+	}
+	public void setTotalAmount(double totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+	public Buyer getBuyer() {
+		return buyer;
+	}
+	public void setBuyer(Buyer buyer) {
+		this.buyer = buyer;
+	}
+	public List<OrderItem> getItems() {
+		return items;
+	}
+	public void setItems(List<OrderItem> items) {
 		this.items = items;
 	}
     

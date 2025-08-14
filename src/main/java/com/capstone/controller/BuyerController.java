@@ -21,6 +21,7 @@ public class BuyerController {
         return orderService.getAllOrders(buyerId);
     }
 
+    
     @GetMapping("/orders/{id}")
     public OrderHeader getOrder(@PathVariable long id) {
         return orderService.getOrder(id);
@@ -28,8 +29,9 @@ public class BuyerController {
 
 
     @PostMapping("/orders")
-    public String placeOrder(@RequestBody OrderHeader order) {
-        orderService.saveOrder(order);
+    public String placeOrder(@RequestBody OrderHeader orderHeader) {
+        orderService.saveOrder(orderHeader);
+        
         return "Order placed successfully";
     }
 

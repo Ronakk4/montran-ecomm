@@ -13,17 +13,17 @@ public class Buyer extends User{
 	private String shippingAddress;
 	private String phoneNumber;
 	
-	@OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "buyer", cascade = CascadeType.PERSIST, orphanRemoval = true)
 	private List<OrderHeader> orders = new ArrayList<OrderHeader>();
 	
 	public Buyer() {}
 	
-//	public Buyer(String name, String email, String password, String role, LocalDateTime createdAt,
-//			LocalDateTime updatedAt, String shippingAddress, String phoneNumber) {
-//		super(name, email, password, role, createdAt, updatedAt);
-//		this.shippingAddress = shippingAddress;
-//		this.phoneNumber = phoneNumber;
-//	}
+	public Buyer(String name, String email, String password, String role, LocalDateTime createdAt,
+			LocalDateTime updatedAt, String shippingAddress, String phoneNumber) {
+		super(name, email, password, role, createdAt, updatedAt);
+		this.shippingAddress = shippingAddress;
+		this.phoneNumber = phoneNumber;
+	}
 
 	public String getShippingAddress() {
 		return shippingAddress;
@@ -48,6 +48,7 @@ public class Buyer extends User{
 	public void setOrders(List<OrderHeader> orders) {
 		this.orders = orders;
 	}
+	
 	
 	
 }

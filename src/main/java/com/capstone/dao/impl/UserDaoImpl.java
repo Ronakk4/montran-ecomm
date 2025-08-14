@@ -4,7 +4,6 @@ import javax.transaction.Transactional;
 
 //import javax.persistence.Query;
 
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;

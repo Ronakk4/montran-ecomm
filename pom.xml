@@ -97,6 +97,13 @@
 <artifactId>commons-dbcp2</artifactId>
 <version>2.9.0</version>
 </dependency>
+
+<dependency>
+    <groupId>com.fasterxml.jackson.datatype</groupId>
+    <artifactId>jackson-datatype-jsr310</artifactId>
+    <version>${jackson.version}</version>
+</dependency>
+
  
         <!-- Jackson JSON -->
 <dependency>

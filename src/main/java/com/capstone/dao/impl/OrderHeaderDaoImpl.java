@@ -1,22 +1,23 @@
+
 package com.capstone.dao.impl;
 
 import java.util.List;
 
 import javax.transaction.Transactional;
 
-import org.hibernate.Session;
+
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-//import com.capstone.dao.Order;
-import com.capstone.dao.OrderDao;
+
+import com.capstone.dao.OrderHeaderDao;
 import com.capstone.model.OrderHeader;
 
 
 @Repository
 @Transactional
-public class OrderDaoImpl implements OrderDao{
+public class OrderHeaderDaoImpl implements OrderHeaderDao{
 
 	
 	@Autowired
@@ -50,3 +51,4 @@ public class OrderDaoImpl implements OrderDao{
 	}
 
 }
+

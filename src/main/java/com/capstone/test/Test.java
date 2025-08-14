@@ -1,4 +1,3 @@
-
 package com.capstone.test;
 
 import java.time.LocalDateTime;
@@ -17,6 +16,7 @@ import com.capstone.util.HibernateUtil;
 public class Test {
 	public static void main(String[] args) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
+		
 		Seller seller = new Seller("Amit Sharma", // name
 				"amit.sharma@example.com", // email
 				"securePassword123", // password
@@ -95,4 +95,5 @@ public class Test {
 
 	}
 }
+
 

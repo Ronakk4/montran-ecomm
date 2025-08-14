@@ -9,6 +9,7 @@
     <script src="<c:url value='/resources/js/bootstrap.bundle.min.js'/>"></script>
 </head>
 <body>
+<<<<<<< HEAD
 <div class="container mt-4">
     <h1 class="mb-3">Welcome to Secure Online E-Commerce Platform</h1>
     <a href="login.jsp" class="btn btn-primary me-2">Login</a>
@@ -42,46 +43,74 @@
 --%>
 
 
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8"%>
 <html>
 <head>
-    <title>SOECP - Page Preview Links</title>
-    <link rel="stylesheet" href="<c:url value='/resources/css/bootstrap.min.css'/>">
+<title>SOECP - Page Preview Links</title>
+<link rel="stylesheet"
+	href="<c:url value='/resources/css/bootstrap.min.css'/>">
 </head>
 <body class="container mt-4">
-    <h1>SOECP UI Pages - Preview</h1>
-    <p class="text-muted">Click on any page to view its UI (static preview, not functional backend).</p>
-    <div class="list-group">
+	<h1>SOECP UI Pages - Preview</h1>
+	<p class="text-muted">Click on any page to view its UI (static
+		preview, not functional backend).</p>
+	<div class="list-group">
 
-        <!-- Public Pages -->
-        <a href="login.jsp" class="list-group-item list-group-item-action">Login</a>
-        <a href="register.jsp" class="list-group-item list-group-item-action">Register</a>
-        <a href="product-list.jsp" class="list-group-item list-group-item-action">Product List</a>
-        <a href="product.jsp" class="list-group-item list-group-item-action">Product Details</a>
-        <a href="search-results.jsp" class="list-group-item list-group-item-action">Search Results</a>
-        <a href="about.jsp" class="list-group-item list-group-item-action">About Us</a>
-        <a href="contact.jsp" class="list-group-item list-group-item-action">Contact Us</a>
+		<!-- Public Pages -->
+		<a href="login.jsp" class="list-group-item list-group-item-action">Login</a>
+		<a href="register.jsp" class="list-group-item list-group-item-action">Register</a>
+		<a href="product-list.jsp"
+			class="list-group-item list-group-item-action">Product List</a> <a
+			href="product.jsp" class="list-group-item list-group-item-action">Product
+			Details</a> <a href="search-results.jsp"
+			class="list-group-item list-group-item-action">Search Results</a> <a
+			href="about.jsp" class="list-group-item list-group-item-action">About
+			Us</a> <a href="contact.jsp"
+			class="list-group-item list-group-item-action">Contact Us</a>
 
-        <!-- Profile -->
-        <a href="profile.jsp" class="list-group-item list-group-item-action">User Profile</a>
+		<!-- Profile -->
+		<a href="profile.jsp" class="list-group-item list-group-item-action">User
+			Profile</a>
 
-        <!-- Seller Pages -->
-        <a href="seller-dashboard.jsp" class="list-group-item list-group-item-action">Seller Dashboard</a>
-        <a href="seller-products.jsp" class="list-group-item list-group-item-action">Seller Products</a>
-        <a href="seller-orders.jsp" class="list-group-item list-group-item-action">Seller Orders</a>
-        <a href="add-product.jsp" class="list-group-item list-group-item-action">Add Product</a>
-        <a href="edit-product.jsp" class="list-group-item list-group-item-action">Edit Product</a>
+		<!-- Seller Pages -->
+		<a href="seller-dashboard.jsp"
+			class="list-group-item list-group-item-action">Seller Dashboard</a> <a
+			href="seller-products.jsp"
+			class="list-group-item list-group-item-action">Seller Products</a> <a
+			href="seller-orders.jsp"
+			class="list-group-item list-group-item-action">Seller Orders</a> <a
+			href="add-product.jsp" class="list-group-item list-group-item-action">Add
+			Product</a> <a href="edit-product.jsp"
+			class="list-group-item list-group-item-action">Edit Product</a>
 
-        <!-- Buyer Pages -->
-        <a href="buyer-dashboard.jsp" class="list-group-item list-group-item-action">Buyer Dashboard</a>
-        <a href="cart.jsp" class="list-group-item list-group-item-action">Cart</a>
-        <a href="buyer-orders.jsp" class="list-group-item list-group-item-action">Buyer Orders</a>
-        <a href="order-details.jsp" class="list-group-item list-group-item-action">Order Details</a>
-        <a href="checkout.jsp" class="list-group-item list-group-item-action">Checkout</a>
+		<!-- Buyer Pages -->
+		<a href="buyer-dashboard.jsp"
+			class="list-group-item list-group-item-action">Buyer Dashboard</a> <a
+			href="cart.jsp" class="list-group-item list-group-item-action">Cart</a>
+		<a href="buyer-orders.jsp"
+			class="list-group-item list-group-item-action">Buyer Orders</a> <a
+			href="order-details.jsp"
+			class="list-group-item list-group-item-action">Order Details</a> <a
+			href="checkout.jsp" class="list-group-item list-group-item-action">Checkout</a>
 
-        <!-- Extra -->
-        <a href="error.jsp" class="list-group-item list-group-item-action text-danger">Error Page</a>
+		<!-- Extra -->
+		<a href="error.jsp"
+			class="list-group-item list-group-item-action text-danger">Error
+			Page</a>
 
-    </div>
+	</div>
+	<form action="login">
+		<button type="submit">login</button>
+	</form>
+	<!-- 	<button onclick="">login</button> -->
+	<!-- 	<button>register</button> -->
+	<!-- 	Are you a buyer? -->
+	<!-- 	<button>go to buyer</button> -->
 </body>
+
+<!-- <script type="text/javascript"> -->
+
+
+<!-- </script> -->
+
 </html>
