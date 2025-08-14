@@ -14,13 +14,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Buyer extends User{
 	private String shippingAddress;
 	private String phoneNumber;
-	
-
 
 
 	@OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
-
 	private List<OrderHeader> orders = new ArrayList<OrderHeader>();
 	
 	public Buyer() {}

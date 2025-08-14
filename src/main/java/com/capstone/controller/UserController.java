@@ -46,10 +46,10 @@ public class UserController {
         	String token=JwtUtil.generateToken(user.getEmail());
         	  response.setContentType("text/plain");
               response.getWriter().write("token=  "+token);
-              return "User login processed";
+              return "about";
         	
         } response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid credentials");
-        return "login";
+        return "home";
        
     }
 

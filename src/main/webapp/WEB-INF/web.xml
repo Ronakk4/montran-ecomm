@@ -19,13 +19,13 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
     
-    <filter>
-    <filter-name>JwtAuthenticationFilter</filter-name>
-    <filter-class>com.jwt.filter.JwtAuthenticationFilter</filter-class>
-</filter>
+<!--     <filter> -->
+<!--     <filter-name>JwtAuthenticationFilter</filter-name> -->
+<!--     <filter-class>com.jwt.filter.JwtAuthenticationFilter</filter-class> -->
+<!-- </filter> -->
 
-<filter-mapping>
-    <filter-name>JwtAuthenticationFilter</filter-name>
-    <url-pattern>/login/*</url-pattern>
-</filter-mapping>
+<!-- <filter-mapping> -->
+<!--     <filter-name>JwtAuthenticationFilter</filter-name> -->
+<!--     <url-pattern>/login/*</url-pattern> -->
+<!-- </filter-mapping> -->
 </web-app>
