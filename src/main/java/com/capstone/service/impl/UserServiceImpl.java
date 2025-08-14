@@ -79,23 +79,23 @@ public class UserServiceImpl implements UserService{
 
 
 	@Override
-	public void loginUser(LoginRequestDTO user) {
+	public boolean loginUser(LoginRequestDTO user) {
 	    if (user.getEmail() == null || user.getPassword() == null) {
 	        System.out.println("Email and password must be provided");
-	        return;
+	        return false;
 	    }
 
 	    User existingUser = userDao.findUserByEmail(user.getEmail().trim());
 
 	    if (existingUser == null) {
-	        System.out.println("User does not exist");
+	       return false;
 	    } 
 	    else {
 	        if (user.getPassword().equals(existingUser.getPassword())) {
-	            System.out.println("Authenticated");
+	        	return true;
 	        } 
 	        else {
-	            System.out.println("Not authenticated");
+	            return false;
 	        }
 	    
 	}
