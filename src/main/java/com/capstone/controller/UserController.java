@@ -1,50 +1,41 @@
 package com.capstone.controller;
 
-
-import com.capstone.dao.UserDAO;
 import com.capstone.model.User;
-
+import com.capstone.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.stereotype.Controller;
-
-import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
-	
-	@Autowired
-    private UserService userService;
-	
-//	@GetMapping
-//	public void getUser(id) {
-//		
-//	}
 
-    @PostMapping
-    public void registerUser(@RequestBody User user) {
+    @Autowired
+    private UserService userService;
+
+
+    @PostMapping("/register")
+    public String registerUser(@RequestBody User user) {
         userService.registerUser(user);
+        return "User registered successfully";
     }
 
 
+    @PostMapping("/login")
+    public String loginUser(@RequestBody User user) {
+        userService.loginUser(user);
+        return "User login processed";
+    }
 
-//    @GetMapping
-//    public List<User> listUsers() {
-//        return userDao.list();
-//    }
 
-//    @PutMapping("/{id}")
-//    public void updateDepartment(@PathVariable Long id, @RequestBody User user) {
-//        user.setid(id);
-//        userDao.update(user);
-//    }
+    @GetMapping("/{id}")
+    public User findUser(@PathVariable long id) {
+        return userService.findUser(id);
+    }
 
-//    @DeleteMapping("/{id}")
-//    public void deleteUser(@PathVariable Long id) {
-//        userDao.delete(id);
-//    }
-//	
-	
-
+    @PutMapping("/{id}")
+    public String updateUser(@PathVariable long id, @RequestBody User updatedUser) {
+        updatedUser.setId(id);
+        userService.updateUser(updatedUser);
+        return "User updated successfully";
+    }
 }
