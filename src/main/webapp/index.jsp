@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!DOCTYPE html>
+<%@ page isELIgnored="false" %>
+	<!DOCTYPE html>
 <html>
 <head>
     <title>Home - Products</title>
@@ -21,7 +22,7 @@
     <div class="container">
         <a class="navbar-brand fw-bold" href="#">MyShop</a>
         <div class="ms-auto">
-            <a href="login.jsp" class="btn btn-outline-primary me-2">Login</a>
+            <a href="${pageContext.request.contextPath}/app/login" class="btn btn-outline-primary me-2">Login</a>
             <a href="signup.jsp" class="btn btn-primary me-2">Sign Up</a>
             <a href="cart.jsp" class="btn btn-outline-success">Cart</a>
         </div>
@@ -84,4 +85,3 @@
 </script>
 </body>
 </html>
- 
