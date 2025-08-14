@@ -18,12 +18,12 @@ public class Buyer extends User{
 	
 	public Buyer() {}
 	
-//	public Buyer(String name, String email, String password, String role, LocalDateTime createdAt,
-//			LocalDateTime updatedAt, String shippingAddress, String phoneNumber) {
-//		super(name, email, password, role, createdAt, updatedAt);
-//		this.shippingAddress = shippingAddress;
-//		this.phoneNumber = phoneNumber;
-//	}
+	public Buyer(String name, String email, String password, String role, LocalDateTime createdAt,
+			LocalDateTime updatedAt, String shippingAddress, String phoneNumber) {
+		super(name, email, password, role, createdAt, updatedAt);
+		this.shippingAddress = shippingAddress;
+		this.phoneNumber = phoneNumber;
+	}
 
 	public String getShippingAddress() {
 		return shippingAddress;
