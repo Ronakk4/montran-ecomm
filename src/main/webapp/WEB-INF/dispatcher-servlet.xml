@@ -15,7 +15,7 @@
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <!-- Scan all app packages for @Controller, @Service, @Repository, @Component -->
-    <context:component-scan base-package="bank" />
+    <context:component-scan base-package="com.capstone" />
 
     <!-- Enable @RequestMapping, @RestController, @ResponseBody -->
     <mvc:annotation-driven />
@@ -25,7 +25,11 @@
         <property name="driverClassName" value="org.postgresql.Driver" />
         <property name="url" value="jdbc:postgresql://localhost:5432/SOECP" />
         <property name="username" value="postgres" />
-        <property name="password" value="montran123" />
+<<<<<<< HEAD
+        <property name="password" value="admin1" />
+=======
+        <property name="password" value="admin" />
+>>>>>>> fc6b824bf006299b4830481f591be2afc7d72c06
         <!-- Optional connection pool settings -->
         <property name="initialSize" value="5" />
         <property name="maxTotal" value="20" />
@@ -37,7 +41,7 @@
     <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <!-- Scan for @Entity classes -->
-        <property name="packagesToScan" value="ecomm.capstone.model" />
+        <property name="packagesToScan" value="com.capstone.model" />
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
