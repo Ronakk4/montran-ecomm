@@ -11,6 +11,7 @@ public interface ProductService {
 	Product getProduct(long id);
 	void saveProduct(Product p);
 	void deleteProduct(long id);
+	List<Product> getProductsFromCategory(String category);
 }
 
 

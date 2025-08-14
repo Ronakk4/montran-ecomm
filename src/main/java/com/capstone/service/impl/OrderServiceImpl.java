@@ -8,7 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.capstone.dao.OrderDao;
+import com.capstone.dao.OrderHeaderDao;
 import com.capstone.model.OrderHeader;
 import com.capstone.model.OrderItem;
 import com.capstone.service.OrderService;
@@ -17,7 +17,11 @@ import com.capstone.service.OrderService;
 public class OrderServiceImpl implements OrderService{
 	
 	@Autowired
+<<<<<<< HEAD
+	private OrderHeaderDao orderDao;  // choose camel case 'orderDao'
+=======
 	private OrderDao orderDao;// choose camel case 'orderDao'
+>>>>>>> fc6b824bf006299b4830481f591be2afc7d72c06
 
 	@Override
 	@Transactional

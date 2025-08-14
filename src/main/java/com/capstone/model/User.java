@@ -22,23 +22,23 @@ public class User {
 	private String email;
 	private String password;
 	private String role;
-//	LocalDateTime createdAt;
-//	LocalDateTime updatedAt;
+	LocalDateTime createdAt;
+	LocalDateTime updatedAt;
 	
 	public User() {}
 	
-//	
-//	public User(String name, String email, String password, String role, LocalDateTime createdAt,
-//			LocalDateTime updatedAt) {
-//		super();
-//		
-//		this.name = name;
-//		this.email = email;
-//		this.password = password;
-//		this.role = role;
-////		this.createdAt = createdAt;
-////		this.updatedAt = updatedAt;
-//	}
+	
+	public User(String name, String email, String password, String role, LocalDateTime createdAt,
+			LocalDateTime updatedAt) {
+		super();
+		
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.role = role;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+	}
 
 
 	public long getId() {

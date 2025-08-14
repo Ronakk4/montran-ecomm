@@ -1,5 +1,16 @@
 <html>
 <body>
-<h2>Hello World!</h2>
+<form action="login">
+<button type="submit">login</button> </form>
+<!-- 	<button onclick="">login</button> -->
+<!-- 	<button>register</button> -->
+<!-- 	Are you a buyer? -->
+<!-- 	<button>go to buyer</button> -->
 </body>
+
+<!-- <script type="text/javascript"> -->
+
+	
+<!-- </script> -->
+
 </html>
