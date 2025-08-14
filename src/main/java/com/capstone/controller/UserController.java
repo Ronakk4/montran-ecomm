@@ -40,8 +40,10 @@ public class UserController {
 
     @PostMapping("/login")
     public String loginUser(@RequestBody LoginRequestDTO user) {
-        userService.loginUser(user);
+        if(userService.loginUser(user))
         return "User login processed";
+        
+        return "User login failed";
     }
 
 
