@@ -9,7 +9,7 @@
    		<property name="hibernate.connection.driver.class">org.postgresql.Driver</property>
    		<property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/SOECP</property>
    		<property name="hibernate.connection.username">postgres</property>
-   		<property name="hibernate.connection.password">admin</property>
+   		<property name="hibernate.connection.password">admin1</property>
    		<property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
    		<property name="hibernate.hbm2ddl.auto">update</property>
 		<property name="hibernate.show_sql">true</property>
@@ -17,6 +17,9 @@
 		<mapping class="com.capstone.model.Buyer"/>
 		<mapping class="com.capstone.model.Seller"/>
 		<mapping class="com.capstone.model.User"/>
+		<mapping class="com.capstone.model.Product"/>
+		<mapping class="com.capstone.model.OrderItem"/>
+		<mapping class="com.capstone.model.OrderHeader"/>
 		
    	</session-factory>
    

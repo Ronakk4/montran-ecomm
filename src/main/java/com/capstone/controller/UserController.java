@@ -1,7 +1,12 @@
 package com.capstone.controller;
 
+import com.capstone.model.Buyer;
+
 import com.capstone.model.User;
 import com.capstone.service.UserService;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,11 +18,23 @@ public class UserController {
     private UserService userService;
 
 
-    @PostMapping("/register")
-    public String registerUser(@RequestBody User user) {
+    @PostMapping
+    public String registerUser(@RequestBody Buyer user) {
+
         userService.registerUser(user);
         return "User registered successfully";
     }
+
+    
+    
+//    @GetMapping
+//    public List<User> getAllUsers() {
+//        return userService
+//    }
+
+
+ 
+
 
 
     @PostMapping("/login")
@@ -29,6 +46,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public User findUser(@PathVariable long id) {
+
         return userService.findUser(id);
     }
 
@@ -38,4 +56,13 @@ public class UserController {
         userService.updateUser(updatedUser);
         return "User updated successfully";
     }
+
+
+
+//    @DeleteMapping("/{id}")
+//    public String deleteUser(@PathVariable Long id) {
+//        userService.deleteUser(id);
+//        return "User deleted successfully";
+//    }
+
 }

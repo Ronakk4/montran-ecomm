@@ -1,9 +1,13 @@
 package com.capstone.service.impl;
 import javax.transaction.Transactional;
 
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.capstone.dao.UserDao;
+import com.capstone.model.Buyer;
+import com.capstone.model.Seller;
 import com.capstone.model.User;
 import com.capstone.service.UserService;
 
@@ -12,44 +16,77 @@ public class UserServiceImpl implements UserService{
 	
 	@Autowired
 	private UserDao userDao;
+	
+	@Autowired
+	private SessionFactory sessionFactory;
 
 	@Override
 	@Transactional
 	public User findUser(long id) {
 		// TODO Auto-generated method stub
-		return userDao.findById(id);
+		return userDao.findUserById(id);
 	}
 
 	@Override
 	@Transactional
-	public boolean registerUser(User user) {
+	public void registerUser(Buyer user) {
 		// TODO Auto-generated method stub
-		 if (user.getEmail() != null && userDao.findByEmail(user.getEmail().trim()) != null) {
-	            return false; 
+		 if (user.getEmail() != null && userDao.findUserByEmail(user.getEmail().trim()) != null) {
+			 System.out.println("user exists");
 	        }
-	        userDao.save(user);
-	        return true;
+		 	
+	        userDao.saveUser(user);
+	        System.out.println("user created");
 		
 	}
 
 	@Override
 	@Transactional
-	public void updateUser(User user) {
-		// TODO Auto-generated method stub
-		 if (userDao.findByEmail(user.getEmail()) != null) {
-	            userDao.update(user);
-	        }
-		
+	public void updateUser(User u) {
+
+
+	    // Load the actual subclass from DB (Buyer or Seller)
+	    User existingUser = sessionFactory.getCurrentSession().get(User.class, u.getId());
+	    if (existingUser == null) {
+	        throw new IllegalArgumentException("User not found with ID: " + u.getId());
+	    }
+
+	    // Common fields
+	    existingUser.setName(u.getName());
+	    existingUser.setEmail(u.getEmail());
+	    existingUser.setPassword(u.getPassword());
+	    existingUser.setRole(u.getRole());
+
+	    // Subclass-specific updates
+	    if (existingUser instanceof Buyer && u instanceof Buyer) {
+	        Buyer existingBuyer = (Buyer) existingUser;
+	        Buyer incomingBuyer = (Buyer) u;
+	        existingBuyer.setShippingAddress(incomingBuyer.getShippingAddress());
+	        existingBuyer.setPhoneNumber(incomingBuyer.getPhoneNumber());
+	    } 
+	    else if (existingUser instanceof Seller && u instanceof Seller) {
+	        Seller existingSeller = (Seller) existingUser;
+	        Seller incomingSeller = (Seller) u;
+	        existingSeller.setShopName(incomingSeller.getShopName());
+	        existingSeller.setShopDescription(incomingSeller.getShopDescription());
+	        existingSeller.setGstNumber(incomingSeller.getGstNumber());
+	    }
+
+	    // No need to call update() or merge()
+	    // Hibernate will flush changes automatically at transaction commit
 	}
+	
+
+
 
 	@Override
 	@Transactional
-	public boolean loginUser(User user) {
+	public void loginUser(User user) {
 		// TODO Auto-generated method stub
-		 if (userDao.findByEmail(user.getEmail()) != null) {
-	            return userDao.login(user);
+		 if (userDao.findUserByEmail(user.getEmail()) != null) {
+	             userDao.saveUser(user);
 	        }
-		 return false;
+		 
 			
 		
 	}
