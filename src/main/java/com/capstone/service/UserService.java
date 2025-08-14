@@ -8,7 +8,7 @@ import com.capstone.model.User;
 public interface UserService {
 	User findUser(long id);
 	void updateUser(Long id ,UserDTO u);
-	void loginUser(LoginRequestDTO u);
+	boolean loginUser(LoginRequestDTO u);
 	void registerUser(Buyer u);
 	User findUserByEmail(String email);
 }
