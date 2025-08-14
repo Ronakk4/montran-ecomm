@@ -13,7 +13,7 @@ public class Buyer extends User{
 	private String shippingAddress;
 	private String phoneNumber;
 	
-	@OneToMany(mappedBy = "buyer", cascade = CascadeType.PERSIST, orphanRemoval = true)
+	@OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<OrderHeader> orders = new ArrayList<OrderHeader>();
 	
 	public Buyer() {}
