@@ -25,6 +25,8 @@ public class User {
 	LocalDateTime createdAt;
 	LocalDateTime updatedAt;
 	
+	public User() {}
+	
 	
 	public User(String name, String email, String password, String role, LocalDateTime createdAt,
 			LocalDateTime updatedAt) {
@@ -89,24 +91,24 @@ public class User {
 	}
 
 
-	public LocalDateTime getCreatedAt() {
-		return createdAt;
-	}
-
-
-	public void setCreatedAt(LocalDateTime createdAt) {
-		this.createdAt = createdAt;
-	}
-
-
-	public LocalDateTime getUpdatedAt() {
-		return updatedAt;
-	}
-
-
-	public void setUpdatedAt(LocalDateTime updatedAt) {
-		this.updatedAt = updatedAt;
-	}
+//	public LocalDateTime getCreatedAt() {
+//		return createdAt;
+//	}
+//
+//
+//	public void setCreatedAt(LocalDateTime createdAt) {
+//		this.createdAt = createdAt;
+//	}
+//
+//
+//	public LocalDateTime getUpdatedAt() {
+//		return updatedAt;
+//	}
+//
+//
+//	public void setUpdatedAt(LocalDateTime updatedAt) {
+//		this.updatedAt = updatedAt;
+//	}
 	
 	
 }

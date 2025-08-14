@@ -72,7 +72,7 @@ public class Seller extends User{
 	@Override
 	public String toString() {
 		return "Seller [shopName=" + shopName + ", shopDescription=" + shopDescription + ", gstNumber=" + gstNumber
-				+ ", products=" + products + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
+				+ ", products=" + products + "]";
 	}
 	
 	

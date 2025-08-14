@@ -16,6 +16,8 @@ public class Buyer extends User{
 	@OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<OrderHeader> orders = new ArrayList<OrderHeader>();
 	
+	public Buyer() {}
+	
 	public Buyer(String name, String email, String password, String role, LocalDateTime createdAt,
 			LocalDateTime updatedAt, String shippingAddress, String phoneNumber) {
 		super(name, email, password, role, createdAt, updatedAt);
