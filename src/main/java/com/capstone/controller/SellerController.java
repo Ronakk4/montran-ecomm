@@ -3,10 +3,12 @@
 
 package com.capstone.controller;
 
+import com.capstone.model.OrderHeader;
 import com.capstone.model.Product;
-import com.capstone.model.Order;
-import com.capstone.service.ProductService;
 import com.capstone.service.OrderService;
+//import com.capstone.model.Order;
+import com.capstone.service.ProductService;
+//import com.capstone.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,7 +59,7 @@ public class SellerController {
 
 
     @GetMapping("/orders")
-    public List<Order> getAllOrders(@RequestParam("sellerId") long sellerId) {
+    public List<OrderHeader> getAllOrders(@RequestParam("sellerId") long sellerId) {
         return orderService.getAllOrders(sellerId);
     }
 }

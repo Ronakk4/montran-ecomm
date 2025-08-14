@@ -1,10 +1,9 @@
-package com.capstone.dao.imp;
+package com.capstone.dao.impl;
 
 import java.util.List;
 
 import javax.transaction.Transactional;
 
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -41,6 +40,15 @@ public class ProductDaoImpl implements ProductDao {
 	public void deleteProduct(long id) {
 		// TODO Auto-generated method stub
 		sessionFactory.getCurrentSession().delete(id);
+	}
+
+	@Override
+	public List<Product> getProductsFromCategory(String category) {
+		return sessionFactory.getCurrentSession().createQuery("from Product where category = :category", Product.class)
+		.setParameter("category", category)
+		.list();
+		
+		
 	}
 
 }
