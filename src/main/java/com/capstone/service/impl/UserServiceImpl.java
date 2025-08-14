@@ -79,10 +79,10 @@ public class UserServiceImpl implements UserService{
 
 
 	@Override
-	public void loginUser(LoginRequestDTO user) {
+	public boolean loginUser(LoginRequestDTO user) {
 	    if (user.getEmail() == null || user.getPassword() == null) {
 	        System.out.println("Email and password must be provided");
-	        return;
+	        return false;
 	    }
 
 	    User existingUser = userDao.findUserByEmail(user.getEmail().trim());
@@ -93,33 +93,13 @@ public class UserServiceImpl implements UserService{
 	    else {
 	        if (user.getPassword().equals(existingUser.getPassword())) {
 	            System.out.println("Authenticated");
+	            return true;
 	        } 
 	        else {
 	            System.out.println("Not authenticated");
+	            return false;
 	        }
-	    
 	}
-
-		 
-		
-		 
-		
+		return false;		
 	}
-
-			
-		
-	
-
-
-
-
-
-
-	@Override
-	public User findUserByEmail(String email) {
-		// TODO Auto-generated method stub
-		return userDao.findUserByEmail(email);
-	}
-
-
 }

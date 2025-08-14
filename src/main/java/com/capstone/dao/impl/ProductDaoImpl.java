@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.capstone.model.Product;
 import com.capstone.dao.ProductDao;
+import com.capstone.dto.ProductInsertDTO;
 
 @Repository
 @Transactional
@@ -31,10 +32,10 @@ public class ProductDaoImpl implements ProductDao {
 	}
 
 	@Override
-	public void saveProduct(Product p) {
-		// TODO Auto-generated method stub
-		sessionFactory.getCurrentSession().save(p);
+	public void saveProduct(Product product) {
+	    sessionFactory.getCurrentSession().save(product);
 	}
+
 
 	@Override
 	public void deleteProduct(long id) {
