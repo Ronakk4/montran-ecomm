@@ -2,6 +2,7 @@ package com.capstone.dao;
 
 import java.util.List;
 
+import com.capstone.dto.ProductInsertDTO;
 import com.capstone.model.Product;
 
 
