@@ -88,38 +88,18 @@ public class UserServiceImpl implements UserService{
 	    User existingUser = userDao.findUserByEmail(user.getEmail().trim());
 
 	    if (existingUser == null) {
-	       return false;
+	        System.out.println("User does not exist");
 	    } 
 	    else {
 	        if (user.getPassword().equals(existingUser.getPassword())) {
-	        	return true;
+	            System.out.println("Authenticated");
+	            return true;
 	        } 
 	        else {
+	            System.out.println("Not authenticated");
 	            return false;
 	        }
-	    
 	}
-
-		 
-		
-		 
-		
+		return false;		
 	}
-
-			
-		
-	
-
-
-
-
-
-
-	@Override
-	public User findUserByEmail(String email) {
-		// TODO Auto-generated method stub
-		return userDao.findUserByEmail(email);
-	}
-
-
 }

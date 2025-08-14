@@ -3,6 +3,7 @@
 
 package com.capstone.controller;
 
+import com.capstone.dto.ProductInsertDTO;
 import com.capstone.model.OrderHeader;
 import com.capstone.model.Product;
 import com.capstone.service.OrderService;
@@ -37,18 +38,18 @@ public class SellerController {
     }
 
     @PostMapping("/products")
-    public String addProduct(@RequestBody Product product) {
+    public String addProduct(@RequestBody ProductInsertDTO product) {
         productService.saveProduct(product);
         return "Product added successfully";
     }
 
 
-    @PutMapping("/products/{id}")
-    public String updateProduct(@PathVariable long id, @RequestBody Product product) {
-        product.setId(id);
-        productService.saveProduct(product);
-        return "Product updated successfully";
-    }
+//    @PutMapping("/products/{id}")
+//    public String updateProduct(@PathVariable long id, @RequestBody Product product) {
+//        product.setId(id);
+//        productService.saveProduct(product);
+//        return "Product updated successfully";
+//    }
 
 
     @DeleteMapping("/products/{id}")
