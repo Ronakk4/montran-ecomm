@@ -1,11 +1,15 @@
+//
 //package com.capstone.test;
 //
 //import java.time.LocalDateTime;
+//import java.util.ArrayList;
 //
 //import org.hibernate.Session;
 //import org.hibernate.Transaction;
 //
 //import com.capstone.model.Buyer;
+//import com.capstone.model.OrderHeader;
+//import com.capstone.model.OrderItem;
 //import com.capstone.model.Product;
 //import com.capstone.model.Seller;
 //import com.capstone.util.HibernateUtil;
@@ -54,9 +58,25 @@
 //			    LocalDateTime.of(2025, 8, 13, 11, 30)          // updatedAt
 //			                                            
 //			);
+//			
+//		OrderHeader orderHeader = new OrderHeader(
+//			    "PLACED",
+//			    0.0, // will update after adding items
+//			    buyer,
+//			    new ArrayList<>()
+//			);
+//		
+//		OrderItem item1 = new OrderItem(orderHeader, p1, seller, 1, p1.getPrice());
+//		OrderItem item2 = new OrderItem(orderHeader, p2, seller, 2, p2.getPrice());
+//
+// 
+//
 //		
 //			seller.getProducts().add(p2);
 //			seller.getProducts().add(p1);
+//			
+////			order.setBuyer(buyer);
+////			buyer.getOrders().add(order);
 //			p1.setSeller(seller);
 //			p2.setSeller(seller);
 //			
@@ -68,7 +88,11 @@
 //		session.save(p2);
 //		session.save(buyer);
 //		session.save(seller);
+//		session.save(orderHeader);
+//		session.save(item1);
+//		session.save(item2);
 //		t.commit();
 //
 //	}
 //}
+//

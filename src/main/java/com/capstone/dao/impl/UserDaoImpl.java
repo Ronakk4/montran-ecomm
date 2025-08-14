@@ -38,6 +38,8 @@ public class UserDaoImpl implements UserDao{
 //		return query.uniqueResult();
 		return sessionFactory.getCurrentSession().get(User.class, id);
 	}
+	
+	
 
 	@Override
 	public User findUserByEmail(String email) {

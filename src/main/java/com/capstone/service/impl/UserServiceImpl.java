@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.capstone.dao.UserDao;
+import com.capstone.dto.BuyerDTO;
+import com.capstone.dto.LoginRequestDTO;
+import com.capstone.dto.SellerDTO;
+import com.capstone.dto.UserDTO;
 import com.capstone.model.Buyer;
 import com.capstone.model.Seller;
 import com.capstone.model.User;
@@ -42,52 +46,69 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	@Transactional
-	public void updateUser(User u) {
+	public void updateUser(Long id, UserDTO dto) {
+	    User existingUser = userDao.findUserById(id);
 
+	    // Common fields update
+	    if (dto.getName() != null) existingUser.setName(dto.getName());
+	    if (dto.getEmail() != null) existingUser.setEmail(dto.getEmail());
+	    if (dto.getPassword() != null) existingUser.setPassword(dto.getPassword());
+	    if (dto.getRole() != null) existingUser.setRole(dto.getRole());
 
-	    // Load the actual subclass from DB (Buyer or Seller)
-	    User existingUser = sessionFactory.getCurrentSession().get(User.class, u.getId());
-	    if (existingUser == null) {
-	        throw new IllegalArgumentException("User not found with ID: " + u.getId());
+	    // Buyer-specific update
+	    if (existingUser instanceof Buyer && dto instanceof BuyerDTO) {
+	        Buyer buyer = (Buyer) existingUser;
+	        BuyerDTO buyerDTO = (BuyerDTO) dto;
+
+	        if (buyerDTO.getShippingAddress() != null) buyer.setShippingAddress(buyerDTO.getShippingAddress());
+	        if (buyerDTO.getPhoneNumber() != null) buyer.setPhoneNumber(buyerDTO.getPhoneNumber());
 	    }
 
-	    // Common fields
-	    existingUser.setName(u.getName());
-	    existingUser.setEmail(u.getEmail());
-	    existingUser.setPassword(u.getPassword());
-	    existingUser.setRole(u.getRole());
+	    // Seller-specific update
+	    if (existingUser instanceof Seller && dto instanceof SellerDTO) {
+	        Seller seller = (Seller) existingUser;
+	        SellerDTO sellerDTO = (SellerDTO) dto;
 
-	    // Subclass-specific updates
-	    if (existingUser instanceof Buyer && u instanceof Buyer) {
-	        Buyer existingBuyer = (Buyer) existingUser;
-	        Buyer incomingBuyer = (Buyer) u;
-	        existingBuyer.setShippingAddress(incomingBuyer.getShippingAddress());
-	        existingBuyer.setPhoneNumber(incomingBuyer.getPhoneNumber());
-	    } 
-	    else if (existingUser instanceof Seller && u instanceof Seller) {
-	        Seller existingSeller = (Seller) existingUser;
-	        Seller incomingSeller = (Seller) u;
-	        existingSeller.setShopName(incomingSeller.getShopName());
-	        existingSeller.setShopDescription(incomingSeller.getShopDescription());
-	        existingSeller.setGstNumber(incomingSeller.getGstNumber());
+	        if (sellerDTO.getShopName() != null) seller.setShopName(sellerDTO.getShopName());
+	        if (sellerDTO.getShopDescription() != null) seller.setShopDescription(sellerDTO.getShopDescription());
+	        if (sellerDTO.getGstNumber() != null) seller.setGstNumber(sellerDTO.getGstNumber());
 	    }
 
-	    // No need to call update() or merge()
-	    // Hibernate will flush changes automatically at transaction commit
+	    userDao.saveUser(existingUser);
 	}
 
 
 	@Override
-	@Transactional
-	public void loginUser(User user) {
-		// TODO Auto-generated method stub
-		 if (userDao.findUserByEmail(user.getEmail()) != null) {
-	             userDao.saveUser(user);
+	public void loginUser(LoginRequestDTO user) {
+	    if (user.getEmail() == null || user.getPassword() == null) {
+	        System.out.println("Email and password must be provided");
+	        return;
+	    }
+
+	    User existingUser = userDao.findUserByEmail(user.getEmail().trim());
+
+	    if (existingUser == null) {
+	        System.out.println("User does not exist");
+	    } 
+	    else {
+	        if (user.getPassword().equals(existingUser.getPassword())) {
+	            System.out.println("Authenticated");
+	        } 
+	        else {
+	            System.out.println("Not authenticated");
 	        }
+	    
+	}
+
 		 
-			
+		
+		 
 		
 	}
+
+			
+		
+	
 
 
 
