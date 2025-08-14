@@ -85,12 +85,13 @@ public class UserServiceImpl implements UserService{
 		// TODO Auto-generated method stub
 		 if (userDao.findUserByEmail(user.getEmail()) != null) {
 	             userDao.saveUser(user);
-	        }
-		 
-			
-		
+	        }		
 	}
 
-
+	@Override
+	public User findUserByEmail(String email) {
+		// TODO Auto-generated method stub
+		return userDao.findUserByEmail(email);
+	}
 
 }

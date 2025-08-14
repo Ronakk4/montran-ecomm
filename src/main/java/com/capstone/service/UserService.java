@@ -8,4 +8,5 @@ public interface UserService {
 	void updateUser(User u);
 	void loginUser(User u);
 	void registerUser(Buyer u);
+	User findUserByEmail(String email);
 }

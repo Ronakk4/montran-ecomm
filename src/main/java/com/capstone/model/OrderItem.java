@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Positive;
 
 @Entity
 @Table(name = "order_items")
@@ -28,7 +29,9 @@ public class OrderItem {
     @JoinColumn(name = "seller_id")
     private Seller seller;
 
+    @Positive(message="Order quantity must be positive")
     private int quantity;
+    
     private double price;
     
     

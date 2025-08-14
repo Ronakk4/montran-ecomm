@@ -1,6 +1,7 @@
 package com.capstone.model;
 
 import java.time.LocalDateTime;
+import javax.validation.constraints.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,18 +20,29 @@ public class Product {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "prod_id")
 	private long prodId;
-	@Column(name = "name", length = 150)
+	
+	@Column(name = "name")
+	@NotBlank(message = "Product name is required")
+	@Size(min=3,max=150,message= "Product name must be between 3 and 150 characters")
 	private String prodName;
-	@Column(name = "description", length = 1000)
+	
+	@Column(name = "description")
+	@Size(max=1000,message="Description must not exceed 1000 characters")
 	private String prodDescription;
+	
 	@Column
+	@Positive(message="Price must be a positive number")
 	private Double price;
+	
 	@Column(name="stock_quantity")
 	private int stockQuantity;
+	
 	@Column
 	private String category;
+	
 	@Column(name = "created_at")
 	private LocalDateTime createdAt = LocalDateTime.now();
+	
 	@Column(name = "updated_at")
 	private LocalDateTime updatedAt;
 

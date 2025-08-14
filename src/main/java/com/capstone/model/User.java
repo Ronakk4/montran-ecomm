@@ -9,6 +9,10 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -19,8 +23,20 @@ public class User {
 	private long id;
 	
 	private String name;
+	
+	@Email(message="Email should be valid")
+	@NotBlank(message= "Email is required")
 	private String email;
+	
+	
+	@NotBlank(message="Password is required")
+	@Size(min=8,message= "Password must be atleast 8 characters")
+	@Pattern(
+			regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]+$",
+	        message = "Password must contain uppercase, lowercase, number, and special character"
+	    )
 	private String password;
+	
 	private String role;
 //	LocalDateTime createdAt;
 //	LocalDateTime updatedAt;
