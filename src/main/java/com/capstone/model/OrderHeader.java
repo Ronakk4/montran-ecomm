@@ -28,7 +28,7 @@ public class OrderHeader {
     @JoinColumn(name = "buyer_id")
     private Buyer buyer;
 
-    @OneToMany(mappedBy = "orderHeader", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "orderHeader", cascade = CascadeType.PERSIST)
     private List<OrderItem> items;
 
 	public OrderHeader(String status, double totalAmount, Buyer buyer, List<OrderItem> items) {

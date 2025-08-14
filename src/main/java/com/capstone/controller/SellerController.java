@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/seller")
 public class SellerController {
@@ -37,14 +39,14 @@ public class SellerController {
     }
 
     @PostMapping("/products")
-    public String addProduct(@RequestBody Product product) {
+    public String addProduct(@Valid @RequestBody Product product) {
         productService.saveProduct(product);
         return "Product added successfully";
     }
 
 
     @PutMapping("/products/{id}")
-    public String updateProduct(@PathVariable long id, @RequestBody Product product) {
+    public String updateProduct(@PathVariable long id,@Valid @RequestBody Product product) {
         product.setId(id);
         productService.saveProduct(product);
         return "Product updated successfully";
