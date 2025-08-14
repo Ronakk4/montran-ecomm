@@ -15,7 +15,10 @@ import com.capstone.util.JwtUtil;
 import java.io.IOException;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import javax.servlet.http.HttpServletResponse;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,11 +34,11 @@ public class UserController {
 
 
     @PostMapping
-    public String registerUser(@RequestBody Buyer user) {
-
+    public String registerUser(@Valid @RequestBody Buyer user) {
         userService.registerUser(user);
         return "User registered successfully";
     }
+
 
     @PostMapping("/login")
 

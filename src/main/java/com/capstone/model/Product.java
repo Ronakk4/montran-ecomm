@@ -37,6 +37,7 @@ public class Product {
 	private Double price;
 	
 	@Column(name="stock_quantity")
+	@Min(value=0,message="Product not available in stock")
 	private int stockQuantity;
 	
 	@Column
