@@ -10,4 +10,5 @@ public interface UserService {
 	void updateUser(Long id ,UserDTO u);
 	boolean loginUser(LoginRequestDTO u);
 	void registerUser(Buyer u);
+
 }
