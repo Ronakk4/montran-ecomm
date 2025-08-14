@@ -16,10 +16,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequestMapping("/users")
 public class UserController {
 
@@ -41,15 +43,13 @@ public class UserController {
 
 
     @PostMapping("/login")
-    public String loginUser(@RequestBody LoginRequestDTO user,HttpServletResponse response) throws IOException {
+    public ResponseEntity<?> loginUser(@RequestBody LoginRequestDTO user,HttpServletResponse response) throws IOException {
         if(userService.loginUser(user)) {
         	String token=JwtUtil.generateToken(user.getEmail());
-        	  response.setContentType("text/plain");
-              response.getWriter().write("token=  "+token);
-              return "about";
+        	return ResponseEntity.ok("token= " + token);
         	
-        } response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid credentials");
-        return "home";
+        } 
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalid credentials");
        
     }
 
