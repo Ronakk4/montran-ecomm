@@ -10,6 +10,14 @@
 </head>
 <body>
 <<<<<<< HEAD
+	<form action="login">
+		<button type="submit">login</button>
+	</form>
+	<form action="register">
+		<button type="submit">register</button>
+	</form>
+=======
+<<<<<<< HEAD
 <div class="container mt-4">
     <h1 class="mb-3">Welcome to Secure Online E-Commerce Platform</h1>
     <a href="login.jsp" class="btn btn-primary me-2">Login</a>
@@ -102,6 +110,7 @@
 	<form action="login">
 		<button type="submit">login</button>
 	</form>
+>>>>>>> 9e35bd2f532b1128a685ae17f475355681e80c3f
 	<!-- 	<button onclick="">login</button> -->
 	<!-- 	<button>register</button> -->
 	<!-- 	Are you a buyer? -->

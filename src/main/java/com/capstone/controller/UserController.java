@@ -38,6 +38,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
+
     public ResponseEntity<LoginResponseDTO> loginUser(@RequestBody LoginRequestDTO user) {
         if (userService.loginUser(user)) {
             String token = JwtUtil.generateToken(user.getEmail());
@@ -46,6 +47,10 @@ public class UserController {
         }
         return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED)
                              .body(new LoginResponseDTO("Invalid credentials", null));
+
+
+       
+
     }
 
 
