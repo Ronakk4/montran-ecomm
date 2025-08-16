@@ -30,8 +30,7 @@ public class BuyerController {
 
     @PostMapping("/orders")
     public String placeOrder(@RequestBody OrderHeader orderHeader) {
-        orderService.saveOrder(orderHeader);
-        
+        orderService.saveOrder(orderHeader);      
         return "Order placed successfully";
     }
 

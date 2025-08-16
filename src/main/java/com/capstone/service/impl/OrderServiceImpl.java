@@ -20,6 +20,8 @@ public class OrderServiceImpl implements OrderService{
 	private OrderHeaderDao orderDao;  // choose camel case 'orderDao'
 
 
+
+
 	@Override
 	@Transactional
 	public List<OrderHeader> getAllOrders(long id) {
@@ -50,5 +52,10 @@ public class OrderServiceImpl implements OrderService{
 	    orderDao.saveOrder(orderHeader);
 	}
 
+	
+	@Override
+    public List<OrderHeader> searchOrders(long sellerId, String orderStatus, String startDate, String endDate) {
+        return orderDao.searchOrders(sellerId, orderStatus, startDate, endDate);
+    }
 
 }

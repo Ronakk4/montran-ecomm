@@ -1,30 +1,13 @@
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Your Cart - MyShop</title>
+    <title>My Cart</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .cart-table th, .cart-table td {
-            vertical-align: middle;
-        }
-        .product-thumb {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-        .product-title {
-            font-weight: 500;
-        }
-        .empty-cart {
-            padding: 40px;
-            text-align: center;
-            color: #6c757d;
-            font-size: 1.2rem;
-        }
-    </style>
+    <script src="<c:url value='/resources/js/jquery.min.js'/>"></script>
+
 </head>
 <body class="bg-light">
 
@@ -120,5 +103,4 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+

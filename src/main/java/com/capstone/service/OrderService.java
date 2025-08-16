@@ -10,5 +10,7 @@ public interface OrderService {
 	OrderHeader getOrder(long id);
 	void deleteOrder(long id);
 	void saveOrder(OrderHeader o);
+	// New method to search orders with filters
+    List<OrderHeader> searchOrders(long sellerId, String orderStatus, String startDate, String endDate);
 }
 
