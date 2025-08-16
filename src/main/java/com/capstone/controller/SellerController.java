@@ -40,19 +40,19 @@ public class SellerController {
     }
 
     @PostMapping("/products")
-    public String addProduct(@Valid @RequestBody Product product) {
+    public String addProduct(@Valid @RequestBody ProductInsertDTO product) {
         productService.saveProduct(product);
         return "Product added successfully";
     }
 
 
 
-    @PutMapping("/products/{id}")
-    public String updateProduct(@PathVariable long id,@Valid @RequestBody Product product) {
-        product.setId(id);
-        productService.saveProduct(product);
-        return "Product updated successfully";
-    }
+//    @PutMapping("/products/{id}")
+//    public String updateProduct(@PathVariable long id,@Valid @RequestBody ProductInsertDTO product) {
+//        product.setId(id);
+//        productService.saveProduct(product);
+//        return "Product updated successfully";
+//    }
 
 //    @PutMapping("/products/{id}")
 //    public String updateProduct(@PathVariable long id, @RequestBody Product product) {

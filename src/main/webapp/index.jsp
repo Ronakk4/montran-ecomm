@@ -18,16 +18,7 @@
 <!--<body class="bg-light">-->
  
 <!-- Header -->
-<!--<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">-->
-<!--    <div class="container">-->
-<!--        <a class="navbar-brand fw-bold" >MyShop</a>-->
-<!--        <div class="ms-auto">-->
-<!--            <a href="${pageContext.request.contextPath}/app/login" class="btn btn-outline-primary me-2">Login</a>-->
-<!--            <a href="signup.jsp" class="btn btn-primary me-2">Sign Up</a>-->
-<!--            <a href="cart.jsp" class="btn btn-outline-success">Cart</a>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</nav>-->
+
  
 <!-- Search + Filter -->
 <!--<div class="container mt-4">-->
@@ -174,7 +165,7 @@ section { padding: 5rem 0 2rem; }
 
 /*Women*/
 
-.women-container { row-gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.product-container{ row-gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
 
 /*Offer*/
 
@@ -273,6 +264,7 @@ section { padding: 5rem 0 2rem; }
 </head>
 
 <body>
+
     <header class="l-header" id="header">
         <nav class="nav bd-grid">
             <div class="nav-toggle" id="nav-toggle">
@@ -286,7 +278,10 @@ section { padding: 5rem 0 2rem; }
                     <li class="nav-item"><a href="#home" class="nav-link active">Home</a></li>
                     <li class="nav-item"><a href="#featured" class="nav-link">Featured</a></li>
                     <li class="nav-item"><a href="#women" class="nav-link">Women</a></li>
-                    <li class="nav-item"><a href="#new" class="nav-link">New</a></li>
+<!--                    <li class="nav-item"><a href="#new" class="nav-link">New</a></li>-->
+                     <li class="nav-item"><a href="${pageContext.request.contextPath}/app/login" class="btn btn-outline-primary me-2">Login</a></li>
+           			 <li class="nav-item"><a href="signup.jsp" class="btn btn-primary me-2">Sign Up</a></li>
+            <li class="nav-item"><a href="#new" class="nav-link"> <a href="cart.jsp" class="btn btn-outline-success">Cart</a></li>
                 </ul>
             </div>
 
@@ -352,10 +347,10 @@ section { padding: 5rem 0 2rem; }
 
        <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<!--<section class="women section" id="women">-->
-<!--    <h2 class="section-title">WOMEN SNEAKERS</h2>-->
-<!--    <div class="women-container bd-grid" id="women-container"></div>-->
-<!--</section>-->
+<section class="women section" id="women">
+    <h2 class="section-title">WOMEN SNEAKERS</h2>
+    <div class="product-container bd-grid" id="women-container"></div>
+</section>
 
 <!--<section class="men section" id="men">-->
 <!--    <h2 class="section-title">MEN SNEAKERS</h2>-->
@@ -364,7 +359,7 @@ section { padding: 5rem 0 2rem; }
 
 <section class="electronics section" id="electronics">
     <h2 class="section-title">ELECTRONICS</h2>
-    <div class="electronics-container bd-grid" id="electronics-container"></div>
+    <div class="product-container bd-grid" id="electronics-container"></div>
 </section>
 
 
@@ -469,6 +464,8 @@ section { padding: 5rem 0 2rem; }
     </main>
 
 <script>
+
+
 async function loadProducts(category, containerId) {
     try {
         console.log("Fetching category raw:", JSON.stringify(category));
@@ -481,23 +478,37 @@ async function loadProducts(category, containerId) {
         console.log("Response status:", response.status);
 
         const products = await response.json();
+        products.forEach(p => {
+        	  console.log("Rendering product:", p, "Price:", p.price);
+        	});
+
+
 
         const container = document.getElementById(containerId);
         container.innerHTML = products.map(p => `
-            <article class="sneaker">
-                <img src="${p.imageUrl}" alt="${p.name}" class="sneaker-img">
-                <span class="sneaker-name">${p.name}</span>
-                <span class="sneaker-price">$${p.price}</span>
-                <a href="cart?add=${p.id}" class="button-light">
-                    Add to Cart <i class="bx bx-right-arrow-alt button-icon"></i>
-                </a>
-            </article>
-        `).join('');
+        <article class="sneaker">
+        <img src="https://i.postimg.cc/3wWGqDYn/women1.png" alt="${p.name}" class="sneaker-img">
+            <span class="sneaker-name">` + p.prodName + `</span>
+            <span class="sneaker-price">$` + p.price + `</span>
+            <a href="cart?add=` + p.prodId + `" class="button-light">
+                Add to Cart <i class="bx bx-right-arrow-alt button-icon"></i>
+            </a>
+        </article>
+    `).join('');
+
+        console.log("Final HTML injected:", container.innerHTML);
+
     } catch (err) {
         console.error("Failed to load products:", err);
     }
 }
 
+<!--const categories = [-->
+<!--	  { name: "Women", id: "women-container" },-->
+<!--	  { name: "Men", id: "men-container" },-->
+<!--	  { name: "Electronics", id: "electronics-container" }-->
+<!--	];-->
+<!--categories.forEach(c => loadProducts(c.name, c.id));-->
 
 
 loadProducts("Electronics", "electronics-container");
