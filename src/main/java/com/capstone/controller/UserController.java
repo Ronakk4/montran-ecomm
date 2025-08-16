@@ -43,6 +43,7 @@ public class UserController {
     @PostMapping("/login")
 
     public ResponseEntity<LoginResponseDTO> loginUser(@RequestBody LoginRequestDTO user) {
+    	System.out.println("called");
         if (userService.loginUser(user)) {
             String token = JwtUtil.generateToken(user.getEmail());
             LoginResponseDTO response = new LoginResponseDTO("User login processed", token);
