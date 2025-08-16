@@ -95,7 +95,7 @@
             <div class="empty-cart bg-white rounded shadow-sm">
                 Your cart is empty.
                 <div class="mt-3">
-                    <a href="${pageContext.request.contextPath}/" class="btn btn-outline-primary">Continue Shopping</a>
+                    <a href="${pageContext.request.contextPath}" class="btn btn-outline-primary">Continue Shopping</a>
                 </div>
             </div>
         </c:otherwise>

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.capstone.model.Product;
 import com.capstone.dao.ProductDao;
-import com.capstone.dto.ProductInsertDTO;
+
 
 @Repository
 @Transactional
@@ -19,11 +19,11 @@ public class ProductDaoImpl implements ProductDao {
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	@Override
-	public List<Product> getAllProducts() {
-		// TODO Auto-generated method stub
-		return sessionFactory.getCurrentSession().createQuery("from Product", Product.class).list();
-	}
+//	@Override
+//	public List<Product> getAllProducts() {
+//		// TODO Auto-generated method stub
+//		return sessionFactory.getCurrentSession().createQuery("from Product", Product.class).list();
+//	}
 
 	@Override
 	public Product getProduct(long id) {
@@ -39,9 +39,13 @@ public class ProductDaoImpl implements ProductDao {
 
 	@Override
 	public void deleteProduct(long id) {
-		// TODO Auto-generated method stub
-		sessionFactory.getCurrentSession().delete(id);
+	    sessionFactory.getCurrentSession()
+	        .createQuery("DELETE FROM Product p WHERE p.id = :id")
+	        .setParameter("id", id)
+	        .executeUpdate();
 	}
+
+
 
 	@Override
 	public List<Product> getProductsFromCategory(String category) {
@@ -49,6 +53,14 @@ public class ProductDaoImpl implements ProductDao {
 		.setParameter("category", category)
 		.list();
 		
+		
+	}
+
+	@Override
+	public List<Product> getProductsBySellerId(long sellerId) {
+		return sessionFactory.getCurrentSession().createQuery("from Product p where p.seller.id = :sellerId", Product.class)
+				.setParameter("sellerId", sellerId)
+				.list();
 		
 	}
 

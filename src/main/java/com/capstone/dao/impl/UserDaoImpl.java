@@ -1,5 +1,7 @@
 package com.capstone.dao.impl;
 
+import java.time.LocalDateTime;
+
 import javax.transaction.Transactional;
 
 //import javax.persistence.Query;
@@ -26,6 +28,8 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public void saveUser(User u) {
+    	u.setCreatedAt(LocalDateTime.now());
+        u.setUpdatedAt(LocalDateTime.now());
         sessionFactory.getCurrentSession().save(u);
     }
     
@@ -37,8 +41,6 @@ public class UserDaoImpl implements UserDao{
 //		return query.uniqueResult();
 		return sessionFactory.getCurrentSession().get(User.class, id);
 	}
-	
-	
 
 	@Override
 	public User findUserByEmail(String email) {

@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +25,7 @@ public class ProductServiceImpl implements ProductService{
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	@Override
-	@Transactional
-	public List<Product> getAllProducts() {
-		// TODO Auto-generated method stub
-		
-		return productDao.getAllProducts();
-	}
+	
 
 	@Override
 	@Transactional
@@ -72,6 +67,18 @@ public class ProductServiceImpl implements ProductService{
 	public List<Product> getProductsFromCategory(String category) {
 		
 		return productDao.getProductsFromCategory(category);
+	}
+
+	@Override
+	public void saveProduct(@Valid Product product) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<Product> getProductsBySellerId(long sellerId) {
+		return productDao.getProductsBySellerId(sellerId);
+		
 	}
 
 

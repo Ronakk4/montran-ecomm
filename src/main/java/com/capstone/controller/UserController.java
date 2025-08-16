@@ -6,23 +6,21 @@
 	import com.capstone.dto.SellerDTO;
 	import com.capstone.dto.UpdateUserDTO;
 	import com.capstone.dto.UserDTO;
-import com.capstone.model.Buyer;
+//	import com.capstone.model.Buyer;
 
 import com.capstone.model.User;
 import com.capstone.service.UserService;
 import com.capstone.util.JwtUtil;
 
-import java.io.IOException;
 import java.util.Map;
 
 import javax.validation.Valid;
 
 import javax.servlet.http.HttpServletResponse;
-
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -31,30 +29,33 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
-
+    
+   
+   
+    
     @PostMapping
-    public String registerUser(@Valid @RequestBody Buyer user) {
+    public String registerUser(@Valid @RequestBody User user) {
         userService.registerUser(user);
         return "User registered successfully";
     }
 
 
     @PostMapping("/login")
-
-    public ResponseEntity<LoginResponseDTO> loginUser(@RequestBody LoginRequestDTO user) {
+    public ResponseEntity<LoginResponseDTO> loginUser(@RequestBody LoginRequestDTO user,HttpSession session) {
+    	System.out.println("called");
         if (userService.loginUser(user)) {
             String token = JwtUtil.generateToken(user.getEmail());
+
+            // store token in session
+            session.setAttribute("jwtToken", token);
+
             LoginResponseDTO response = new LoginResponseDTO("User login processed", token);
             return ResponseEntity.ok(response);
         }
         return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED)
                              .body(new LoginResponseDTO("Invalid credentials", null));
-
-
-       
-
     }
+
 
 
     

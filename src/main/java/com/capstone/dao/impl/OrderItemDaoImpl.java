@@ -15,8 +15,8 @@ import com.capstone.model.OrderItem;
 
 
 @Repository
-@Transactional
-public class OrderItemDaoImp implements OrderItemDao {
+//@Transactional
+public class OrderItemDaoImpl implements OrderItemDao {
 	@Autowired
 	SessionFactory sessionFactory;
 
