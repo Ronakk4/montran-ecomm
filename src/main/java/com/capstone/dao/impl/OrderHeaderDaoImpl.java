@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.capstone.dao.OrderHeaderDao;
 import com.capstone.model.OrderHeader;
+import com.capstone.model.OrderItem;
 
 
 @Repository
@@ -55,6 +56,14 @@ public class OrderHeaderDaoImpl implements OrderHeaderDao{
 	public void saveOrder(OrderHeader o) {
 		// TODO Auto-generated method stub
 		sessionFactory.getCurrentSession().save(o);
+	}
+
+	@Override
+	public List<OrderItem> getAllOrdersForSeller(long id) {
+		return sessionFactory.getCurrentSession().createQuery("from OrderItem where seller = :id	",OrderItem.class)
+				.setParameter("id", id)
+				.list();
+		
 	}
 
 }

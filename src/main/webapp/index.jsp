@@ -18,6 +18,18 @@
 <!--<body class="bg-light">-->
  
 <!-- Header -->
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="#">MyShop</a>
+        <div class="ms-auto">
+            <a href="${pageContext.request.contextPath}/app/login" class="btn btn-outline-primary me-2">Login</a>
+            <a href="${pageContext.request.contextPath}/app/register" class="btn btn-primary me-2">Sign Up</a>
+            <a href="cart.jsp" class="btn btn-outline-success">Cart</a>
+        </div>
+    </div>
+</nav>
+
 <!--<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">-->
 <!--    <div class="container">-->
 <!--        <a class="navbar-brand fw-bold" >MyShop</a>-->
@@ -28,6 +40,7 @@
 <!--        </div>-->
 <!--    </div>-->
 <!--</nav>-->
+
  
 <!-- Search + Filter -->
 <!--<div class="container mt-4">-->
@@ -527,5 +540,4 @@ loadProducts("Electronics", "electronics-container");
 
     
 </body>
-</html>
 

@@ -1,5 +1,6 @@
 package com.capstone.service.impl;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,8 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	@Transactional
-	public void registerUser(Buyer user) {
+	
+	public void registerUser(@Valid User user) {
 		// TODO Auto-generated method stub
 		 if (user.getEmail() != null && userDao.findUserByEmail(user.getEmail().trim()) != null) {
 			 System.out.println("user exists");

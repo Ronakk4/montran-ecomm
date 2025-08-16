@@ -89,6 +89,12 @@ public class OrderServiceImpl implements OrderService{
 	    orderDao.saveOrder(oh);
 	}
 
+	@Override
+	public List<OrderItem> getAllOrdersForSeller(long id) {
+		return orderDao.getAllOrdersForSeller(id);
+		
+	}
+
 
 
 
