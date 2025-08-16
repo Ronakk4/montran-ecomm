@@ -36,7 +36,7 @@ public class OrderItem {
     
     
     
-    OrderItem(){}
+    public OrderItem(){}
     
 	public OrderItem(OrderHeader orderHeader, Product product, Seller seller, int quantity,
 			double price) {
