@@ -1,7 +1,5 @@
 package com.capstone.controller.seller;
 
-package com.capstone.controller.seller;
-
 
 import com.capstone.model.OrderItem;
 import com.capstone.model.Product;
