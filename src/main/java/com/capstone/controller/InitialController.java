@@ -15,6 +15,11 @@ public class InitialController {
     public String loginPage() {
         return "login";
     }
+    
+    @GetMapping("/home")
+    public String homePage() {
+    	return "home";
+    }
 
     @GetMapping("/register")
     public String registerBuyerPage() {

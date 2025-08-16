@@ -16,6 +16,7 @@ public interface ProductService {
 	List<Product> getProductsFromCategory(String category);
 	void saveProduct(@Valid Product product);
 	List<Product> getProductsBySellerId(long sellerId);
+	void saveProduct(ProductInsertDTO p);
 }
 
 

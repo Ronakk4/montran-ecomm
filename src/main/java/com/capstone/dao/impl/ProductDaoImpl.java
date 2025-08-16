@@ -39,9 +39,13 @@ public class ProductDaoImpl implements ProductDao {
 
 	@Override
 	public void deleteProduct(long id) {
-		// TODO Auto-generated method stub
-		sessionFactory.getCurrentSession().delete(id);
+	    sessionFactory.getCurrentSession()
+	        .createQuery("DELETE FROM Product p WHERE p.id = :id")
+	        .setParameter("id", id)
+	        .executeUpdate();
 	}
+
+
 
 	@Override
 	public List<Product> getProductsFromCategory(String category) {
