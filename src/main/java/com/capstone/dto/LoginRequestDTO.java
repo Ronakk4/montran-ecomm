@@ -3,6 +3,7 @@ package com.capstone.dto;
 public class LoginRequestDTO {
     private String email;
     private String password;
+    private String role;
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
