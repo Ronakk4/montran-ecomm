@@ -14,7 +14,10 @@ import com.capstone.util.JwtUtil;
 
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,27 +31,31 @@ public class UserController {
     private UserService userService;
     
    
-    
+   
     
     @PostMapping
-    public String registerUser(@RequestBody Buyer user) {
-
+    public String registerUser(@Valid @RequestBody User user) {
         userService.registerUser(user);
         return "User registered successfully";
     }
 
+
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> loginUser(@RequestBody LoginRequestDTO user) {
+    public ResponseEntity<LoginResponseDTO> loginUser(@RequestBody LoginRequestDTO user,
+                                                      HttpSession session) {
         if (userService.loginUser(user)) {
             String token = JwtUtil.generateToken(user.getEmail());
+
+            // store token in session
+            session.setAttribute("jwtToken", token);
+
             LoginResponseDTO response = new LoginResponseDTO("User login processed", token);
             return ResponseEntity.ok(response);
         }
         return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED)
                              .body(new LoginResponseDTO("Invalid credentials", null));
-       
-
     }
+
 
 
     

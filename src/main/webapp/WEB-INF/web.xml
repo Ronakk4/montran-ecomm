@@ -30,7 +30,7 @@
 
 <filter-mapping>
 	<filter-name>JWTAuthenticationFilter</filter-name>
-	<url-pattern>/login/*</url-pattern>
+	<url-pattern>/app/login/*</url-pattern>
 </filter-mapping>
 
 </web-app>

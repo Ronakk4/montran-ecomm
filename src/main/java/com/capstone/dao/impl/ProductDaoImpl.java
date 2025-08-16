@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.capstone.model.Product;
 import com.capstone.dao.ProductDao;
-import com.capstone.dto.ProductInsertDTO;
+
 
 @Repository
 @Transactional

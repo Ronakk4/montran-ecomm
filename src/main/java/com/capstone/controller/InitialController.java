@@ -4,9 +4,11 @@ package com.capstone.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Controller
+@RequestMapping("/app")
 public class InitialController {
 
     @GetMapping("/login")
@@ -15,13 +17,18 @@ public class InitialController {
     }
 
     @GetMapping("/register")
-    public String registerPage() {
-        return "register";
+    public String registerBuyerPage() {
+        return "registerBuyer";
     }
+    @GetMapping("/registerseller")
+    public String registerSellerPage() {
+    	return "registerSeller";
+    }
+    
 
-    @GetMapping("/products")
+    @GetMapping("login/products")
     public String productsPage() {
-        return "products";
+        return "product";
     }
 
     @GetMapping("/orders")

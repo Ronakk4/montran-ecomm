@@ -46,7 +46,7 @@ public class JWTAuthenticationFilter extends HttpFilter implements Filter {
 		
 		System.out.println("called");
 		
-		if(path.contains("/login") || path.startsWith("/public")) {
+		if(path.contains("/app/login") || path.startsWith("/public")) {
 			chain.doFilter(request, response);
 			return;
 		}
