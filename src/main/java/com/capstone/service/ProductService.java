@@ -12,9 +12,13 @@ import com.capstone.model.Product;
 public interface ProductService {
 	List<Product> getAllProducts();
 	Product getProduct(long id);
-	void saveProduct(Product product);
 	void deleteProduct(long id);
 	List<Product> getProductsFromCategory(String category);
+	void saveProduct(ProductInsertDTO p);
+	
+	// Method for dynamic product search
+    List<Product> searchProducts(String prodName, String category, Double minPrice, Double maxPrice);
+	
 }
 
 
