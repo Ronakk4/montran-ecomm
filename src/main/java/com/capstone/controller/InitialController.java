@@ -25,6 +25,10 @@ public class InitialController {
     public String productsPage() {
         return "products";
     }
+    @GetMapping("/cart")
+    public String cart() {
+    	return "cart";
+    }
 
     @GetMapping("/orders")
     public String ordersPage() {

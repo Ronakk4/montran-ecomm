@@ -1,4 +1,4 @@
-
+<%@ page isELIgnored="false" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -95,7 +95,7 @@
             <div class="empty-cart bg-white rounded shadow-sm">
                 Your cart is empty.
                 <div class="mt-3">
-                    <a href="home.jsp" class="btn btn-outline-primary">Continue Shopping</a>
+                    <a href="${pageContext.request.contextPath}/" class="btn btn-outline-primary">Continue Shopping</a>
                 </div>
             </div>
         </c:otherwise>

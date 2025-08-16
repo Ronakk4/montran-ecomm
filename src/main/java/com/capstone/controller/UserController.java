@@ -1,11 +1,11 @@
-package com.capstone.controller;
-
-import com.capstone.dto.BuyerDTO;
-import com.capstone.dto.LoginRequestDTO;
-import com.capstone.dto.LoginResponseDTO;
-import com.capstone.dto.SellerDTO;
-import com.capstone.dto.UpdateUserDTO;
-import com.capstone.dto.UserDTO;
+	package com.capstone.controller;
+	
+	import com.capstone.dto.BuyerDTO;
+	import com.capstone.dto.LoginRequestDTO;
+	import com.capstone.dto.LoginResponseDTO;
+	import com.capstone.dto.SellerDTO;
+	import com.capstone.dto.UpdateUserDTO;
+	import com.capstone.dto.UserDTO;
 import com.capstone.model.Buyer;
 
 import com.capstone.model.User;

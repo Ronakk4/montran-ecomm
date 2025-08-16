@@ -77,8 +77,8 @@ public class Test {
 			seller.getProducts().add(p2);
 			seller.getProducts().add(p1);
 			
-//			order.setBuyer(buyer);
-//			buyer.getOrders().add(order);
+//		order.setBuyer(buyer)
+//		buyer.getOrders().add(order);
 			p1.setSeller(seller);
 			p2.setSeller(seller);
 			

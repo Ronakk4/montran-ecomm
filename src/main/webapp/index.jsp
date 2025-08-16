@@ -23,8 +23,8 @@
         <a class="navbar-brand fw-bold" href="#">MyShop</a>
         <div class="ms-auto">
             <a href="${pageContext.request.contextPath}/app/login" class="btn btn-outline-primary me-2">Login</a>
-            <a href="signup.jsp" class="btn btn-primary me-2">Sign Up</a>
-            <a href="cart.jsp" class="btn btn-outline-success">Cart</a>
+            <a href="${pageContext.request.contextPath}/app/register" class="btn btn-primary me-2">Sign Up</a>
+            <a href="${pageContext.request.contextPath}/app/cart" btn btn-outline-success">Cart</a>
         </div>
     </div>
 </nav>
