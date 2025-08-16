@@ -40,4 +40,6 @@ public class InitialController {
     public String dashboardPage() {
         return "dashboard";
     }
+    
+    
 }

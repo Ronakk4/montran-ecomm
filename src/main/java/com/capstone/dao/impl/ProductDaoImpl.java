@@ -19,11 +19,11 @@ public class ProductDaoImpl implements ProductDao {
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	@Override
-	public List<Product> getAllProducts() {
-		// TODO Auto-generated method stub
-		return sessionFactory.getCurrentSession().createQuery("from Product", Product.class).list();
-	}
+//	@Override
+//	public List<Product> getAllProducts() {
+//		// TODO Auto-generated method stub
+//		return sessionFactory.getCurrentSession().createQuery("from Product", Product.class).list();
+//	}
 
 	@Override
 	public Product getProduct(long id) {
@@ -49,6 +49,14 @@ public class ProductDaoImpl implements ProductDao {
 		.setParameter("category", category)
 		.list();
 		
+		
+	}
+
+	@Override
+	public List<Product> getProductsBySellerId(long sellerId) {
+		return sessionFactory.getCurrentSession().createQuery("from Product p where p.seller.id = :sellerId", Product.class)
+				.setParameter("sellerId", sellerId)
+				.list();
 		
 	}
 

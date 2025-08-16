@@ -48,6 +48,7 @@
         <p class="footer-text">
             Don't have an account? <a href="signup.jsp">Sign up</a>
         </p>
+
  
         <div id="errorMsg" class="text-danger mt-2"></div>
     </form>
@@ -58,7 +59,7 @@ function submitLogin() {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
     const role = document.getElementById("loginType").value;
- 
+
     fetch('${pageContext.request.contextPath}/users/login', {
         method: 'POST',
         headers: {
@@ -70,7 +71,7 @@ function submitLogin() {
         if(res.status === 200) {
             // redirect to homepage or dashboard
             window.location.href = '${pageContext.request.contextPath}/home';
-            console.log("logged in");
+
         } else if(res.status === 401) {
             return res.json();
         }
@@ -85,7 +86,7 @@ function submitLogin() {
     });
 }
 </script>
- 
+
 </body>
 </html>
  

@@ -48,7 +48,7 @@ public class User {
 			LocalDateTime updatedAt) {
 		super();
 		
-		this.name = name;
+		this.name = name;	
 		this.email = email;
 		this.password = password;
 		this.role = role;
