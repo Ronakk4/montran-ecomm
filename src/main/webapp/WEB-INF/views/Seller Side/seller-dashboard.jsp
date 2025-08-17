@@ -15,7 +15,7 @@
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="products">Products</a></li>
                 <li class="nav-item"><a class="nav-link" href="orders">Orders</a></li>
-                <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/seller/profile">Profile</a></li>
+                <li class="nav-item"><a class="nav-link" href="profile">Profile</a></li>
                 <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/logout">Logout</a></li>
             </ul>
         </div>
@@ -73,7 +73,7 @@
     <script>
         $(document).ready(function() {
 //             const sellerId = "${sessionScope.sellerId}";
-			const sellerId = 14;
+            const sellerId = 16;
             const apiBase = "http://localhost:8080/ecomm.capstone/api/seller";
 
             // Fetch Products

@@ -16,5 +16,4 @@ public interface OrderHeaderDao {
 	OrderHeader getOrder(long id);
 	void deleteOrder(long id);
 	void saveOrder(OrderHeader o);
-	List<OrderItem> getAllOrdersForSeller(long id);
 }

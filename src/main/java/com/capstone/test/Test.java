@@ -1,9 +1,8 @@
-
-
 package com.capstone.test;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -16,85 +15,118 @@ import com.capstone.model.Seller;
 import com.capstone.util.HibernateUtil;
 
 public class Test {
-	public static void main(String[] args) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		
-		Seller seller = new Seller("Amit Sharma", // name
-				"amit.sharma@example.com", // email
-				"securePassword123", // password
-				"SELLER", // role
-				LocalDateTime.of(2025, 8, 13, 10, 30), // createdAt
-				LocalDateTime.of(2025, 8, 13, 10, 45), // updatedAt
-				"Amit's Electronics", // shopName
-				"We sell the latest gadgets and accessories", // shopDescription
-				"27ABCDE1234F1Z5" // gstNumber
-		);
-		
-		Buyer buyer = new Buyer("Neha Verma", // name
-				"neha.verma@example.com", // email
-				"mySecurePass456", // password
-				"BUYER", // role
-				LocalDateTime.of(2025, 8, 13, 9, 15), // createdAt
-				LocalDateTime.of(2025, 8, 13, 9, 45), // updatedAt
-				"Flat 302, Green Heights, Borivali West, Mumbai", // shippingAddress
-				"+91-9876543210" // phoneNumber
-		);
+    public static void main(String[] args) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction t = session.beginTransaction();
 
-		Product p1 = new Product(
-			    "Cotton T-Shirt",                               // prodName
-			    "100% cotton round-neck T-shirt in navy blue",  // prodDescription
-			    499.00,                                         // price
-			    120,                                            // stockQuantity
-			    "Clothing",                                     // category
-			    LocalDateTime.of(2025, 8, 13, 12, 0),           // createdAt
-			    LocalDateTime.of(2025, 8, 13, 12, 30)	        // updatedAt
+        try {
+            // --- SELLER ---
+            Seller seller = new Seller(
+                "Rohit", 
+                "rohit.sharma@example.com", 
+                "securePassword123", 
+                "SELLER",
+                LocalDateTime.of(2025, 8, 13, 10, 30),
+                LocalDateTime.of(2025, 8, 13, 10, 45),
+                "Amit's Electronics",
+                "We sell the latest gadgets and accessories",
+                "27ABCDE1234F1Z5"
+            );
+            
+            Seller seller2 = new Seller(
+            		"michael Sharma", 
+            		"mich.sharma@example.com", 
+            		"securePassword123", 
+            		"SELLER",
+            		LocalDateTime.of(2025, 8, 13, 10, 30),
+            		LocalDateTime.of(2025, 8, 13, 10, 45),
+            		"Amit's Electronics",
+            		"We sell the latest gadgets and accessories",
+            		"27ABCDE1234F1Z5"
+            		);
 
-			);
-		Product p2 = new Product(
-			    "Wireless Headphones",                          // prodName
-			    "Noise-cancelling over-ear headphones",         // prodDescription
-			    2999.99,                                        // price
-			    50,                                             // stockQuantity
-			    "Electronics",                                  // category
-			    LocalDateTime.of(2025, 8, 13, 11, 0),           // createdAt
-			    LocalDateTime.of(2025, 8, 13, 11, 30)          // updatedAt
-			                                            
-			);
-			
-		OrderHeader orderHeader = new OrderHeader(
-			    "PLACED",
-			    0.0, // will update after adding items
-			    buyer,
-			    new ArrayList<>()
-			);
-		
-		OrderItem item1 = new OrderItem(orderHeader, p1, seller, 1, p1.getPrice());
-		OrderItem item2 = new OrderItem(orderHeader, p2, seller, 2, p2.getPrice());
+            // --- BUYER ---
+            Buyer buyer = new Buyer(
+                "Greha Verma", 
+                "greha.verma@example.com", 
+                "mySecurePass456", 
+                "BUYER",
+                LocalDateTime.of(2025, 8, 13, 9, 15),
+                LocalDateTime.of(2025, 8, 13, 9, 45),
+                "Flat 302, Green Heights, Borivali West, Mumbai", 
+                "+91-9876543210"
+            );
 
- 
+            // --- PRODUCTS ---
+            Product p1 = new Product(
+                "RTX 5080",
+                "100% cotton round-neck T-shirt in navy blue",
+                499.00,
+                120,
+                "Electronics",
+                LocalDateTime.of(2025, 8, 13, 12, 0),
+                LocalDateTime.of(2025, 8, 13, 12, 30)
+            );
 
-		
-			seller.getProducts().add(p2);
-			seller.getProducts().add(p1);
-			
-//			order.setBuyer(buyer);
-//			buyer.getOrders().add(order);
-			p1.setSeller(seller);
-			p2.setSeller(seller);
-			
-			
-			
+            Product p2 = new Product(
+                "Brush",
+                "Noise-cancelling over-ear headphones",
+                2.99,
+                50,
+                "Utility",
+                LocalDateTime.of(2025, 8, 13, 11, 0),
+                LocalDateTime.of(2025, 8, 13, 11, 30)
+            );
 
-		Transaction t = session.beginTransaction();
-		session.save(p1);
-		session.save(p2);
-		session.save(buyer);
-		session.save(seller);
-		session.save(orderHeader);
-		session.save(item1);
-		session.save(item2);
-		t.commit();
+            // link seller <-> products
+            p1.setSeller(seller);
+            p2.setSeller(seller);
+            seller.getProducts().add(p1);
+            seller.getProducts().add(p2);
 
-	}
+            // --- ORDER HEADER ---
+            OrderHeader orderHeader = new OrderHeader();
+            orderHeader.setBuyer(buyer);
+            orderHeader.setStatus("Pending");
+            orderHeader.setTotalAmount(499.00 * 2 + 2999.99); // just an example total
+
+            // --- ORDER ITEMS ---
+            List<OrderItem> items = new ArrayList<>();
+
+            OrderItem item1 = new OrderItem();
+            item1.setOrderHeader(orderHeader);
+            item1.setProduct(p1);
+            item1.setSeller(seller);
+            item1.setQuantity(2);
+            item1.setPrice(499.00 * 2);
+
+            OrderItem item2 = new OrderItem();
+            item2.setOrderHeader(orderHeader);
+            item2.setProduct(p2);
+            item2.setSeller(seller2);
+            item2.setQuantity(1);
+            item2.setPrice(2999.99);
+
+            items.add(item1);
+            items.add(item2);
+
+            orderHeader.setItems(items);
+
+            // --- SAVE ALL ---
+            session.save(seller);
+            session.save(seller2);
+            session.save(buyer);
+            session.save(p1);
+            session.save(p2);
+            session.save(orderHeader); // cascade should handle order items
+
+            t.commit();
+            System.out.println("✅ Sample order inserted successfully!");
+        } catch (Exception e) {
+            if (t != null) t.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
 }
-

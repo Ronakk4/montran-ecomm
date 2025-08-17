@@ -47,7 +47,7 @@ public class UserController {
             String token = JwtUtil.generateToken(user.getEmail());
 
             // store token in session
-            session.setAttribute("jwtToken", token);
+//            session.setAttribute("jwtToken", token);
 
             LoginResponseDTO response = new LoginResponseDTO("User login processed", token);
             return ResponseEntity.ok(response);

@@ -29,7 +29,8 @@
     </table>
 
 <script>
-    const sellerId = 14;  // later replace with sessionScope.sellerId
+// 	const sellerId = "${sessionScope.sellerId}";
+	const sellerId = 16;
     const apiBase = "http://localhost:8080/ecomm.capstone/api/seller";
 
     // Fetch products
@@ -57,27 +58,32 @@
         });
     }
 
-    // Add product
     $("#addProductForm").submit(function(e) {
         e.preventDefault();
+
         const product = {
             prodName: $("input[name='name']").val(),
-            price: $("input[name='price']").val(),
-            stockQuantity: $("input[name='stock']").val(),
-            seller: { id: sellerId }
+            price: parseFloat($("input[name='price']").val()),
+            stockQuantity: parseInt($("input[name='stock']").val()),
+            // seller is set on backend from session
         };
+
         $.ajax({
             url: `${apiBase}/products`,
             method: "POST",
             contentType: "application/json",
             data: JSON.stringify(product),
-            success: function() {
+            success: function(savedProduct) {
+            	console.log(savedProduct)
                 alert("Product added!");
-                loadProducts();
-                $("#addProductForm")[0].reset();
+
+            },
+            error: function(xhr) {
+                alert("Error: " + xhr.responseText);
             }
         });
     });
+
 
     // Delete product
     function deleteProduct(id) {
