@@ -17,7 +17,7 @@
     </style>
 </head>
 <body>
-
+ 
 <div class="login-container">
     <h2 class="login-title">Welcome Back</h2>
     
@@ -30,29 +30,30 @@
                 <option value="seller">Seller</option>
             </select>
         </div>
-
+ 
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
             <input type="text" id="email" class="form-control" placeholder="Enter your email" required>
         </div>
-
+ 
         <div class="mb-3">
             <label for="password" class="form-label">Password</label>
             <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
         </div>
-
+ 
         <div class="d-grid">
             <button type="button" class="btn btn-custom" onclick="submitLogin()">Login</button>
         </div>
-
+ 
         <p class="footer-text">
             Don't have an account? <a href="signup.jsp">Sign up</a>
         </p>
 
+ 
         <div id="errorMsg" class="text-danger mt-2"></div>
     </form>
 </div>
-
+ 
 <script>
 function submitLogin() {
     const email = document.getElementById("email").value;
@@ -69,7 +70,8 @@ function submitLogin() {
     .then(res => {
         if(res.status === 200) {
             // redirect to homepage or dashboard
-            window.location.href = '${pageContext.request.contextPath}/home';
+            window.location.href = '${pageContext.request.contextPath}';
+
         } else if(res.status === 401) {
             return res.json();
         }
@@ -87,3 +89,5 @@ function submitLogin() {
 
 </body>
 </html>
+ 
+ 

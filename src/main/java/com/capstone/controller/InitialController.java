@@ -20,15 +20,22 @@ public class InitialController {
     public String homePage() {
     	return "home";
     }
+    
+    
 
     @GetMapping("/register")
-    public String registerPage() {
-        return "register";
+    public String registerBuyerPage() {
+        return "registerBuyer";
     }
+    @GetMapping("/registerseller")
+    public String registerSellerPage() {
+    	return "registerSeller";
+    }
+    
 
-    @GetMapping("/products")
+    @GetMapping("login/products")
     public String productsPage() {
-        return "products";
+        return "product";
     }
 
     @GetMapping("/orders")
@@ -40,4 +47,17 @@ public class InitialController {
     public String dashboardPage() {
         return "dashboard";
     }
+    
+    
+    @GetMapping("/product-details")
+    public String productDetails() {
+    	return "product-details";
+    }
+    
+    @GetMapping("/product-list")
+    public String productList() {
+    	return "productList";
+    }
+    
+    
 }

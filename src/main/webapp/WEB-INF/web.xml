@@ -14,29 +14,23 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
-    <servlet-mapping>
-        <servlet-name>dispatcher</servlet-name>
-        <url-pattern>/</url-pattern>
-    </servlet-mapping>
+   <servlet-mapping>
+    <servlet-name>dispatcher</servlet-name>
+    <url-pattern>/</url-pattern>
+</servlet-mapping>
+
 
 <!--    <filter>-->
-<!--    <filter-name>JwtAuthenticationFilter</filter-name>-->
-<!--    <filter-class>com.jwt.filter.JwtAuthenticationFilter</filter-class>-->
-<!--</filter>-->
+<!--    	<filter-name>JWTAuthenticationFilter</filter-name>-->
+<!--    	<display-name>JWTAuthenticationFilter</display-name>-->
+<!--    	<description></description>-->
+<!--    	<filter-class>com.capstone.filter.JWTAuthenticationFilter</filter-class>-->
+<!--    </filter>-->
+
 
 <!--<filter-mapping>-->
-<!--    <filter-name>JwtAuthenticationFilter</filter-name>-->
-<!--    <url-pattern>/login/*</url-pattern>-->
+<!--	<filter-name>JWTAuthenticationFilter</filter-name>-->
+<!--	<url-pattern>/app/login/*</url-pattern>-->
 <!--</filter-mapping>-->
-
-<!--     <filter> -->
-<!--     <filter-name>JwtAuthenticationFilter</filter-name> -->
-<!--     <filter-class>com.jwt.filter.JwtAuthenticationFilter</filter-class> -->
-<!-- </filter> -->
-
-<!-- <filter-mapping> -->
-<!--     <filter-name>JwtAuthenticationFilter</filter-name> -->
-<!--     <url-pattern>/login/*</url-pattern> -->
-<!-- </filter-mapping> -->
 
 </web-app>

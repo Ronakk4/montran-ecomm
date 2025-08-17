@@ -1,5 +1,8 @@
 package com.capstone.service.impl;
+import java.time.LocalDateTime;
+
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +13,7 @@ import com.capstone.dto.BuyerDTO;
 import com.capstone.dto.LoginRequestDTO;
 import com.capstone.dto.SellerDTO;
 import com.capstone.dto.UserDTO;
+import com.capstone.dto.UserRegisterDTO;
 import com.capstone.model.Buyer;
 import com.capstone.model.Seller;
 import com.capstone.model.User;
@@ -32,15 +36,29 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	@Transactional
-	public void registerUser(Buyer user) {
+	@Transactional	
+	public void registerUser(@Valid UserRegisterDTO user) {
 		// TODO Auto-generated method stub
 		 if (user.getEmail() != null && userDao.findUserByEmail(user.getEmail().trim()) != null) {
 			 System.out.println("user exists");
 	        }
 		 	
-	        userDao.saveUser(user);
-	        System.out.println("user created");
+		 if ("SELLER".equalsIgnoreCase(user.getRole())) {
+	            Seller seller = new Seller(
+	                    user.getName(), user.getEmail(), user.getPassword(),
+	                    "SELLER", LocalDateTime.now(), LocalDateTime.now(),
+	                    user.getShopName(), user.getShopDescription(), user.getGstNumber()
+	            );
+	             userDao.saveUser(seller);
+
+	        } else if ("BUYER".equalsIgnoreCase(user.getRole())) {
+	            Buyer buyer = new Buyer(
+	                    user.getName(), user.getEmail(), user.getPassword(),
+	                    "BUYER", LocalDateTime.now(), LocalDateTime.now(),
+	                    user.getShippingAddress(), user.getPhoneNumber()
+	            );
+	             userDao.saveUser(buyer);
+	        }
 		
 	}
 

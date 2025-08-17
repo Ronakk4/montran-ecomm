@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +25,7 @@ public class ProductServiceImpl implements ProductService{
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	@Override
-	@Transactional
-	public List<Product> getAllProducts() {
-		// TODO Auto-generated method stub
-		
-		return productDao.getAllProducts();
-	}
+	
 
 	@Override
 	@Transactional
@@ -53,9 +48,11 @@ public class ProductServiceImpl implements ProductService{
 		    product.setCreatedAt(p.getCreatedAt() != null ? p.getCreatedAt() : LocalDateTime.now());
 		    product.setUpdatedAt(p.getUpdatedAt());
 
-		    // Fetch Seller entity and set
-		    Seller seller = sessionFactory.getCurrentSession().get(Seller.class, p.getSellerId());
-		    product.setSeller(seller);
+		    // Fetch seller using DAO or session in same transaction
+		    Seller seller = productDao.getSellerById(p.getSellerId());
+		    if (seller == null) {
+		        throw new RuntimeException("Seller not found for ID: " + p.getSellerId());
+		    }
 
 		    productDao.saveProduct(product);
 	}
@@ -72,6 +69,18 @@ public class ProductServiceImpl implements ProductService{
 	public List<Product> getProductsFromCategory(String category) {
 		
 		return productDao.getProductsFromCategory(category);
+	}
+
+	@Override
+	public void saveProduct(@Valid Product product) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<Product> getProductsBySellerId(long sellerId) {
+		return productDao.getProductsBySellerId(sellerId);
+		
 	}
 
 

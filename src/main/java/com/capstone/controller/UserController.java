@@ -1,69 +1,69 @@
 package com.capstone.controller;
-
-import com.capstone.dto.BuyerDTO;
-import com.capstone.dto.LoginRequestDTO;
-import com.capstone.dto.LoginResponseDTO;
-import com.capstone.dto.SellerDTO;
-import com.capstone.dto.UpdateUserDTO;
-import com.capstone.dto.UserDTO;
-import com.capstone.model.Buyer;
-
+	
+	import com.capstone.dto.BuyerDTO;
+	import com.capstone.dto.LoginRequestDTO;
+	import com.capstone.dto.LoginResponseDTO;
+	import com.capstone.dto.SellerDTO;
+	import com.capstone.dto.UpdateUserDTO;
+	import com.capstone.dto.UserDTO;
+//	import com.capstone.model.Buyer;
+import com.capstone.dto.UserRegisterDTO;
 import com.capstone.model.User;
 import com.capstone.service.UserService;
 import com.capstone.util.JwtUtil;
-
-import java.io.IOException;
+ 
 import java.util.Map;
-
+ 
 import javax.validation.Valid;
-
+ 
 import javax.servlet.http.HttpServletResponse;
-
-
+import javax.servlet.http.HttpSession;
+ 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
+ 
 @RestController
 @RequestMapping("/users")
 public class UserController {
-
+ 
     @Autowired
     private UserService userService;
-
-
+    
+   
+   
+    
     @PostMapping
-    public String registerUser(@Valid @RequestBody Buyer user) {
+    public String registerUser(@Valid @RequestBody UserRegisterDTO user) {
         userService.registerUser(user);
         return "User registered successfully";
     }
-
-
+ 
+ 
     @PostMapping("/login")
-
-    public ResponseEntity<LoginResponseDTO> loginUser(@RequestBody LoginRequestDTO user) {
+    public ResponseEntity<LoginResponseDTO> loginUser(@RequestBody LoginRequestDTO user,HttpSession session) {
     	System.out.println("called");
         if (userService.loginUser(user)) {
             String token = JwtUtil.generateToken(user.getEmail());
+ 
+            // store token in session
+            session.setAttribute("jwtToken", token);
+ 
             LoginResponseDTO response = new LoginResponseDTO("User login processed", token);
             return ResponseEntity.ok(response);
         }
         return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED)
                              .body(new LoginResponseDTO("Invalid credentials", null));
-
-
-       
-
     }
-
-
+ 
+ 
+ 
     
     @GetMapping("/id/{id}")
     public User findUser(@PathVariable long id) {
         return userService.findUser(id);
     }
-
+ 
     
 //    @PutMapping("/{id}")
 //    public String updateUser(@PathVariable long id, @RequestBody Map<String, Object> json) {
@@ -120,13 +120,13 @@ public class UserController {
         else {
             throw new RuntimeException("Invalid role. Must be BUYER or SELLER.");
         }
-
+ 
         return "User updated successfully";
     }
-
-
-
-
+ 
+ 
+ 
+ 
 //    @DeleteMapping("/{id}")
 //    public String deleteUser(@PathVariable Long id) {
 //        userService.deleteUser(id);
@@ -139,5 +139,5 @@ public class UserController {
         dto.setPassword((String) json.get("password"));
         dto.setRole((String) json.get("role"));
     }
-
+ 
 }
