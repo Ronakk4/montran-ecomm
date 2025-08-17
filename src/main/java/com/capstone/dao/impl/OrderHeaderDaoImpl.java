@@ -58,13 +58,7 @@ public class OrderHeaderDaoImpl implements OrderHeaderDao{
 		sessionFactory.getCurrentSession().save(o);
 	}
 
-	@Override
-	public List<OrderItem> getAllOrdersForSeller(long id) {
-		return sessionFactory.getCurrentSession().createQuery("from OrderItem where seller = :id	",OrderItem.class)
-				.setParameter("id", id)
-				.list();
-		
-	}
+	
 
 }
 

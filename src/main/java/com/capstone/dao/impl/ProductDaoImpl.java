@@ -1,5 +1,6 @@
 package com.capstone.dao.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -33,6 +34,9 @@ public class ProductDaoImpl implements ProductDao {
 
 	@Override
 	public void saveProduct(Product product) {
+		product.setCreatedAt(LocalDateTime.now());
+	    product.setUpdatedAt(LocalDateTime.now());
+
 	    sessionFactory.getCurrentSession().save(product);
 	}
 
