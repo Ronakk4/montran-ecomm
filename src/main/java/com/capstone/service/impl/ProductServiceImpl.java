@@ -51,8 +51,10 @@ public class ProductServiceImpl implements ProductService{
 		    // Fetch seller using DAO or session in same transaction
 		    Seller seller = productDao.getSellerById(p.getSellerId());
 		    if (seller == null) {
+		    	System.out.println("seller not found");
 		        throw new RuntimeException("Seller not found for ID: " + p.getSellerId());
 		    }
+		    product.setSeller(seller);
 
 		    productDao.saveProduct(product);
 	}
