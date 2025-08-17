@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 public class UserController {
 
+
 	@Autowired
 	private UserService userService;
 
@@ -140,4 +141,4 @@ public class UserController {
 		dto.setRole((String) json.get("role"));
 	}
 
-}
+  

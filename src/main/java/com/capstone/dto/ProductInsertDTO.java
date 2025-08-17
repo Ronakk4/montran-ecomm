@@ -10,7 +10,7 @@ public class ProductInsertDTO {
     private String category;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private Long sellerId;
+    private long sellerId;
 
     public ProductInsertDTO() {
     }
@@ -83,11 +83,11 @@ public class ProductInsertDTO {
         this.updatedAt = updatedAt;
     }
 
-    public Long getSellerId() {
+    public long getSellerId() {
         return sellerId;
     }
 
-    public void setSellerId(Long sellerId) {
+    public void setSellerId(long sellerId) {
         this.sellerId = sellerId;
     }
 }
