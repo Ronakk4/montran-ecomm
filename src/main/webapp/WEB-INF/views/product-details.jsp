@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Details | Ecommerce</title>
 <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/resources/css/style.css">
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </head>
 
@@ -152,32 +152,53 @@
         <section class="related-products section">
             <h2 class="section-title">RELATED PRODUCTS</h2>
             <div class="featured-container bd-grid">
-                <article class="sneaker">
-                    <div class="sneaker-sale">Sale</div>
-                    <img src="https://i.postimg.cc/k4Zj2mXv/featured3.png" alt="" class="sneaker-img">
-                    <span class="sneaker-name">Nike Air Max</span>
-                    <span class="sneaker-price">$129.99</span>
-                    <a href="product-details.html" class="button-light">View Details <i class="bx bx-right-arrow-alt button-icon"></i></a>
-                </article>
-
-                <article class="sneaker">
-                    <img src="https://i.postimg.cc/3wWGqDYn/women1.png" alt="" class="sneaker-img">
-                    <span class="sneaker-name">Adidas Ultraboost</span>
-                    <span class="sneaker-price">$179.99</span>
-                    <a href="product-details.html" class="button-light">View Details <i class="bx bx-right-arrow-alt button-icon"></i></a>
-                </article>
-
-                <article class="sneaker">
-                    <img src="https://i.postimg.cc/8CqqJMCY/new1.png" alt="" class="sneaker-img">
-                    <span class="sneaker-name">Puma RS-X</span>
-                    <span class="sneaker-price">$99.99</span>
-                    <a href="product-details.html" class="button-light">View Details <i class="bx bx-right-arrow-alt button-icon"></i></a>
-                </article>
+               
             </div>
         </section>
     </main>
 
     <script>
+    
+    
+    function getRelatedProducts(category) {
+        $.ajax({
+            url: '/ecomm.capstone/products/category/' + category,
+            method: 'GET',
+            success: function(products) {
+                let container = $(".featured-container");
+                container.empty(); // clear existing hardcoded items
+				console.log("calling");
+                products.forEach(p => {
+                	console.log(p);
+                    let productHtml = `
+                        <article class="sneaker">
+                            ${p.onSale ? '<div class="sneaker-sale">Sale</div>' : ''}
+                    	  <a href="/ecomm.capstone/app/product-details/\${p.id}">
+                            <img src="https://i.postimg.cc/3wWGqDYn/women1.png" alt="" class="sneaker-img">
+                            <span class="sneaker-name">` + p.prodName + `</span>
+                            <span class="sneaker-price">$` + p.price + `</span>
+                            <a href="/app/product-details/${p.id}" class="button-light">
+                                View Details <i class="bx bx-right-arrow-alt button-icon"></i>
+                            </a>
+                            </a>
+                        </article>
+                    `;
+                    container.append(productHtml);
+                });
+            },
+            error: function(err) {
+                console.error("Error fetching related products", err);
+            }
+        });
+    }
+
+    // Call function on page load
+    $(document).ready(function() {
+        let category = "${product.category}";  // category from JSP model
+        getRelatedProducts(category);
+    });
+    
+    
         function changeImage(src) {
             document.getElementById('mainImage').src = src;
             

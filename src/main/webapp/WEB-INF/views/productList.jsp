@@ -19,7 +19,7 @@
             </div>
 
             <a href="index.html" class="nav-logo">Ecommerce</a>
-
+q
             <div class="nav-menu" id="nav-menu">
                 <ul class="nav-list">
                     <li class="nav-item"><a href="<%= request.getContextPath() %>" class="nav-link">Home</a></li>
