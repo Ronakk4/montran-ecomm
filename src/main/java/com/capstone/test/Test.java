@@ -15,6 +15,7 @@ import com.capstone.model.Seller;
 import com.capstone.util.HibernateUtil;
 
 public class Test {
+
     public static void main(String[] args) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction t = session.beginTransaction();
@@ -83,7 +84,6 @@ public class Test {
             p2.setSeller(seller);
             seller.getProducts().add(p1);
             seller.getProducts().add(p2);
-
             // --- ORDER HEADER ---
             OrderHeader orderHeader = new OrderHeader();
             orderHeader.setBuyer(buyer);
