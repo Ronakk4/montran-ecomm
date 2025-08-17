@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products | Ecommerce</title>
 <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/resources/css/style.css">
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 
@@ -19,7 +19,7 @@
             </div>
 
             <a href="index.html" class="nav-logo">Ecommerce</a>
-q
+
             <div class="nav-menu" id="nav-menu">
                 <ul class="nav-list">
                     <li class="nav-item"><a href="<%= request.getContextPath() %>" class="nav-link">Home</a></li>
@@ -27,15 +27,16 @@ q
                     <li class="nav-item">
                         <a href="#" class="nav-link active">Categories</a>
                         <ul class="dropdown-menu">
-                            <li><a href="product-list.html?category=men" class="dropdown-item">Men</a></li>
-                            <li><a href="product-list.html?category=women" class="dropdown-item">Women</a></li>
-                            <li><a href="product-list.html?category=electronics" class="dropdown-item">Electronics</a></li>
-                            <li><a href="product-list.html?category=sneakers" class="dropdown-item">Sneakers</a></li>
+                            <li><a href="product-list?category=men" class="dropdown-item">Men</a></li>
+                            <li><a href="product-list?category=women" class="dropdown-item">Women</a></li>
+                            <li><a href="product-list?category=electronics" class="dropdown-item">Electronics</a></li>
+                            <li><a href="product-list?category=sneakers" class="dropdown-item">Sneakers</a></li>
                         </ul>
                     </li>
                     <li class="nav-item"><a href="#new" class="nav-link">New</a></li>
-                    <li class="nav-item"><a href="login.html" class="nav-link">Login</a></li>
-                    <li class="nav-item"><a href="signup.html" class="nav-link">Sign Up</a></li>
+                    <li class="nav-item"><a href="${pageContext.request.contextPath}/app/login" class="nav-link">Login</a></li>
+                    <li class="nav-item"><a href="${pageContext.request.contextPath}/app/login" class="nav-link">Sign Up</a></li>
+                    
                 </ul>
             </div>
 
@@ -87,64 +88,8 @@ q
 
             <div class="product-grid bd-grid" id="productGrid">
                 <!-- Products will be loaded here -->
-                <article class="sneaker">
-                    <div class="sneaker-sale">Sale</div>
-                    <img src="https://i.postimg.cc/BbYwJ393/featured2.png" alt="Nike Free RN" class="sneaker-img">
-                    <span class="sneaker-name">Nike Free RN</span>
-                    <span class="sneaker-price">$149.99</span>
-                    <a href="product-details.html" class="button-light">View Details <i class="bx bx-right-arrow-alt button-icon"></i></a>
-                </article>
+              
 
-                <article class="sneaker">
-                    <img src="https://i.postimg.cc/k4Zj2mXv/featured3.png" alt="Nike Air Max" class="sneaker-img">
-                    <span class="sneaker-name">Nike Air Max</span>
-                    <span class="sneaker-price">$129.99</span>
-                    <a href="product-details.html" class="button-light">View Details <i class="bx bx-right-arrow-alt button-icon"></i></a>
-                </article>
-
-                <article class="sneaker">
-                    <img src="https://i.postimg.cc/3wWGqDYn/women1.png" alt="Adidas Ultraboost" class="sneaker-img">
-                    <span class="sneaker-name">Adidas Ultraboost</span>
-                    <span class="sneaker-price">$179.99</span>
-                    <a href="product-details.html" class="button-light">View Details <i class="bx bx-right-arrow-alt button-icon"></i></a>
-                </article>
-
-                <article class="sneaker">
-                    <div class="sneaker-sale">New</div>
-                    <img src="https://i.postimg.cc/8CqqJMCY/new1.png" alt="Puma RS-X" class="sneaker-img">
-                    <span class="sneaker-name">Puma RS-X</span>
-                    <span class="sneaker-price">$99.99</span>
-                    <a href="product-details.html" class="button-light">View Details <i class="bx bx-right-arrow-alt button-icon"></i></a>
-                </article>
-
-                <article class="sneaker">
-                    <img src="https://i.postimg.cc/gJWgbDjG/new2.png" alt="Converse Chuck Taylor" class="sneaker-img">
-                    <span class="sneaker-name">Converse Chuck Taylor</span>
-                    <span class="sneaker-price">$79.99</span>
-                    <a href="product-details.html" class="button-light">View Details <i class="bx bx-right-arrow-alt button-icon"></i></a>
-                </article>
-
-                <article class="sneaker">
-                    <div class="sneaker-sale">Sale</div>
-                    <img src="https://i.postimg.cc/mDgF9z6Q/new4.png" alt="Vans Old Skool" class="sneaker-img">
-                    <span class="sneaker-name">Vans Old Skool</span>
-                    <span class="sneaker-price">$89.99</span>
-                    <a href="product-details.html" class="button-light">View Details <i class="bx bx-right-arrow-alt button-icon"></i></a>
-                </article>
-
-                <article class="sneaker">
-                    <img src="https://i.postimg.cc/5yFy5w5F/new5-1.png" alt="Reebok Classic" class="sneaker-img">
-                    <span class="sneaker-name">Reebok Classic</span>
-                    <span class="sneaker-price">$69.99</span>
-                    <a href="product-details.html" class="button-light">View Details <i class="bx bx-right-arrow-alt button-icon"></i></a>
-                </article>
-
-                <article class="sneaker">
-                    <img src="https://i.postimg.cc/BbYwJ393/featured2.png" alt="New Balance 990" class="sneaker-img">
-                    <span class="sneaker-name">New Balance 990</span>
-                    <span class="sneaker-price">$199.99</span>
-                    <a href="product-details.html" class="button-light">View Details <i class="bx bx-right-arrow-alt button-icon"></i></a>
-                </article>
             </div>
 
             <div class="pagination-container bd-grid">
@@ -175,23 +120,66 @@ q
         </section>
     </main>
 
-    <script>
-        // Get category from URL parameters
-        const urlParams = new URLSearchParams(window.location.search);
-        const category = urlParams.get('category') || 'all';
-        
-        // Update page title and breadcrumb based on category
-        const categoryNames = {
-            'men': 'Men\'s Products',
-            'women': 'Women\'s Products',
-            'electronics': 'Electronics',
-            'sneakers': 'Sneakers',
-            'all': 'All Products'
-        };
-        
-        document.getElementById('categoryName').textContent = categoryNames[category];
-        document.getElementById('categoryTitle').textContent = categoryNames[category];
-        document.title = `${categoryNames[category]} | Ecommerce`;
+  <script>
+$(document).ready(function() {
+    // 1. Get category from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    let category = urlParams.get('category') || 'all';
+    category = category.toLowerCase(); // Normalize input
+    const displayCategory = category.charAt(0).toUpperCase() + category.slice(1);
+    // 2. Update page title + breadcrumb
+    const categoryNames = {
+        'men': "Men's Products",
+        'women': "Women's Products",
+        'electronics': "Electronics",
+        'sneakers': "Sneakers",
+        'all': "All Products"
+    };
+    $("#categoryName").text(categoryNames[category]);
+    $("#categoryTitle").text(categoryNames[category]);
+    document.title = categoryNames[category] + " | Ecommerce";
+
+    // 3. Call backend REST API to fetch products
+    $.ajax({
+    	  url: '/ecomm.capstone/products/category/' + displayCategory,
+        method: "GET",
+        success: function(products) {
+            let grid = $("#productGrid");
+<!--            console.log(url);-->
+            grid.empty(); // clear old cards
+
+            if (products.length === 0) {
+                grid.append("<p>No products found in this category.</p>");
+                return;
+            }
+            
+            console.log("calling");
+
+            // 4. Loop through products and build cards
+            products.forEach(product => {
+                let card = `
+                    <article class="sneaker">
+                        ${product.discount ? `<div class="sneaker-sale">Sale</div>` : ""}
+                        <img src="${product.imageUrl || 'https://via.placeholder.com/150'}" 
+                             alt="${product.prodName}" 
+                             class="sneaker-img">
+                        <span class="sneaker-name">${product.prodName}</span>
+                        <span class="sneaker-price">₹${product.price}</span>
+                        <a href="<%= request.getContextPath() %>/app/product-details/${product.id}" 
+                           class="button-light">
+                           View Details <i class="bx bx-right-arrow-alt button-icon"></i>
+                        </a>
+                    </article>
+                `;
+                grid.append(card);
+            });
+        },
+        error: function(err) {
+            console.error("Error loading products:", err);
+            $("#productGrid").html("<p>Failed to load products.</p>");
+        }
+    });
+});
 
         // View toggle functionality
         document.querySelectorAll('.view-btn').forEach(btn => {

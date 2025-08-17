@@ -21,22 +21,23 @@
 
             <a href="index.html" class="nav-logo">Ecommerce</a>
 
-            <div class="nav-menu" id="nav-menu">
+           <div class="nav-menu" id="nav-menu">
                 <ul class="nav-list">
                     <li class="nav-item"><a href="<%= request.getContextPath() %>" class="nav-link">Home</a></li>
                     <li class="nav-item"><a href="#featured" class="nav-link">Featured</a></li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Categories</a>
-                        <ul class="dropdown-menu">
-                            <li><a href="product-list.html?category=men" class="dropdown-item">Men</a></li>
-                            <li><a href="product-list.html?category=women" class="dropdown-item">Women</a></li>
-                            <li><a href="product-list.html?category=electronics" class="dropdown-item">Electronics</a></li>
-                            <li><a href="product-list.html?category=sneakers" class="dropdown-item">Sneakers</a></li>
-                        </ul>
-                    </li>
+                   <li class="nav-item">
+    <a href="#" class="nav-link">Categories</a>
+    <ul class="dropdown-menu">
+        <li><a href="#" class="dropdown-item category-link" data-category="men">Men</a></li>
+        <li><a href="#" class="dropdown-item category-link" data-category="women">Women</a></li>
+        <li><a href="#" class="dropdown-item category-link" data-category="electronics">Electronics</a></li>
+        <li><a href="#" class="dropdown-item category-link" data-category="sneakers">Sneakers</a></li>
+    </ul>
+</li>
+
                     <li class="nav-item"><a href="#new" class="nav-link">New</a></li>
-                    <li class="nav-item"><a href="login.html" class="nav-link">Login</a></li>
-                    <li class="nav-item"><a href="signup.html" class="nav-link">Sign Up</a></li>
+                    <li class="nav-item"><a href="${pageContext.request.contextPath}/app/login" class="nav-link btn btn-login"> Login</a></li>
+                    <li class="nav-item"><a href="${pageContext.request.contextPath}/app/login" class="nav-link btn btn-signup"> Sign Up</a></li>
                 </ul>
             </div>
 
@@ -199,6 +200,34 @@
     });
     
     
+    
+    
+    $(document).ready(function() {
+        $(".category-link").on("click", function(e) {
+            e.preventDefault();
+            let category = $(this).data("category");
+
+            $.ajax({
+                url: "<%= request.getContextPath() %>/app/product-list",
+                type: "GET",
+                data: { category: category },
+                success: function(response) {
+                    // Case 1: If your product-list.jsp is a full page, then just redirect:
+                    window.location.href = "<%= request.getContextPath() %>/app/product-list?category=" + category;
+
+                    // Case 2 (Optional): If you want to inject results into current page:
+                    // $("#content").html(response);   // assumes you have <div id="content"></div>
+                },
+                error: function(xhr) {
+                    console.error("Error loading category:", xhr);
+                }
+            });
+        });
+    });
+    
+
+
+
         function changeImage(src) {
             document.getElementById('mainImage').src = src;
             

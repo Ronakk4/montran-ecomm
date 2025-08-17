@@ -49,6 +49,8 @@
 
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/resources/css/index.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
 </head>
 
 <body>
@@ -56,31 +58,39 @@
 
 
 
-	<header>
-  <nav>
-    <a href="#" class="logo">Ecommerce</a>
+	 <header class="l-header">
+        <nav class="nav bd-grid">
+            <div class="nav-toggle" id="nav-toggle">
+                <i class="bx bxs-grid"></i>
+            </div>
 
-    <span class="menu-toggle" onclick="toggleMenu()">☰</span>
+            <a href="#" class="nav-logo">Ecommerce</a>
 
-    <ul class="nav-list" id="navList">
-      <li><a href="#home">Home</a></li>
-      <li><a href="#featured">Featured</a></li>
-      <li>
-        <a href="#">Categories ▼</a>
-        <div class="dropdown-content">
-          <a href="/category/men">Men</a>
-          <a href="/category/women">Women</a>
-          <a href="/category/electronics">Electronics</a>
-          <a href="/category/sneakers">Sneakers</a>
-        </div>
-      </li>
-      <li><a href="#new">New</a></li>
-      <li><a href="${pageContext.request.contextPath}/app/login" class="btn btn-login">Login</a></li>
-      <li><a href="${pageContext.request.contextPath}/app/signup" class="btn btn-signup">Sign Up</a></li>
-      <li><a href="/cart" class="btn btn-cart">Cart</a></li>
-    </ul>
-  </nav>
-</header>
+            <div class="nav-menu" id="nav-menu">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="<%= request.getContextPath() %>"  class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="#featured" class="nav-link">Featured</a></li>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link">Categories <i class="bx bx-chevron-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" class="dropdown-item category-link" data-category="men">Men</a></li>
+        <li><a href="#" class="dropdown-item category-link" data-category="women">Women</a></li>
+        <li><a href="#" class="dropdown-item category-link" data-category="electronics">Electronics</a></li>
+        <li><a href="#" class="dropdown-item category-link" data-category="sneakers">Sneakers</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a href="#new" class="nav-link">New</a></li>
+                    <li class="nav-item"><a href="${pageContext.request.contextPath}/app/login" class="nav-link">Login</a></li>
+                    <li class="nav-item"><a href="${pageContext.request.contextPath}/app/login" class="nav-link">Sign Up</a></li>
+                </ul>
+            </div>
+
+            <div class="nav-shop">
+                <i class="bx bx-shopping-bag"></i>
+            </div>
+        </nav>
+    </header>
+
 
 
     <main class="l-main">
@@ -139,22 +149,70 @@
 
        <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<section class="women section" id="women">
-    <h2 class="section-title">WOMEN SNEAKERS</h2>
-    <div class="product-container bd-grid" id="women-container"></div>
-</section>
+<!--<section class="women section" id="women">-->
+<!--    <h2 class="section-title">WOMEN SNEAKERS</h2>-->
+<!--    <div class="product-container bd-grid" id="women-container"></div>-->
+<!--</section>-->
 
-<section class="men section" id="men">
-    <h2 class="section-title">MEN SNEAKERS</h2>
-    <div class="product-container bd-grid" id="men-container"></div>
-</section>
+ <section class="women section" id="women">
+            <h2 class="section-title">WOMEN SNEAKERS</h2>
+            <div class="slider-container">
+                <button class="slider-btn prev-btn" onclick="slideProducts('women', -1)">
+                    <i class="bx bx-chevron-left"></i>
+                </button>
+                <div class="slider-wrapper">
+                    <div class="product-slider" id="women-slider">
+                    </div>
+                </div>
+                <button class="slider-btn next-btn" onclick="slideProducts('women', 1)">
+                    <i class="bx bx-chevron-right"></i>
+                </button>
+            </div>
+        </section>
+        
+        
+<!--<section class="men section" id="men">-->
+<!--    <h2 class="section-title">MEN SNEAKERS</h2>-->
+<!--    <div class="product-container bd-grid" id="men-container"></div>-->
+<!--</section>-->
 
-<section class="electronics section" id="electronics">
-    <h2 class="section-title">ELECTRONICS</h2>
-    <div class="product-container bd-grid" id="electronics-container"></div>
-</section>
+<!--<section class="electronics section" id="electronics">-->
+<!--    <h2 class="section-title">ELECTRONICS</h2>-->
+<!--    <div class="product-container bd-grid" id="electronics-container"></div>-->
+<!--</section>-->
 
+ <section class="men section" id="men">
+            <h2 class="section-title">MEN SNEAKERS</h2>
+            <div class="slider-container">
+                <button class="slider-btn prev-btn" onclick="slideProducts('men', -1)">
+                    <i class="bx bx-chevron-left"></i>
+                </button>
+                <div class="slider-wrapper">
+                    <div class="product-slider" id="men-slider">
+                       
+                    </div>
+                </div>
+                <button class="slider-btn next-btn" onclick="slideProducts('men', 1)">
+                    <i class="bx bx-chevron-right"></i>
+                </button>
+            </div>
+        </section>
 
+  <section class="electronics section" id="electronics">
+            <h2 class="section-title">ELECTRONICS</h2>
+            <div class="slider-container">
+                <button class="slider-btn prev-btn" onclick="slideProducts('electronics', -1)">
+                    <i class="bx bx-chevron-left"></i>
+                </button>
+                <div class="slider-wrapper">
+                    <div class="product-slider" id="electronics-slider">
+                    </div>
+                </div>
+                <button class="slider-btn next-btn" onclick="slideProducts('electronics', 1)">
+                    <i class="bx bx-chevron-right"></i>
+                </button>
+            </div>
+        </section>
 
 
 <!--        <section class="offer section">-->
@@ -300,13 +358,118 @@ async function loadProducts(category, containerId) {
 }
 
 const categories = [
-    { name: "Women", containerId: "women-container" },
-    { name: "Men", containerId: "men-container" },
-    { name: "Electronics", containerId: "electronics-container" }
+    { name: "Women", containerId: "women-slider" },
+    { name: "Men", containerId: "men-slider" },
+    { name: "Electronics", containerId: "electronics-slider" }
 ];
 
 categories.forEach(c => loadProducts(c.name, c.containerId));
 	
+	
+
+$(document).ready(function() {
+    $(".category-link").on("click", function(e) {
+        e.preventDefault();
+        let category = $(this).data("category");
+
+        $.ajax({
+            url: "<%= request.getContextPath() %>/app/product-list",
+            type: "GET",
+            data: { category: category },
+            success: function(response) {
+                // Case 1: If your product-list.jsp is a full page, then just redirect:
+                window.location.href = "<%= request.getContextPath() %>/app/product-list?category=" + category;
+
+                // Case 2 (Optional): If you want to inject results into current page:
+                // $("#content").html(response);   // assumes you have <div id="content"></div>
+            },
+            error: function(xhr) {
+                console.error("Error loading category:", xhr);
+            }
+        });
+    });
+});
+
+
+$(document).ready(function() {
+    $(".category-link").on("click", function(e) {
+        e.preventDefault();
+        let category = $(this).data("category");
+
+        $.ajax({
+            url: "<%= request.getContextPath() %>/app/product-list",
+            type: "GET",
+            data: { category: category },
+            success: function(response) {
+                // Case 1: If your product-list.jsp is a full page, then just redirect:
+                window.location.href = "<%= request.getContextPath() %>/app/product-list?category=" + category;
+
+                // Case 2 (Optional): If you want to inject results into current page:
+                // $("#content").html(response);   // assumes you have <div id="content"></div>
+            },
+            error: function(xhr) {
+                console.error("Error loading category:", xhr);
+            }
+        });
+    });
+});
+
+
+//store slider positions for each category
+const sliderPositions = {};
+
+function initializeSlider(category) {
+    sliderPositions[category] = 0;
+    updateSliderPosition(category);
+}
+
+function slideProducts(category, direction) {
+    const slider = document.getElementById(`${category}-slider`);
+    if (!slider || slider.children.length === 0) return;
+
+    const totalSlides = slider.children.length;
+    const slidesToShow = window.innerWidth > 768 ? 3 : 1;
+    const maxPosition = Math.max(0, totalSlides - slidesToShow);
+
+    // Initialize position if not exists
+    if (!(category in sliderPositions)) {
+        sliderPositions[category] = 0;
+    }
+
+    // Update position
+    sliderPositions[category] += direction;
+
+    // Boundary checks
+    if (sliderPositions[category] < 0) {
+        sliderPositions[category] = 0;
+    }
+    if (sliderPositions[category] > maxPosition) {
+        sliderPositions[category] = maxPosition;
+    }
+
+    updateSliderPosition(category);
+}
+
+function updateSliderPosition(category) {
+    const slider = document.getElementById(`${category}-slider`);
+    if (!slider) return;
+
+    const slidesToShow = window.innerWidth > 768 ? 3 : 1;
+    const slideWidth = 100 / slidesToShow;
+    const translateX = -(sliderPositions[category] * slideWidth);
+    
+    slider.style.transform = `translateX(${translateX}%)`;
+}
+
+window.addEventListener('resize', function() {
+    Object.keys(sliderPositions).forEach(category => {
+        updateSliderPosition(category);
+    });
+});
+
+
+
+
 
     // AJAX Search
     /*
