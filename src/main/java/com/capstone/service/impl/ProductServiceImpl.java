@@ -39,6 +39,7 @@ public class ProductServiceImpl implements ProductService{
 	@Transactional
 	public void saveProduct(ProductInsertDTO p) {
 		 Product product = new Product();
+		 	product.setId(p.getProdId());	
 		    product.setProdName(p.getProdName());
 		    product.setProdDescription(p.getProdDescription());
 		    product.setPrice(p.getPrice());
@@ -62,21 +63,29 @@ public class ProductServiceImpl implements ProductService{
 		productDao.deleteProduct(id);
 		
 	}
-
-	@Override
-	public List<Product> getProductsFromCategory(String category) {
-		
-		return productDao.getProductsFromCategory(category);
-	}
-
 	
-
+	@Override
+	public void updateProduct(ProductInsertDTO p) {
+		productDao.updateProduct(p);
+	}
+	
+	
 	@Override
 	public List<Product> getProductsBySellerId(long sellerId) {
 		return productDao.getProductsBySellerId(sellerId);
 		
 	}
-
+	
+	@Override
+	public List<Product> getProductsFromCategory(String category) {
+		
+		return productDao.getProductsFromCategory(category);
+	}
+	
+	public List<String> getAllCategories(){
+		
+		return productDao.getAllCategories();
+	}
 
 
 
