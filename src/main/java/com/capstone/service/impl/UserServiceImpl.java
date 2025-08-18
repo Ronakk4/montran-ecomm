@@ -11,6 +11,7 @@ import com.capstone.dto.BuyerDTO;
 import com.capstone.dto.LoginRequestDTO;
 import com.capstone.dto.SellerDTO;
 import com.capstone.dto.UserDTO;
+import com.capstone.exception.UserNotFoundException;
 import com.capstone.model.Buyer;
 import com.capstone.model.Seller;
 import com.capstone.model.User;
@@ -27,9 +28,13 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	@Transactional
-	public User findUser(long id) {
+	public User findUser(long id) throws UserNotFoundException{
 		// TODO Auto-generated method stub
-		return userDao.findUserById(id);
+		User user = userDao.findUserById(id);
+		if(user == null) {
+			throw new UserNotFoundException("User with ID "+ id + " not found !!");
+		}
+		return user;
 	}
 
 	@Override

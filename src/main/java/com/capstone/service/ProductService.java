@@ -1,5 +1,4 @@
 
-
 package com.capstone.service;
 
 import java.util.List;
@@ -12,14 +11,20 @@ import com.capstone.model.Product;
 public interface ProductService {
 //	List<Product> getAllProducts();
 	void saveProduct(ProductInsertDTO p);
+
 	Product getProduct(long id);
+
 	void deleteProduct(long id);
+
 	void updateProduct(ProductInsertDTO p);
+
 	List<Product> getProductsFromCategory(String category);
+
+	// Method for dynamic product search
+	List<Product> searchProducts(String prodName, String category, Double minPrice, Double maxPrice);
+
 	List<Product> getProductsBySellerId(long sellerId);
+
 	List<String> getAllCategories();
+
 }
-
-
-
-
