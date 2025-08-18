@@ -4,6 +4,7 @@ public class AddToCartDTO {
 	private long buyerId;
 	private long productId;
 	private int quantity;
+	
 	public long getBuyerId() {
 		return buyerId;
 	}

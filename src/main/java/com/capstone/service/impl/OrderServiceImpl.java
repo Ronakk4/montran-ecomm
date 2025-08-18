@@ -18,6 +18,7 @@ import com.capstone.dto.OrderDTO;
 import com.capstone.dto.OrderItemDTO;
 import com.capstone.dto.SellerOrderDTO;
 import com.capstone.model.Buyer;
+import com.capstone.model.CartItem;
 import com.capstone.model.OrderHeader;
 import com.capstone.model.OrderItem;
 import com.capstone.model.Product;
@@ -127,6 +128,13 @@ public class OrderServiceImpl implements OrderService{
     public List<OrderHeader> searchOrders(long sellerId, String orderStatus, String startDate, String endDate) {
         return orderDao.searchOrders(sellerId, orderStatus, startDate, endDate);
     }
+
+	@Override
+	public OrderHeader placeOrder(List<CartItem> cartItems) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 
 
