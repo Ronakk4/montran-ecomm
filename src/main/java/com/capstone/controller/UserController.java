@@ -41,10 +41,13 @@ public class UserController {
 	@PostMapping("/login")
 	public void loginUser(@RequestBody LoginRequestDTO user, 
 	                      HttpServletResponse response) throws IOException {
+  
+
 		User existingUser = userService.loginUser(user);
 	    if (existingUser!=null) {
 	        String token = JwtUtil.generateToken(existingUser.getEmail(), existingUser.getRole(), existingUser.getId());
 
+          
 	        // Store JWT in HttpOnly cookie (browser-specific)
 	        Cookie cookie = new Cookie("jwtToken", token);
 	        cookie.setHttpOnly(true); 
@@ -134,8 +137,10 @@ public class UserController {
 		dto.setEmail((String) json.get("email"));
 		dto.setPassword((String) json.get("password"));
 		dto.setRole((String) json.get("role"));
+
 	}
-	
+
 }
+
 
   

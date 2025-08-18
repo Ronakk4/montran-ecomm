@@ -142,7 +142,7 @@
                     let productHtml = `
                         <article class="sneaker">
                             ${p.onSale ? '<div class="sneaker-sale">Sale</div>' : ''}
-                    	  <a href="/ecomm.capstone/app/product-details/\${p.id}">
+                    	  <a href="/ecomm.capstone/app/product-details/\${p.prodId}">
                             <img src="https://i.postimg.cc/3wWGqDYn/women1.png" alt="" class="sneaker-img">
                             <span class="sneaker-name">` + p.prodName + `</span>
                             <span class="sneaker-price">$` + p.price + `</span>

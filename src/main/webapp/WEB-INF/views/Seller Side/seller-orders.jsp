@@ -41,10 +41,8 @@
     </table>
 
 <script>
-    // Replace with logged-in sellerId from session or context
-//     const sellerId = "${sessionScope.sellerId}"; 
-    const sellerId = 16; 
-
+	const sellerId = <%= sellerId != null ? sellerId : "null" %>;
+	console.log(sellerId)
     function loadOrders() {
         $.get(`/ecomm.capstone/api/seller/orders?sellerId=${sellerId}`, function(data) {
             let rows = "";

@@ -121,67 +121,76 @@
             <div class="switch-role">
                 <p class="text-muted mb-2">Not a seller?</p>
                 <a href="${pageContext.request.contextPath}/app/login" class="btn btn-outline-custom btn-sm">Buyer Login</a>
-            </div>
+</div>
+            
 
             <p class="footer-text">
-                Don't have a seller account? <a href="${pageContext.request.contextPath}/app/register-seller" class="text-decoration-none" style="color: #f5576c; font-weight: 600;">Register as Seller</a>
+                Don't have a seller account? <a href="${pageContext.request.contextPath}/app/registerseller" class="text-decoration-none" style="color: #f5576c; font-weight: 600;">Register as Seller</a>
             </p>
+            
 
-            <div id="errorMsg" class="mt-3"></div>
+            <div id="errorMsg" class="alert alert-danger mt-3" style="display:none;"></div>
         </form>
     </div>
 </div>
+  <!-- ✅ Put script at bottom -->
+    <script>
+    function validateForm(email, password) {
+        let errorMsg = "";
 
-<script>
-function submitLogin() {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    const role = "SELLER";
-
-    fetch('${pageContext.request.contextPath}/users/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email: email, password: password, role: role })
-    })
-    .then(res => {
-        if(res.status === 200) {
-            // redirect to homepage or dashboard
-            console.log(role);
-<!--			if(role=="SELLER"){-->
-				window.location.href = '${pageContext.request.contextPath}/app/seller/dashboard'
-<!--			}else{-->
-				
-<!--            window.location.href = '${pageContext.request.contextPath}';-->
-<!--			}-->
-
-
-        } else if(res.status === 401) {
-            return res.json();
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (email == null || email.trim() === "") {
+            errorMsg = "Please enter an email address.";
+        } 
+        else if (!emailPattern.test(email)) {
+            errorMsg = "Please enter a valid email address.";
+        } 
+        else if (password == null || password.trim() === "") {
+            errorMsg = "Please enter password.";
         }
-    })
-    .then(data => {
-        if(data && data.message) {
-            document.getElementById("errorMsg").innerText = data.message;
+
+        return errorMsg;
+    }
+
+    function submitLogin() {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const role = "SELLER";
+        
+        const validationError = validateForm(email, password);
+        if (validationError) {
+            showError(validationError);
+            return;
         }
-    })
-    .catch(err => {
-        document.getElementById("errorMsg").innerText = "Server error: " + err;
-    });
-}
 
+        fetch('/ecomm.capstone/users/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email, password: password, role: role })
+        })
+        .then(res => {
+            if(res.status === 200) {
+                window.location.href = '/ecomm.capstone/app/seller/dashboard';
+            } else if(res.status === 401) {
+            	 return res.json().catch(() => ({ message: "Invalid email or password" }));
+            }
+        })
+        .then(data => {
+            if(data && data.message) {
+                showError(data.message);
+            }
+        })
+        .catch(err => {
+            showError("Server error: " + err);
+        });
+    }
 
-
-
-function showMessage(message, type) {
-    const errorDiv = document.getElementById("errorMsg");
-    errorDiv.innerHTML = `<div class="alert alert-${type} alert-dismissible fade show" role="alert">
-        ${message}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>`;
-}
-</script>
+    function showError(message) {
+        const errorDiv = document.getElementById("errorMsg");
+        errorDiv.style.display = "block";
+        errorDiv.innerText = message;
+    }
+    </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

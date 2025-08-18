@@ -337,14 +337,14 @@ async function loadProducts(category, containerId) {
         const container = document.getElementById(containerId);
         container.innerHTML = products.map(p => `
         <article class="sneaker">
-        <a href="/ecomm.capstone/app/product-details/\${p.id}">
+        <a href="/ecomm.capstone/app/product-details/\${p.prodId}">
         <img src="https://i.postimg.cc/3wWGqDYn/women1.png" alt="${p.name}" class="sneaker-img">
             <span class="sneaker-name">` + p.prodName + `</span>
             <span class="sneaker-price">$` + p.price + `</span>
-            <a href="cart?add=` + p.prodId + `" class="button-light">
-                Add to Cart <i class="bx bx-right-arrow-alt button-icon"></i>
             </a>
-            </a>
+            <button class="button-light add-to-cart-btn" data-product-id="${p.id}">
+            Add to Cart <i class="bx bx-right-arrow-alt button-icon"></i>
+        </button>
         </article>
     `).join('');
 
@@ -365,45 +365,31 @@ categories.forEach(c => loadProducts(c.name, c.containerId));
 	
 	
 
-<!--$(document).ready(function() {-->
-<!--	loadCategories();-->
-<!--	 $(document).on("click", ".category-link", function(e) {-->
-<!--	        e.preventDefault();-->
-<!--	        let category = $(this).data("category");-->
-<!--	        console.log("Category clicked:", category);-->
 
-<!--	        window.location.href = "<%= request.getContextPath() %>/app/product-list?category=" + category;-->
-<!--	    });-->
+$(document).on("click", ".add-to-cart-btn", function() {
+    const productId = $(this).data("product-id"); // get productId from button
+    addToCart(productId, 1); // default quantity = 1
+});
 
-<!--});-->
-
-
-
-
-<!--function loadCategories() {-->
-<!--    $.get("http://localhost:8080/ecomm.capstone/api/seller/category", function(categories) {-->
-<!--        console.log("RAW categories:", categories);-->
-
-<!--        let items = "";-->
-<!--        categories.forEach(c => {-->
-<!--            console.log("Category:", c);-->
-<!--            console.log(`Category ${c}:`, c, typeof c);-->
-
-<!--            items += `-->
-<!--                <li>-->
-<!--                    <a href="#" -->
-<!--                       class="dropdown-item category-link" -->
-<!--                       data-category="\${c}">\${c}-->
-<!--                    </a>-->
-<!--                </li>`;-->
-<!--        });-->
-
-<!--        $(".dropdown-menu").html(items);-->
-<!--    });-->
-<!--}-->
-
-
-
+function addToCart(productId, quantity) {
+    $.ajax({
+        url: "http://localhost:8080/ecomm.capstone/api/cart",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({
+            productId: productId,
+            quantity: quantity
+        }),
+        success: function(response) {
+            console.log("Cart updated:", response);
+            alert("Product added to cart");
+        },
+        error: function(xhr) {
+            console.error("Error:", xhr.responseText);
+            alert("Failed to add product to cart");
+        }
+    });
+}
 
 
 

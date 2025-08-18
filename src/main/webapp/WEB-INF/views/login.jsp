@@ -142,16 +142,45 @@
                 Don't have an account? <a href="${pageContext.request.contextPath}/app/register" class="text-decoration-none" style="color: #74ebd5; font-weight: 600;">Sign up as Buyer</a>
             </p>
 
-            <div id="errorMsg" class="mt-3"></div>
+            <!-- Error Box -->
+            <div id="errorMsg" class="alert alert-danger mt-3" style="display:none;"></div>
         </form>
     </div>
 </div>
  
 <script>
+function validateForm(email, password) {
+    let errorMsg = "";
+
+ 
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+        errorMsg = "Please enter a valid email address.";
+    } 
+    else if(email==null || email.trim()===""){
+    	errorMsg = "Please enter a email address.";
+    	
+    }
+    else if(password==null || password.trim()==""){
+    	errorMsg = "Please enter password";
+    	
+    }
+   
+
+    return errorMsg;
+}
+
 function submitLogin() {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
     const role = "BUYER";
+
+
+    const validationError = validateForm(email, password);
+    if (validationError) {
+        showError(validationError);
+        return;
+    }
 
     fetch('${pageContext.request.contextPath}/users/login', {
         method: 'POST',
@@ -161,33 +190,30 @@ function submitLogin() {
         body: JSON.stringify({ email: email, password: password, role: role })
     })
     .then(res => {
-        if(res.status === 200) {
-            // redirect to homepage or dashboard
-            console.log(role);
-<!--			if(role=="SELLER"){-->
-<!--				window.location.href = '${pageContext.request.contextPath}/app/seller/dashboard'-->
-<!--			}else{-->
-				
+        if (res.ok) {
+         
             window.location.href = '${pageContext.request.contextPath}';
-<!--			}-->
-
-
-        } else if(res.status === 401) {
-            return res.json();
+        } else {
+           
+            return res.json().catch(() => ({ message: "Invalid email or password" }));
         }
     })
     .then(data => {
-        if(data && data.message) {
-            document.getElementById("errorMsg").innerText = data.message;
+        if (data && data.message) {
+            showError(data.message);
         }
     })
     .catch(err => {
-        document.getElementById("errorMsg").innerText = "Server error: " + err;
+        showError("Server error: " + err.message);
     });
+}
+
+function showError(msg) {
+    const errorBox = document.getElementById("errorMsg");
+    errorBox.style.display = "block";
+    errorBox.innerText = msg;
 }
 </script>
 
 </body>
 </html>
- 
- 

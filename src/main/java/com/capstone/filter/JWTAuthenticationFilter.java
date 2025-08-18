@@ -50,6 +50,10 @@ public class JWTAuthenticationFilter implements Filter {
       try {
         Claims claims = JwtUtil.validateToken(token).getBody();
         String userType = claims.get("userType", String.class); // exact key
+        Long userId = claims.get("userId", Long.class);
+
+        req.setAttribute("userId", userId);
+        req.setAttribute("userType", userType);
 
         boolean buyerArea  = servletPath.startsWith("/app/buyer");
         boolean sellerArea = servletPath.startsWith("/app/seller");
