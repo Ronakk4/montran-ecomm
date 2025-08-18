@@ -152,14 +152,20 @@
 function validateForm(email, password) {
     let errorMsg = "";
 
-    // ✅ Correct email validation regex
+ 
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(email)) {
         errorMsg = "Please enter a valid email address.";
     } 
-    else if (password.trim().length < 6) {
-        errorMsg = "Password must be at least 6 characters.";
+    else if(email==null || email.trim()===""){
+    	errorMsg = "Please enter a email address.";
+    	
     }
+    else if(password==null || password.trim()==""){
+    	errorMsg = "Please enter password";
+    	
+    }
+   
 
     return errorMsg;
 }
@@ -169,7 +175,7 @@ function submitLogin() {
     const password = document.getElementById("password").value;
     const role = "BUYER";
 
-    // ✅ Validate before sending
+
     const validationError = validateForm(email, password);
     if (validationError) {
         showError(validationError);
