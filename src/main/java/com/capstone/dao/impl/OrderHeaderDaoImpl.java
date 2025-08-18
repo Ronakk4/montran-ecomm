@@ -64,6 +64,12 @@ public class OrderHeaderDaoImpl implements OrderHeaderDao{
 		return null;
 	}
 
+	@Override
+	public List<OrderHeader> searchOrders(long sellerId, String orderStatus, String startDate, String endDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 
 }

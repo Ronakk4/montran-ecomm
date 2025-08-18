@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 
 import com.capstone.dao.OrderHeaderDao;
 import com.capstone.dao.OrderItemDao;
-import com.capstone.dao.ProductDao;
-import com.capstone.dao.UserDao;
 import com.capstone.dto.OrderDTO;
 import com.capstone.dto.OrderItemDTO;
 import com.capstone.dto.SellerOrderDTO;
@@ -35,11 +33,6 @@ public class OrderServiceImpl implements OrderService{
 	@Autowired
 	private OrderHeaderDao orderDao;  
 	
-//	@Autowired
-//	private ProductDao productDao;
-//
-//	@Autowired
-//	private UserDao userDao;
 
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -117,7 +110,7 @@ public class OrderServiceImpl implements OrderService{
             }
 
             OrderItemDTO itemDTO = new OrderItemDTO();
-            itemDTO.setProductId(item.getProduct().getId());
+            itemDTO.setProductId(item.getProduct().getProdId());
             itemDTO.setSellerId(item.getSeller().getId());
             itemDTO.setQuantity(item.getQuantity());
             itemDTO.setPrice(item.getPrice());

@@ -36,9 +36,6 @@ public class UserDaoImpl implements UserDao{
 	@Override
 	public User findUserById(long id) {
 		// TODO Auto-generated method stub
-//		Query <User> query = session.createQuery("from User where id= :id", User.class);
-//		query.setParameter("id",id);
-//		return query.uniqueResult();
 		return sessionFactory.getCurrentSession().get(User.class, id);
 	}
 

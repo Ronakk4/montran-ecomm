@@ -15,7 +15,7 @@ public interface OrderHeaderDao {
 	
 	// New method for searching orders
     List<OrderHeader> searchOrders(long sellerId, String orderStatus, String startDate, String endDate);
-	
+	List<OrderItem> getAllOrdersForSeller(long id);
 
 
 }
