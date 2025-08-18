@@ -53,13 +53,7 @@ public class UserController {
 	        response.addCookie(cookie);
 
 	        // Redirect based on role
-	        if ("buyer".equalsIgnoreCase(user.getRole())) {
-	            response.sendRedirect("/app/buyer");
-	        } else if ("seller".equalsIgnoreCase(user.getRole())) {
-	            response.sendRedirect("/app/seller");
-	        } else {
-	            response.sendRedirect("/"); // default fallback
-	        }
+	       
 	    } else {
 	        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid credentials");
 	    }
@@ -140,5 +134,6 @@ public class UserController {
 		dto.setPassword((String) json.get("password"));
 		dto.setRole((String) json.get("role"));
 	}
+}
 
   
