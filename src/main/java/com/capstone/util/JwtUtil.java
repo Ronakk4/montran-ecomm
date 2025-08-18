@@ -3,6 +3,7 @@ import java.security.Key;
 import java.util.Date;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -29,9 +30,9 @@ public class JwtUtil {
     }
 
 
-    public static Claims validateToken(String token)  throws JwtException{
+    public static Jws<Claims> validateToken(String token)  throws JwtException{
     	
-    	return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
+    	return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
     	
     }
 }

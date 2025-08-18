@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.capstone.model.Product;
 import com.capstone.dao.ProductDao;
-import com.capstone.dto.ProductInsertDTO;
+
 
 @Repository
 @Transactional
@@ -43,12 +43,20 @@ public class ProductDaoImpl implements ProductDao {
 
 	@Override
 	public void deleteProduct(long id) {
+
 		// TODO Auto-generated method stub
 		Product product = sessionFactory.getCurrentSession().get(Product.class, id);
         if (product != null) {
             sessionFactory.getCurrentSession().delete(product);
         }
+	    sessionFactory.getCurrentSession()
+	        .createQuery("DELETE FROM Product p WHERE p.id = :id")
+	        .setParameter("id", id)
+	        .executeUpdate();
+
 	}
+
+
 
 	@Override
 	public List<Product> getProductsFromCategory(String category) {
@@ -87,5 +95,15 @@ public class ProductDaoImpl implements ProductDao {
         
         return sessionFactory.getCurrentSession().createQuery(criteriaQuery).getResultList();
     }
+
+	@Override
+	public List<Product> getProductsBySellerId(long sellerId) {
+		return sessionFactory.getCurrentSession().createQuery("from Product p where p.seller.id = :sellerId", Product.class)
+				.setParameter("sellerId", sellerId)
+				.list();
+		
+	}
+
+	
 
 }

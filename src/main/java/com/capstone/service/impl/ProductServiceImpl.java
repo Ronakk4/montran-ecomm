@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,17 +87,19 @@ import com.capstone.service.ProductService;
 @Service
 public class ProductServiceImpl implements ProductService {
 
+
     @Autowired
     private ProductDao productDao;
+
 
     @Autowired
     private SessionFactory sessionFactory;
 
-    @Override
-    @Transactional
-    public List<Product> getAllProducts() {
-        return productDao.getAllProducts();
-    }
+//    @Override
+//    @Transactional
+//    public List<Product> getAllProducts() {
+//        return productDao.getAllProducts();
+//    }
 
     @Override
     @Transactional
@@ -120,12 +123,19 @@ public class ProductServiceImpl implements ProductService {
         product.setCreatedAt(p.getCreatedAt() != null ? p.getCreatedAt() : LocalDateTime.now());
         product.setUpdatedAt(p.getUpdatedAt());
 
+
         // Fetch Seller entity and set
         Seller seller = sessionFactory.getCurrentSession().get(Seller.class, p.getSellerId());
         product.setSeller(seller);
-
+        
         productDao.saveProduct(product);
     }
+    
+	@Override
+	public List<Product> getProductsBySellerId(long sellerId) {
+		return productDao.getProductsBySellerId(sellerId);
+		
+	}
 
     @Override
     @Transactional

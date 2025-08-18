@@ -1,6 +1,7 @@
 
 package com.capstone.controller;
 
+import com.capstone.dto.OrderDTO;
 import com.capstone.model.OrderHeader;
 import com.capstone.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,8 @@ public class BuyerController {
 
 
     @PostMapping("/orders")
-    public String placeOrder(@RequestBody OrderHeader orderHeader) {
-        orderService.saveOrder(orderHeader);      
+    public String placeOrder(@RequestBody OrderDTO orderHeader) {
+        orderService.saveOrder(orderHeader);
         return "Order placed successfully";
     }
 

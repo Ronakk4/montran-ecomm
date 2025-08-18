@@ -21,14 +21,9 @@
         <label>Password</label>
         <input type="password" name="password" class="form-control" required/>
     </div>
-    <div class="mb-3">
-        <label>Role</label>
-        <select name="role" class="form-select">
-            <option value="BUYER">Buyer</option>
-            <option value="SELLER">Seller</option>
-        </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Register</button>
+    Are you a Seller? <a href="registerseller">register seller</a> 
+
+    <button  class="btn btn-primary ">Register</button>
 </form>
 
 <script>
