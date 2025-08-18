@@ -4,11 +4,11 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Login - E-Commerce</title>
+    <title>Seller Login - E-Commerce</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body { 
-            background: linear-gradient(135deg, #74ebd5, #ACB6E5); 
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             min-height: 100vh;
             display: flex;
@@ -29,8 +29,8 @@
             margin-bottom: 30px; 
             font-size: 28px;
         }
-        .buyer-badge {
-            background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+        .seller-badge {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             color: white;
             padding: 8px 20px;
             border-radius: 20px;
@@ -46,11 +46,11 @@
             transition: all 0.3s ease;
         }
         .form-control:focus {
-            border-color: #74ebd5;
-            box-shadow: 0 0 0 0.2rem rgba(116, 235, 213, 0.25);
+            border-color: #f5576c;
+            box-shadow: 0 0 0 0.2rem rgba(245, 87, 108, 0.25);
         }
         .btn-custom { 
-            background: linear-gradient(135deg, #74ebd5, #ACB6E5); 
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); 
             color: white; 
             border-radius: 10px; 
             padding: 12px;
@@ -60,11 +60,11 @@
         }
         .btn-custom:hover { 
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(116, 235, 213, 0.4);
+            box-shadow: 0 4px 12px rgba(245, 87, 108, 0.4);
         }
         .btn-outline-custom {
-            border: 2px solid #74ebd5;
-            color: #74ebd5;
+            border: 2px solid #f5576c;
+            color: #f5576c;
             border-radius: 10px;
             padding: 12px;
             font-weight: 600;
@@ -72,7 +72,7 @@
             transition: all 0.3s ease;
         }
         .btn-outline-custom:hover {
-            background: #74ebd5;
+            background: #f5576c;
             color: white;
         }
         .footer-text { 
@@ -92,21 +92,6 @@
             padding-top: 20px;
             border-top: 1px solid #e1e5e9;
         }
-        .seller-link {
-            color: #f5576c;
-            text-decoration: none;
-            font-weight: 600;
-            padding: 8px 16px;
-            border: 2px solid #f5576c;
-            border-radius: 8px;
-            display: inline-block;
-            transition: all 0.3s ease;
-        }
-        .seller-link:hover {
-            background: #f5576c;
-            color: white;
-            text-decoration: none;
-        }
     </style>
 </head>
 <body>
@@ -114,14 +99,14 @@
 <div class="container">
     <div class="login-container">
         <div class="text-center">
-            <span class="buyer-badge">BUYER PORTAL</span>
+            <span class="seller-badge">SELLER PORTAL</span>
         </div>
-        <h2 class="login-title">Welcome Back</h2>
+        <h2 class="login-title">Welcome Back, Seller</h2>
         
         <form id="loginForm">
             <div class="mb-3">
                 <label for="email" class="form-label">Email Address</label>
-                <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
+                <input type="email" id="email" class="form-control" placeholder="Enter your business email" required>
             </div>
 
             <div class="mb-4">
@@ -129,52 +114,29 @@
                 <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
             </div>
 
-            <div class="d-grid">
-                <button type="button" class="btn btn-custom" onclick="submitLogin()">Sign In</button>
+            <div class="d-grid gap-2">
+                <button type="button" class="btn btn-custom" onclick="submitLogin()">Sign In to Dashboard</button>
             </div>
 
             <div class="switch-role">
-                <p class="text-muted mb-3">Are you a seller?</p>
-                <a href="${pageContext.request.contextPath}/app/seller-login" class="seller-link">Seller Login</a>
+                <p class="text-muted mb-2">Not a seller?</p>
+                <a href="${pageContext.request.contextPath}/app/login" class="btn btn-outline-custom btn-sm">Buyer Login</a>
             </div>
 
             <p class="footer-text">
-                Don't have an account? <a href="${pageContext.request.contextPath}/app/register" class="text-decoration-none" style="color: #74ebd5; font-weight: 600;">Sign up as Buyer</a>
+                Don't have a seller account? <a href="${pageContext.request.contextPath}/app/register-seller" class="text-decoration-none" style="color: #f5576c; font-weight: 600;">Register as Seller</a>
             </p>
 
-            <!-- Error Box -->
-            <div id="errorMsg" class="alert alert-danger mt-3" style="display:none;"></div>
+            <div id="errorMsg" class="mt-3"></div>
         </form>
     </div>
 </div>
- 
+
 <script>
-function validateForm(email, password) {
-    let errorMsg = "";
-
-    // ✅ Correct email validation regex
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(email)) {
-        errorMsg = "Please enter a valid email address.";
-    } 
-    else if (password.trim().length < 6) {
-        errorMsg = "Password must be at least 6 characters.";
-    }
-
-    return errorMsg;
-}
-
 function submitLogin() {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
-    const role = "BUYER";
-
-    // ✅ Validate before sending
-    const validationError = validateForm(email, password);
-    if (validationError) {
-        showError(validationError);
-        return;
-    }
+    const role = "SELLER";
 
     fetch('${pageContext.request.contextPath}/users/login', {
         method: 'POST',
@@ -184,30 +146,43 @@ function submitLogin() {
         body: JSON.stringify({ email: email, password: password, role: role })
     })
     .then(res => {
-        if (res.ok) {
-         
-            window.location.href = '${pageContext.request.contextPath}/app/buyer/dashboard';
-        } else {
-           
-            return res.json().catch(() => ({ message: "Invalid email or password" }));
+        if(res.status === 200) {
+            // redirect to homepage or dashboard
+            console.log(role);
+<!--			if(role=="SELLER"){-->
+				window.location.href = '${pageContext.request.contextPath}/app/seller/dashboard'
+<!--			}else{-->
+				
+<!--            window.location.href = '${pageContext.request.contextPath}';-->
+<!--			}-->
+
+
+        } else if(res.status === 401) {
+            return res.json();
         }
     })
     .then(data => {
-        if (data && data.message) {
-            showError(data.message);
+        if(data && data.message) {
+            document.getElementById("errorMsg").innerText = data.message;
         }
     })
     .catch(err => {
-        showError("Server error: " + err.message);
+        document.getElementById("errorMsg").innerText = "Server error: " + err;
     });
 }
 
-function showError(msg) {
-    const errorBox = document.getElementById("errorMsg");
-    errorBox.style.display = "block";
-    errorBox.innerText = msg;
+
+
+
+function showMessage(message, type) {
+    const errorDiv = document.getElementById("errorMsg");
+    errorDiv.innerHTML = `<div class="alert alert-${type} alert-dismissible fade show" role="alert">
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>`;
 }
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
