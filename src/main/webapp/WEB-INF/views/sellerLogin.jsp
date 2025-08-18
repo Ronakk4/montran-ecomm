@@ -125,7 +125,7 @@
             
 
             <p class="footer-text">
-                Don't have a seller account? <a href="${pageContext.request.contextPath}/app/register-seller" class="text-decoration-none" style="color: #f5576c; font-weight: 600;">Register as Seller</a>
+                Don't have a seller account? <a href="${pageContext.request.contextPath}/app/registerseller" class="text-decoration-none" style="color: #f5576c; font-weight: 600;">Register as Seller</a>
             </p>
             
 
