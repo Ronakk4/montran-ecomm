@@ -27,7 +27,7 @@
             <select id="loginType" class="form-select" required>
                 <option value="">Select Role</option>
                 <option value="buyer">Buyer</option>
-                <option value="seller">Seller</option>
+                <option value="SELLER">Seller</option>
             </select>
         </div>
  
@@ -70,8 +70,13 @@ function submitLogin() {
     .then(res => {
         if(res.status === 200) {
             // redirect to homepage or dashboard
-
+            console.log(role);
+			if(role=="SELLER"){
+				window.location.href = '${pageContext.request.contextPath}/app/seller/dashboard'
+			}else{
+				
             window.location.href = '${pageContext.request.contextPath}';
+			}
 
 
         } else if(res.status === 401) {
