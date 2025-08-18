@@ -40,6 +40,7 @@ hs_err_pid*.log
 .localized
 Thumbs.db
 
+src/main/webapp/WEB-INF/dispatcher-servlet.xml
 # Logs and temporary files
 *.log
 log/

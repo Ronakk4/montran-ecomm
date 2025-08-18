@@ -1,3 +1,4 @@
+
 package com.capstone.service.impl;
 
 import java.time.LocalDateTime;
@@ -48,8 +49,12 @@ public class ProductServiceImpl implements ProductService{
 		    product.setCreatedAt(p.getCreatedAt() != null ? p.getCreatedAt() : LocalDateTime.now());
 		    product.setUpdatedAt(p.getUpdatedAt());
 
-		    // Fetch Seller entity and set
-		    Seller seller = sessionFactory.getCurrentSession().get(Seller.class, p.getSellerId());
+		    // Fetch seller using DAO or session in same transaction
+		    Seller seller = productDao.getSellerById(p.getSellerId());
+		    if (seller == null) {
+		    	System.out.println("seller not found");
+		        throw new RuntimeException("Seller not found for ID: " + p.getSellerId());
+		    }
 		    product.setSeller(seller);
 
 		    
@@ -68,8 +73,15 @@ public class ProductServiceImpl implements ProductService{
 	public void updateProduct(ProductInsertDTO p) {
 		productDao.updateProduct(p);
 	}
-	
-	
+
+
+//	@Override
+//	public void saveProduct(@Valid Product product) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+
+
 	@Override
 	public List<Product> getProductsBySellerId(long sellerId) {
 		return productDao.getProductsBySellerId(sellerId);
@@ -87,6 +99,10 @@ public class ProductServiceImpl implements ProductService{
 		return productDao.getAllCategories();
 	}
 
+	 @Override
+	    public List<Product> searchProducts(String prodName, String category, Double minPrice, Double maxPrice) {
+	        return productDao.searchProducts(prodName, category, minPrice, maxPrice);
+	    }
 
 
 }

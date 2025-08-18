@@ -17,4 +17,12 @@ public interface OrderHeaderDao {
 	OrderHeader getOrder(long id);
 	void deleteOrder(long id);
 	void saveOrder(OrderHeader o);
+
+
+	
+	// New method for searching orders
+    List<OrderHeader> searchOrders(long sellerId, String orderStatus, String startDate, String endDate);
+	
+
+
 }

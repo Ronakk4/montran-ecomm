@@ -15,8 +15,7 @@ public class UserRegisterDTO {
     // Buyer-specific
     private String shippingAddress;
     private String phoneNumber;
-    
-    
+
 	public String getName() {
 		return name;
 	}
