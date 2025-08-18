@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.capstone.model.Product;
+import com.capstone.model.Seller;
 import com.capstone.dao.ProductDao;
 import com.capstone.dto.ProductInsertDTO;
 
@@ -25,11 +26,11 @@ public class ProductDaoImpl implements ProductDao {
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	@Override
-	public List<Product> getAllProducts() {
-		// TODO Auto-generated method stub
-		return sessionFactory.getCurrentSession().createQuery("from Product", Product.class).list();
-	}
+//	@Override
+//	public List<Product> getAllProducts() {
+//		// TODO Auto-generated method stub
+//		return sessionFactory.getCurrentSession().createQuery("from Product", Product.class).list();
+//	}
 
 	@Override
 	public Product getProduct(long id) {
@@ -120,6 +121,11 @@ public class ProductDaoImpl implements ProductDao {
 				.list();
 		
 	}
+	
+	public Seller getSellerById(Long id) {
+	    return sessionFactory.getCurrentSession().get(Seller.class, id);
+	}
+
 
 
 	@Override

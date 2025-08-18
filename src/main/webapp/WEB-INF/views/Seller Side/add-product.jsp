@@ -1,5 +1,22 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="com.capstone.util.JwtUtil" %>
+
+<%
+    Cookie jwtToken = null;
+    Cookie[] cookies = request.getCookies();
+    if (cookies != null) {
+        for (Cookie cookie : cookies) {
+            if ("jwtToken".equals(cookie.getName())) {
+                jwtToken = cookie;
+                break;
+            }
+        }
+    }
+    
+    Long sellerId = jwtToken != null ? JwtUtil.getId(jwtToken.getValue()) : null;
+
+%>
 <html>
 <head>
     <title>Add New Product</title>
@@ -42,8 +59,9 @@
     </form>
 
 <script>
-    const sellerId = 16; // later replace with session sellerId
+	const sellerId = <%= sellerId != null ? sellerId : "null" %>;
     const apiBase = "http://localhost:8080/ecomm.capstone/api/seller";
+    console.log(sellerId);
 
     // Load categories
     function loadCategories() {
@@ -81,7 +99,7 @@
             data: JSON.stringify(product),
             success: function() {
                 alert("Product added successfully!");
-                window.location.href = "http://localhost:8080/ecomm.capstone/seller/products"; // redirect back
+                window.location.href = "http://localhost:8080/ecomm.capstone/app/seller/products"; // redirect back
             },
             error: function(xhr) {
                 alert("Error: " + xhr.responseText);

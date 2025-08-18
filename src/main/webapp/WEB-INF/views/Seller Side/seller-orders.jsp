@@ -1,5 +1,22 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="com.capstone.util.JwtUtil" %>
+
+<%
+    Cookie jwtToken = null;
+    Cookie[] cookies = request.getCookies();
+    if (cookies != null) {
+        for (Cookie cookie : cookies) {
+            if ("jwtToken".equals(cookie.getName())) {
+                jwtToken = cookie;
+                break;
+            }
+        }
+    }
+    
+    Long sellerId = jwtToken != null ? JwtUtil.getId(jwtToken.getValue()) : null;
+
+%>
 <html>
 <head>
     <title>Seller Orders</title>
