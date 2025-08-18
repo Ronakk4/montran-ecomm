@@ -1,89 +1,130 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page import="com.capstone.util.JwtUtil" %>
+
+<%
+    Cookie jwtToken = null;
+    Cookie[] cookies = request.getCookies();
+    if (cookies != null) {
+        for (Cookie cookie : cookies) {
+            if ("jwtToken".equals(cookie.getName())) {
+                jwtToken = cookie;
+                break;
+            }
+        }
+    }
+    
+    Long sellerId = jwtToken != null ? JwtUtil.getId(jwtToken.getValue()) : null;
+
+%>
 <html>
 <head>
 <title>Manage Products</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+    .sortable { cursor: pointer; }
+</style>
 </head>
 <body class="container mt-4">
 
-    <h2>Manage Products</h2>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Manage Products</h2>
+        <a href="products/add-product" class="btn btn-success">+ Add New Product</a>
+    </div>
 
-    <!-- Add Product Form -->
-    <form id="addProductForm" class="mb-4">
-        <input type="text" name="name" placeholder="Product Name" required class="form-control mb-2" />
-        <input type="number" name="price" placeholder="Price" required class="form-control mb-2" />
-        <input type="number" name="stock" placeholder="Stock" required class="form-control mb-2" />
-        <button class="btn btn-success">Add Product</button>
-    </form>
+    <!-- Category Filter -->
+    <div class="mb-3">
+        <label for="categoryFilter" class="form-label">Filter by Category:</label>
+        <select id="categoryFilter" class="form-select w-auto d-inline">
+            <option value="">All</option>
+        </select>
+    </div>
 
     <!-- Products Table -->
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>ID</th><th>Name</th><th>Price</th><th>Stock</th><th>Actions</th>
+                <th>ID</th>
+                <th class="sortable" onclick="sortTable('name')">Name <span id="sortIcon-name">↕</span></th>
+                <th class="sortable" onclick="sortTable('price')">Price <span id="sortIcon-price">↕</span></th>
+                <th class="sortable" onclick="sortTable('stock')">Stock <span id="sortIcon-stock">↕</span></th>
+                <th>Category</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody id="productsTable"></tbody>
     </table>
 
 <script>
-// 	const sellerId = "${sessionScope.sellerId}";
-	const sellerId = 16;
+const sellerId = <%= sellerId != null ? sellerId : "null" %>;
+
+    console.log(sellerId);
     const apiBase = "http://localhost:8080/ecomm.capstone/api/seller";
 
-    // Fetch products
+    let products = [];     // all products
+    let currentSort = { key: null, order: 'asc' };
+
+    // Load products
     function loadProducts() {
         $.get(`${apiBase}/products?sellerId=${sellerId}`, function(data) {
-            let rows = "";
-            if (data.length === 0) {
-                rows = `<tr><td colspan="5" class="text-center">No products found.</td></tr>`;
-            } else {
-                data.forEach(p => {
-                    rows += `
-                        <tr>
-                            <td>${p.id}</td>
-                            <td>${p.prodName}</td>
-                            <td>${p.price}</td>
-                            <td>${p.stockQuantity}</td>
-                            <td>
-                                <button class="btn btn-warning btn-sm" onclick="editProduct(${p.id})">Edit</button>
-                                <button class="btn btn-danger btn-sm" onclick="deleteProduct(${p.id})">Delete</button>
-                            </td>
-                        </tr>`;
-                });
-            }
-            $("#productsTable").html(rows);
+            products = data;
+            renderProducts(products);
         });
     }
 
-    $("#addProductForm").submit(function(e) {
-        e.preventDefault();
+    // Render products to table
+    function renderProducts(list) {
+        let rows = "";
+        if (list.length === 0) {
+            rows = `<tr><td colspan="6" class="text-center">No products found.</td></tr>`;
+        } else {
+            list.forEach(p => {
+                rows += `
+                    <tr>
+                        <td>${p.id}</td>
+                        <td>${p.prodName}</td>
+                        <td>${p.price}</td>
+                        <td>${p.stockQuantity}</td>
+                        <td>${p.category}</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" onclick="editProduct(${p.id})">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteProduct(${p.id})">Delete</button>
+                        </td>
+                    </tr>`;
+            });
+        }
+        $("#productsTable").html(rows);
+    }
 
-        const product = {
-            prodName: $("input[name='name']").val(),
-            price: parseFloat($("input[name='price']").val()),
-            stockQuantity: parseInt($("input[name='stock']").val()),
-            // seller is set on backend from session
-        };
+    // Sorting
+    function sortTable(key) {
+        let sorted = [...products];
+        let order = 'asc';
 
-        $.ajax({
-            url: `${apiBase}/products`,
-            method: "POST",
-            contentType: "application/json",
-            data: JSON.stringify(product),
-            success: function(savedProduct) {
-            	console.log(savedProduct)
-                alert("Product added!");
+        if (currentSort.key === key && currentSort.order === 'asc') {
+            order = 'desc';
+        }
 
-            },
-            error: function(xhr) {
-                alert("Error: " + xhr.responseText);
-            }
-        });
-    });
+        if (key === 'name') {
+            sorted.sort((a, b) => order === 'asc' ? a.prodName.localeCompare(b.prodName) : b.prodName.localeCompare(a.prodName));
+        } else if (key === 'price') {
+            sorted.sort((a, b) => order === 'asc' ? a.price - b.price : b.price - a.price);
+        } else if (key === 'stock') {
+            sorted.sort((a, b) => order === 'asc' ? a.stockQuantity - b.stockQuantity : b.stockQuantity - a.stockQuantity);
+        }
 
+        currentSort = { key, order };
+        resetSortIcons();
+        document.getElementById(`sortIcon-${key}`).innerText = (order === 'asc') ? '↑' : '↓';
+        renderProducts(applyCategoryFilter(sorted));
+    }
+
+    function resetSortIcons() {
+        document.getElementById("sortIcon-name").innerText = '↕';
+        document.getElementById("sortIcon-price").innerText = '↕';
+        document.getElementById("sortIcon-stock").innerText = '↕';
+    }
 
     // Delete product
     function deleteProduct(id) {
@@ -93,16 +134,40 @@
             success: function() {
                 alert("Deleted!");
                 loadProducts();
+            },
+            error: function(xhr) {
+                alert("Error: " + xhr.responseText);
             }
         });
     }
 
-    // TODO: Edit product
+    // Edit redirect
     function editProduct(id) {
-        alert("Editing product " + id + " (implement modal later)");
+        window.location.href = `products/edit-product?id=${id}`;
     }
 
-    // Initial load
+    // Category filter
+    function loadCategories() {
+        $.get(`${apiBase}/category`, function(categories) {
+            categories.forEach(c => {
+                $("#categoryFilter").append(`<option value="${c}">${c}</option>`);
+            });
+        });
+    }
+
+    $("#categoryFilter").change(function() {
+        const filtered = applyCategoryFilter(products);
+        renderProducts(filtered);
+    });
+
+    function applyCategoryFilter(list) {
+        const selected = $("#categoryFilter").val();
+        if (!selected) return list;
+        return list.filter(p => p.category === selected);
+    }
+
+    // Init
+    loadCategories();
     loadProducts();
 </script>
 </body>

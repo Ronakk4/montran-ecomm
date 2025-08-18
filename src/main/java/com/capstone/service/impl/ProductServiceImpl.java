@@ -39,6 +39,7 @@ public class ProductServiceImpl implements ProductService{
 	@Transactional
 	public void saveProduct(ProductInsertDTO p) {
 		 Product product = new Product();
+		 	product.setId(p.getProdId());	
 		    product.setProdName(p.getProdName());
 		    product.setProdDescription(p.getProdDescription());
 		    product.setPrice(p.getPrice());
@@ -47,8 +48,12 @@ public class ProductServiceImpl implements ProductService{
 		    product.setCreatedAt(p.getCreatedAt() != null ? p.getCreatedAt() : LocalDateTime.now());
 		    product.setUpdatedAt(p.getUpdatedAt());
 
-		    // Fetch Seller entity and set
-		    Seller seller = sessionFactory.getCurrentSession().get(Seller.class, p.getSellerId());
+		    // Fetch seller using DAO or session in same transaction
+		    Seller seller = productDao.getSellerById(p.getSellerId());
+		    if (seller == null) {
+		    	System.out.println("seller not found");
+		        throw new RuntimeException("Seller not found for ID: " + p.getSellerId());
+		    }
 		    product.setSeller(seller);
 
 		    
@@ -62,22 +67,41 @@ public class ProductServiceImpl implements ProductService{
 		productDao.deleteProduct(id);
 		
 	}
-
+	
 	@Override
-	public List<Product> getProductsFromCategory(String category) {
-		
-		return productDao.getProductsFromCategory(category);
+	public void updateProduct(ProductInsertDTO p) {
+		productDao.updateProduct(p);
 	}
 
-	
+
+//	@Override
+//	public void saveProduct(@Valid Product product) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+
 
 	@Override
 	public List<Product> getProductsBySellerId(long sellerId) {
 		return productDao.getProductsBySellerId(sellerId);
 		
 	}
+	
+	@Override
+	public List<Product> getProductsFromCategory(String category) {
+		
+		return productDao.getProductsFromCategory(category);
+	}
+	
+	public List<String> getAllCategories(){
+		
+		return productDao.getAllCategories();
+	}
 
-
+	 @Override
+	    public List<Product> searchProducts(String prodName, String category, Double minPrice, Double maxPrice) {
+	        return productDao.searchProducts(prodName, category, minPrice, maxPrice);
+	    }
 
 
 }

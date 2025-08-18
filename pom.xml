@@ -152,11 +152,13 @@
 </dependency>
 
 <dependency>
-    <groupId>jakarta.servlet.jsp</groupId>
-    <artifactId>jakarta.servlet.jsp-api</artifactId>
-    <version>3.0.0</version> <!-- or match your Tomcat version -->
-    <scope>provided</scope>
+    <groupId>commons-logging</groupId>
+    <artifactId>commons-logging</artifactId>
+    <version>1.2</version>
 </dependency>
+
+
+
 
 </dependencies>
  

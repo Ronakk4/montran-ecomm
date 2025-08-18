@@ -15,6 +15,7 @@ import com.capstone.model.Seller;
 import com.capstone.util.HibernateUtil;
 
 public class Test {
+
     public static void main(String[] args) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction t = session.beginTransaction();
@@ -68,6 +69,7 @@ public class Test {
                 LocalDateTime.of(2025, 8, 13, 12, 30)
             );
 
+<<<<<<< HEAD
 
 		
 			seller.getProducts().add(p2);
@@ -81,13 +83,23 @@ public class Test {
 			
 			
 
+=======
+            Product p2 = new Product(
+                "Brush",
+                "Noise-cancelling over-ear headphones",
+                2.99,
+                50,
+                "Utility",
+                LocalDateTime.of(2025, 8, 13, 11, 0),
+                LocalDateTime.of(2025, 8, 13, 11, 30)
+            );
+>>>>>>> 3ac3de90508ca577f5544b11bd736df2a024a05b
 
             // link seller <-> products
             p1.setSeller(seller);
             p2.setSeller(seller);
             seller.getProducts().add(p1);
             seller.getProducts().add(p2);
-
             // --- ORDER HEADER ---
             OrderHeader orderHeader = new OrderHeader();
             orderHeader.setBuyer(buyer);

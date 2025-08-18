@@ -78,3 +78,4 @@ public class JWTAuthenticationFilter implements Filter {
         // cleanup
     }
 }
+

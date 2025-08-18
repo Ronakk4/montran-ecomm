@@ -17,13 +17,14 @@ public class JwtUtil {
     // Use a secret key (in production, store securely)
     private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-    private static final long EXPIRATION_TIME =  100*60*3 ; // 1 hour
+    private static final long EXPIRATION_TIME =  1000*60*30 ; // 1 hour
 
-    public static String generateToken(String username,String userType) {
+    public static String generateToken(String username,String userType,Long userId) {
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuer("") 
                 .claim("userType", userType) 
+                .claim("userId", userId)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(key)
@@ -33,7 +34,9 @@ public class JwtUtil {
         return validateToken(token).getBody().getSubject();
     }
 
-   
+    public static Long getId(String token) {
+        return validateToken(token).getBody().get("userId",Long.class);
+    }
 
     public static String getUserType(String token) {
         return validateToken(token).getBody().get("userType", String.class);
