@@ -38,7 +38,6 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	@Transactional
 	public void saveProduct(ProductInsertDTO p) {
-		// TODO Auto-generated method stub
 		 Product product = new Product();
 		    product.setProdName(p.getProdName());
 		    product.setProdDescription(p.getProdDescription());
@@ -52,6 +51,7 @@ public class ProductServiceImpl implements ProductService{
 		    Seller seller = sessionFactory.getCurrentSession().get(Seller.class, p.getSellerId());
 		    product.setSeller(seller);
 
+		    
 		    productDao.saveProduct(product);
 	}
 
@@ -69,11 +69,7 @@ public class ProductServiceImpl implements ProductService{
 		return productDao.getProductsFromCategory(category);
 	}
 
-	@Override
-	public void saveProduct(@Valid Product product) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 	@Override
 	public List<Product> getProductsBySellerId(long sellerId) {

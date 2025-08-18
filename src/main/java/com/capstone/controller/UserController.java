@@ -41,9 +41,11 @@ public class UserController {
 	public void loginUser(@RequestBody LoginRequestDTO user, 
 	                      HttpServletResponse response) throws IOException {
 
+
 	    if (userService.loginUser(user)) {
 	        String token = JwtUtil.generateToken(user.getEmail(), user.getRole());
 
+          
 	        // Store JWT in HttpOnly cookie (browser-specific)
 	        Cookie cookie = new Cookie("jwtToken", token);
 	        cookie.setHttpOnly(true); 
