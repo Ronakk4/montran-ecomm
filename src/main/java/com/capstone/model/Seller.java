@@ -6,8 +6,10 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
@@ -18,8 +20,9 @@ public class Seller extends User{
 	private String shopDescription;
 	private String gstNumber;
 	
-	@OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	@JsonManagedReference
+	@JsonIgnore
 	private List<Product> products = new ArrayList<Product>();
 	
 	public Seller() {

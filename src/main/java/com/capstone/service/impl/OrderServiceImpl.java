@@ -2,7 +2,9 @@
 package com.capstone.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -11,29 +13,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.capstone.dao.OrderHeaderDao;
+import com.capstone.dao.OrderItemDao;
 import com.capstone.dao.ProductDao;
 import com.capstone.dao.UserDao;
 import com.capstone.dto.OrderDTO;
 import com.capstone.dto.OrderItemDTO;
+import com.capstone.dto.SellerOrderDTO;
 import com.capstone.model.Buyer;
 import com.capstone.model.OrderHeader;
 import com.capstone.model.OrderItem;
 import com.capstone.model.Product;
 import com.capstone.model.Seller;
-import com.capstone.model.User;
 import com.capstone.service.OrderService;
 
 @Service
 public class OrderServiceImpl implements OrderService{
 	
 	@Autowired
-	private OrderHeaderDao orderDao;  
+	private OrderItemDao orderItemDao;  
 	
 	@Autowired
-	private ProductDao productDao;
-
-	@Autowired
-	private UserDao userDao;
+	private OrderHeaderDao orderDao;  
+	
+//	@Autowired
+//	private ProductDao productDao;
+//
+//	@Autowired
+//	private UserDao userDao;
 
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -89,11 +95,39 @@ public class OrderServiceImpl implements OrderService{
 	    orderDao.saveOrder(oh);
 	}
 
+	
 	@Override
-	public List<OrderItem> getAllOrdersForSeller(long id) {
-		return orderDao.getAllOrdersForSeller(id);
-		
-	}
+	@Transactional
+	public List<SellerOrderDTO> getOrdersForSeller(long sellerId) {
+        List<OrderItem> orderItems = orderItemDao.getAllOrdersForSeller(sellerId);
+
+        Map<Long, SellerOrderDTO> ordersMap = new HashMap<>();
+
+        for (OrderItem item : orderItems) {
+            Long orderId = item.getOrderHeader().getOrderId();
+
+            SellerOrderDTO dto = ordersMap.getOrDefault(orderId, new SellerOrderDTO());
+            dto.setOrderId(orderId);
+            dto.setStatus(item.getOrderHeader().getStatus());
+            dto.setTotalAmount(item.getOrderHeader().getTotalAmount());
+            dto.setShippingAddress(item.getOrderHeader().getBuyer().getShippingAddress());
+
+            if (dto.getItems() == null) {
+                dto.setItems(new ArrayList<>());
+            }
+
+            OrderItemDTO itemDTO = new OrderItemDTO();
+            itemDTO.setProductId(item.getProduct().getId());
+            itemDTO.setSellerId(item.getSeller().getId());
+            itemDTO.setQuantity(item.getQuantity());
+            itemDTO.setPrice(item.getPrice());
+
+            dto.getItems().add(itemDTO);
+            ordersMap.put(orderId, dto);
+        }
+
+        return new ArrayList<>(ordersMap.values());
+    }
 
 	
 	@Override

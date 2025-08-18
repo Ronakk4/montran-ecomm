@@ -70,7 +70,7 @@ function submitLogin() {
     .then(res => {
         if(res.status === 200) {
             // redirect to homepage or dashboard
-            window.location.href = '${pageContext.request.contextPath}/home';
+            window.location.href = '${pageContext.request.contextPath}/app/buyer/';
 
         } else if(res.status === 401) {
             return res.json();

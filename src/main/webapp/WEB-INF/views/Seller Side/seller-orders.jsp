@@ -2,21 +2,21 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <title>Manage Orders</title>
+    <title>Seller Orders</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body class="container mt-4">
 
-    <h2>Orders</h2>
+    <h2 class="mb-4">📦 Orders</h2>
 
-    <table class="table table-bordered">
-        <thead>
+    <table class="table table-striped table-bordered align-middle">
+        <thead class="table-dark">
         <tr>
             <th>Order ID</th>
-            <th>Buyer</th>
+            <th>Shipping Address</th>
             <th>Status</th>
-            <th>Total</th>
+            <th>Total Amount</th>
             <th>Items</th>
         </tr>
         </thead>
@@ -25,25 +25,28 @@
 
 <script>
     // Replace with logged-in sellerId from session or context
-    const sellerId = 14;  
+//     const sellerId = "${sessionScope.sellerId}"; 
+    const sellerId = 16; 
 
-    // Fetch seller orders
     function loadOrders() {
         $.get(`/ecomm.capstone/api/seller/orders?sellerId=${sellerId}`, function(data) {
             let rows = "";
+            let total
             data.forEach(order => {
-                let itemsHtml = "<ul>";
+                let itemsHtml = "<ul class='mb-0'>";
+                let totalAmount = 0;
                 order.items.forEach(item => {
-                    itemsHtml += `<li>${item.product.name} - Qty: ${item.quantity}, Price: ${item.price}</li>`;
+                    itemsHtml += `<li>Product ID: ${item.productId} - Qty: ${item.quantity}, Price: ₹${item.price}</li>`;
+                    totalAmount+= item.price*item.quantity;
                 });
                 itemsHtml += "</ul>";
 
                 rows += `
                     <tr>
                         <td>${order.orderId}</td>
-                        <td>${order.buyer ? order.buyer.name : "N/A"}</td>
-                        <td>${order.status}</td>
-                        <td>${order.totalAmount}</td>
+                        <td>${order.shippingAddress ? order.shippingAddress : "N/A"}</td>
+                        <td><span class="badge bg-info text-dark">${order.status}</span></td>
+                        <td>₹${totalAmount}</td>
                         <td>${itemsHtml}</td>
                     </tr>`;
             });
