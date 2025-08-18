@@ -98,6 +98,10 @@ public class ProductServiceImpl implements ProductService{
 		return productDao.getAllCategories();
 	}
 
+	 @Override
+	    public List<Product> searchProducts(String prodName, String category, Double minPrice, Double maxPrice) {
+	        return productDao.searchProducts(prodName, category, minPrice, maxPrice);
+	    }
 
 
 }

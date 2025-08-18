@@ -13,7 +13,9 @@ import com.capstone.dto.BuyerDTO;
 import com.capstone.dto.LoginRequestDTO;
 import com.capstone.dto.SellerDTO;
 import com.capstone.dto.UserDTO;
+
 import com.capstone.dto.UserRegisterDTO;
+import com.capstone.exception.UserNotFoundException;
 import com.capstone.model.Buyer;
 import com.capstone.model.Seller;
 import com.capstone.model.User;
@@ -30,9 +32,13 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	@Transactional
-	public User findUser(long id) {
+	public User findUser(long id) throws UserNotFoundException{
 		// TODO Auto-generated method stub
-		return userDao.findUserById(id);
+		User user = userDao.findUserById(id);
+		if(user == null) {
+			throw new UserNotFoundException("User with ID "+ id + " not found !!");
+		}
+		return user;
 	}
 
 	@Override
@@ -97,10 +103,10 @@ public class UserServiceImpl implements UserService{
 
 
 	@Override
-	public boolean loginUser(LoginRequestDTO user) {
+	public User loginUser(LoginRequestDTO user) {
 	    if (user.getEmail() == null || user.getPassword() == null) {
 	        System.out.println("Email and password must be provided");
-	        return false;
+	        return null;
 	    }
 
 	    User existingUser = userDao.findUserByEmail(user.getEmail().trim());
@@ -111,13 +117,13 @@ public class UserServiceImpl implements UserService{
 	    else {
 	        if (user.getPassword().equals(existingUser.getPassword())) {
 	            System.out.println("Authenticated");
-	            return true;
+	            return existingUser;
 	        } 
 	        else {
 	            System.out.println("Not authenticated");
-	            return false;
+	            return null;
 	        }
 	}
-		return false;		
+		return null;		
 	}
 }

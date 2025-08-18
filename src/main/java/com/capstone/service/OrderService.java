@@ -13,6 +13,12 @@ public interface OrderService {
 	List<SellerOrderDTO> getOrdersForSeller(long sellerId);
 	OrderHeader getOrder(long id);
 	void deleteOrder(long id);
+
+//	void saveOrder(OrderHeader o);
+	// New method to search orders with filters
+    List<OrderHeader> searchOrders(long sellerId, String orderStatus, String startDate, String endDate);
+
 	void saveOrder(OrderDTO o);
+
 }
 

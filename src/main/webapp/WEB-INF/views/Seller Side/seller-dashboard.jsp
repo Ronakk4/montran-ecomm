@@ -1,6 +1,22 @@
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="com.capstone.util.JwtUtil" %>
+
+<%
+    Cookie jwtToken = null;
+    Cookie[] cookies = request.getCookies();
+    if (cookies != null) {
+        for (Cookie cookie : cookies) {
+            if ("jwtToken".equals(cookie.getName())) {
+                jwtToken = cookie;
+                break;
+            }
+        }
+    }
+%>
+
+<h2>Welcome, <%= jwtToken != null ? jwtToken : "Guest" %>!</h2>
 <html>
 <head>
     <title>Seller Dashboard</title>
@@ -24,7 +40,8 @@
 
     <!-- DASHBOARD CONTENT -->
     <div class="container mt-4">
-        <h2>Welcome, ${sessionScope.sellerName}!</h2>
+        <h2>Welcome, <%= jwtToken != null ? JwtUtil.getUsername(jwtToken.getValue()) : "Guest" %>!</h2>
+
 
         <!-- QUICK STATS -->
         <div class="row mt-3">
@@ -115,6 +132,8 @@
                 }
             });
         });
+        
+        
     </script>
 </body>
 </html>

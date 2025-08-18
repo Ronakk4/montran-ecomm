@@ -41,9 +41,9 @@ public class UserController {
 	@PostMapping("/login")
 	public void loginUser(@RequestBody LoginRequestDTO user, 
 	                      HttpServletResponse response) throws IOException {
-
-	    if (userService.loginUser(user)) {
-	        String token = JwtUtil.generateToken(user.getEmail(), user.getRole());
+		User existingUser = userService.loginUser(user);
+	    if (existingUser!=null) {
+	        String token = JwtUtil.generateToken(existingUser.getEmail(), existingUser.getRole(), existingUser.getId());
 
 	        // Store JWT in HttpOnly cookie (browser-specific)
 	        Cookie cookie = new Cookie("jwtToken", token);

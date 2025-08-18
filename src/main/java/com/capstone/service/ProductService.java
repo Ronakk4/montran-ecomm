@@ -19,9 +19,5 @@ public interface ProductService {
 
 	List<Product> getProductsBySellerId(long sellerId);
 	List<String> getAllCategories();
+	List<Product> searchProducts(String prodName, String category, Double minPrice, Double maxPrice);
 }
-
-
-
-
-

@@ -10,7 +10,7 @@ import com.capstone.model.User;
 public interface UserService {
 	User findUser(long id);
 	void updateUser(Long id ,UserDTO u);
-	boolean loginUser(LoginRequestDTO u);
+	User loginUser(LoginRequestDTO u);
 	void registerUser(@Valid UserRegisterDTO user);	
 
 }
