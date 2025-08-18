@@ -32,6 +32,10 @@ public class InitialController {
     	return "registerSeller";
     }
     
+    @GetMapping("/seller-login")
+    public String sellerLoginPage() {
+        return "sellerLogin";
+    }
 
     @GetMapping("login/products")
     public String productsPage() {

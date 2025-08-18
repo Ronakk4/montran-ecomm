@@ -58,6 +58,12 @@ public class OrderHeaderDaoImpl implements OrderHeaderDao{
 		sessionFactory.getCurrentSession().save(o);
 	}
 
+	@Override
+	public List<OrderItem> getAllOrdersForSeller(long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 
 }
