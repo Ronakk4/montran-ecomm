@@ -1,79 +1,81 @@
-//package com.capstone.filter;
-//
-//import java.io.IOException;
-//import javax.servlet.Filter;
-//import javax.servlet.FilterChain;
-//import javax.servlet.FilterConfig;
-//import javax.servlet.ServletException;
-//import javax.servlet.ServletRequest;
-//import javax.servlet.ServletResponse;
-//import javax.servlet.annotation.WebFilter;
-//import javax.servlet.http.HttpFilter;
-//import javax.servlet.http.HttpServletRequest;
-//import javax.servlet.http.HttpServletResponse;
-//
-//import com.capstone.util.JwtUtil;
-//
-//import io.jsonwebtoken.Claims;
-//
-///**
-// * Servlet Filter implementation class JWTAuthenticationFilter
-// */
-//@WebFilter("/JWTAuthenticationFilter")
-//public class JWTAuthenticationFilter extends HttpFilter implements Filter {
-//       
-//    /**
-//     * @see HttpFilter#HttpFilter()
-//     */
-//    public JWTAuthenticationFilter() {
-//        super();
-//        // TODO Auto-generated constructor stub
-//    }
-//
-//	/**
-//	 * @see Filter#destroy()
-//	 */
-//	public void destroy() {
-//		// TODO Auto-generated method stub
-//	}
-//
-//	/**
-//	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
-//	 */
-//	public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-//		String authHeader = request.getHeader("Authorization");
-//		String path = request.getRequestURI();
-//		
-//		System.out.println("called");
-//		
-//		if(path.contains("/app/login") || path.startsWith("/public")) {
-//			chain.doFilter(request, response);
-//			return;
-//		}
-//		
-//		if(authHeader == null || !authHeader.startsWith("Bearer ")) {
-//			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing or invalid authorization header");
-//			return;
-//		}
-//		
-//		String token = authHeader.substring(7);
-//		
-//		try {
-//			Claims claims = JwtUtil.validateToken(token).getBody();
-//			request.setAttribute("claims", claims);
-//			chain.doFilter(request, response);
-//		}
-//		catch (Exception e) {
-//			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "invalid or expired token");
-//		}
-//		// pass the request along the filter chain
-//	}
-//
-//	/**
-//	 * @see Filter#init(FilterConfig)
-//	 */
-//	public void init(FilterConfig fConfig) throws ServletException {
-//		// TODO Auto-generated method stub
-//	}
-//
-//}
+package com.capstone.filter;
+
+import java.io.IOException;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+import com.capstone.util.JwtUtil;
+import io.jsonwebtoken.Claims;
+
+public class JWTAuthenticationFilter implements Filter {
+
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        // optional: init config
+    }
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+        throws IOException, ServletException {
+
+      HttpServletRequest req = (HttpServletRequest) request;
+      HttpServletResponse res = (HttpServletResponse) response;
+
+      // These endpoints are not mapped to this filter anyway, but harmless to allow:
+      String servletPath = req.getServletPath(); // NO context path here
+
+      if ("/login".equals(servletPath) || "/register".equals(servletPath) || servletPath.startsWith("/public")) {
+        chain.doFilter(request, response);
+        return;
+      }
+
+      // Since this filter is mapped ONLY to /app/buyer/* and /app/seller/*,
+      // we can just validate the token and check role
+      String token = null;
+      Cookie[] cookies = req.getCookies();
+      if (cookies != null) {
+        for (Cookie c : cookies) {
+          if ("jwtToken".equals(c.getName())) {
+            token = c.getValue();
+            break;
+          }
+        }
+      }
+
+      if (token == null || token.isEmpty()) {
+        res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing token");
+        return;
+      }
+
+      try {
+        Claims claims = JwtUtil.validateToken(token).getBody();
+        String userType = claims.get("userType", String.class); // exact key
+
+        boolean buyerArea  = servletPath.startsWith("/app/buyer");
+        boolean sellerArea = servletPath.startsWith("/app/seller");
+
+        if (buyerArea  && !"buyer".equalsIgnoreCase(userType)) {
+          res.sendError(HttpServletResponse.SC_FORBIDDEN, "Only buyers can access this resource");
+          return;
+        }
+        if (sellerArea && !"seller".equalsIgnoreCase(userType)) {
+          res.sendError(HttpServletResponse.SC_FORBIDDEN, "Only sellers can access this resource");
+          return;
+        }
+
+        // OK
+        chain.doFilter(request, response);
+
+      } catch (Exception ex) {
+        res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or expired token");
+      }
+    }
+  
+
+
+    @Override
+    public void destroy() {
+        // cleanup
+    }
+}
+

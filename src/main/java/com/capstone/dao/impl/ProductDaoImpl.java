@@ -1,5 +1,6 @@
 package com.capstone.dao.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.capstone.model.Product;
 import com.capstone.model.Seller;
 import com.capstone.dao.ProductDao;
+import com.capstone.dto.ProductInsertDTO;
 
 
 @Repository
@@ -34,6 +36,9 @@ public class ProductDaoImpl implements ProductDao {
 
 	@Override
 	public void saveProduct(Product product) {
+//		product.setCreatedAt(LocalDateTime.now());
+//	    product.setUpdatedAt(LocalDateTime.now());
+
 	    sessionFactory.getCurrentSession().save(product);
 	}
 
@@ -46,16 +51,23 @@ public class ProductDaoImpl implements ProductDao {
 	        .executeUpdate();
 	}
 
-
-
 	@Override
-	public List<Product> getProductsFromCategory(String category) {
-		return sessionFactory.getCurrentSession().createQuery("from Product where category = :category", Product.class)
-		.setParameter("category", category)
-		.list();
+	public void updateProduct(ProductInsertDTO p) {
+		Product existingProduct = sessionFactory.getCurrentSession().get(Product.class, p.getProdId());
+		if(existingProduct != null) {
+			existingProduct.setProdName(p.getProdName());
+			existingProduct.setProdDescription(p.getProdDescription());
+			existingProduct.setPrice(p.getPrice());
+			existingProduct.setStockQuantity(p.getStockQuantity());
+			existingProduct.setCategory(p.getCategory());
+			existingProduct.setUpdatedAt(LocalDateTime.now());
+			
+			sessionFactory.getCurrentSession().update(existingProduct);
+		} else {
+			throw new RuntimeException("Product with ID " + p.getProdId() + " not found");
+		}
 		
-		
-	}
+	}	
 
 	@Override
 	public List<Product> getProductsBySellerId(long sellerId) {
@@ -69,5 +81,21 @@ public class ProductDaoImpl implements ProductDao {
 	    return sessionFactory.getCurrentSession().get(Seller.class, id);
 	}
 
+
+	@Override
+	public List<String> getAllCategories() {
+		return sessionFactory.getCurrentSession().createQuery("select distinct p.category from Product p", String.class)
+				.list();
+		
+	}
+
+	@Override
+	public List<Product> getProductsFromCategory(String category) {
+		return sessionFactory.getCurrentSession().createQuery("from Product where category = :category", Product.class)
+		.setParameter("category", category)
+		.list();
+		
+	}
+	
 
 }

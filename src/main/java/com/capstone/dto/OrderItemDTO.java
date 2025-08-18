@@ -5,6 +5,8 @@ public class OrderItemDTO {
     private Long sellerId;
     private int quantity;
     private double price;
+    
+    	
 	public Long getProductId() {
 		return productId;
 	}

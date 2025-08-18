@@ -497,4 +497,3 @@ window.addEventListener('resize', function() {
 
     
 </body>
-

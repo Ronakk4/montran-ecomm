@@ -29,7 +29,6 @@
         <property name="username" value="postgres" />
         <property name="password" value="admin" />
  
- 
         <!-- Optional connection pool settings -->
         <property name="initialSize" value="5" />
         <property name="maxTotal" value="20" />

@@ -3,6 +3,7 @@ package com.capstone.dto;
 import java.time.LocalDateTime;
 
 public class ProductInsertDTO {
+	private long prodId;
     private String prodName;
     private String prodDescription;
     private Double price;
@@ -10,7 +11,7 @@ public class ProductInsertDTO {
     private String category;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private Long sellerId;
+    private long sellerId;
 
     public ProductInsertDTO() {
     }
@@ -26,8 +27,18 @@ public class ProductInsertDTO {
         this.updatedAt = updatedAt;
         this.sellerId = sellerId;
     }
+    
+    
 
-    public String getProdName() {
+    public long getProdId() {
+		return prodId;
+	}
+
+	public void setProdId(long prodId) {
+		this.prodId = prodId;
+	}
+
+	public String getProdName() {
         return prodName;
     }
 
@@ -83,11 +94,11 @@ public class ProductInsertDTO {
         this.updatedAt = updatedAt;
     }
 
-    public Long getSellerId() {
+    public long getSellerId() {
         return sellerId;
     }
 
-    public void setSellerId(Long sellerId) {
+    public void setSellerId(long sellerId) {
         this.sellerId = sellerId;
     }
 }

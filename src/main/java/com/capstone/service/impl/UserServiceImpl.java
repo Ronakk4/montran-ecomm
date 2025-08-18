@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService{
 	        if (sellerDTO.getGstNumber() != null) seller.setGstNumber(sellerDTO.getGstNumber());
 	    }
 
-	    userDao.saveUser(existingUser);
+	    userDao.updateUser(existingUser);
 	}
 
 

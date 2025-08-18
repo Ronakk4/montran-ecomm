@@ -70,7 +70,9 @@ function submitLogin() {
     .then(res => {
         if(res.status === 200) {
             // redirect to homepage or dashboard
+
             window.location.href = '${pageContext.request.contextPath}';
+
 
         } else if(res.status === 401) {
             return res.json();
