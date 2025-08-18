@@ -1,4 +1,6 @@
 package com.capstone.service.impl;
+import java.time.LocalDateTime;
+
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -11,6 +13,8 @@ import com.capstone.dto.BuyerDTO;
 import com.capstone.dto.LoginRequestDTO;
 import com.capstone.dto.SellerDTO;
 import com.capstone.dto.UserDTO;
+
+import com.capstone.dto.UserRegisterDTO;
 import com.capstone.exception.UserNotFoundException;
 import com.capstone.model.Buyer;
 import com.capstone.model.Seller;
@@ -38,16 +42,29 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	@Transactional
-	
-	public void registerUser(@Valid User user) {
+	@Transactional	
+	public void registerUser(@Valid UserRegisterDTO user) {
 		// TODO Auto-generated method stub
 		 if (user.getEmail() != null && userDao.findUserByEmail(user.getEmail().trim()) != null) {
 			 System.out.println("user exists");
 	        }
 		 	
-	        userDao.saveUser(user);
-	        System.out.println("user created");
+		 if ("SELLER".equalsIgnoreCase(user.getRole())) {
+	            Seller seller = new Seller(
+	                    user.getName(), user.getEmail(), user.getPassword(),
+	                    "SELLER", LocalDateTime.now(), LocalDateTime.now(),
+	                    user.getShopName(), user.getShopDescription(), user.getGstNumber()
+	            );
+	             userDao.saveUser(seller);
+
+	        } else if ("BUYER".equalsIgnoreCase(user.getRole())) {
+	            Buyer buyer = new Buyer(
+	                    user.getName(), user.getEmail(), user.getPassword(),
+	                    "BUYER", LocalDateTime.now(), LocalDateTime.now(),
+	                    user.getShippingAddress(), user.getPhoneNumber()
+	            );
+	             userDao.saveUser(buyer);
+	        }
 		
 	}
 
@@ -81,15 +98,15 @@ public class UserServiceImpl implements UserService{
 	        if (sellerDTO.getGstNumber() != null) seller.setGstNumber(sellerDTO.getGstNumber());
 	    }
 
-	    userDao.saveUser(existingUser);
+	    userDao.updateUser(existingUser);
 	}
 
 
 	@Override
-	public boolean loginUser(LoginRequestDTO user) {
+	public User loginUser(LoginRequestDTO user) {
 	    if (user.getEmail() == null || user.getPassword() == null) {
 	        System.out.println("Email and password must be provided");
-	        return false;
+	        return null;
 	    }
 
 	    User existingUser = userDao.findUserByEmail(user.getEmail().trim());
@@ -100,13 +117,13 @@ public class UserServiceImpl implements UserService{
 	    else {
 	        if (user.getPassword().equals(existingUser.getPassword())) {
 	            System.out.println("Authenticated");
-	            return true;
+	            return existingUser;
 	        } 
 	        else {
 	            System.out.println("Not authenticated");
-	            return false;
+	            return null;
 	        }
 	}
-		return false;		
+		return null;		
 	}
 }

@@ -6,26 +6,22 @@ import com.capstone.dto.ProductDTO;
 import com.capstone.dto.ProductInsertDTO;
 
 import com.capstone.model.Product;
+import com.capstone.model.Seller;
 
 public interface ProductDao {
 
-	List<Product> getAllProducts();
-
+//	List<Product> getAllProducts();
 	Product getProduct(long id);
-
 	void saveProduct(Product p);
-
 	void deleteProduct(long id);
-
+	void updateProduct(ProductInsertDTO p);
 	List<Product> getProductsFromCategory(String category);
-
 	List<Product> getProductsBySellerId(long sellerId);
 
-	// Method for dynamic product search
-	List<Product> searchProducts(String prodName, String category, Double minPrice, Double maxPrice);
-
-	void updateProduct(ProductInsertDTO p);
+	public Seller getSellerById(Long id);
 
 	List<String> getAllCategories();
-
+	List<Product> searchProducts(String prodName, String category, Double minPrice, Double maxPrice);
+	
+	
 }

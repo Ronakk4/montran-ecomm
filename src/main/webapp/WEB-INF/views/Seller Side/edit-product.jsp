@@ -1,5 +1,21 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page import="com.capstone.util.JwtUtil" %>
+<%
+    Cookie jwtToken = null;
+    Cookie[] cookies = request.getCookies();
+    if (cookies != null) {
+        for (Cookie cookie : cookies) {
+            if ("jwtToken".equals(cookie.getName())) {
+                jwtToken = cookie;
+                break;
+            }
+        }
+    }
+    
+    Long sellerId = jwtToken != null ? JwtUtil.getId(jwtToken.getValue()) : null;
+
+%>
 <html>
 <head>
     <title>Edit Product</title>
@@ -45,8 +61,7 @@
 
 <script>
     const apiBase = "http://localhost:8080/ecomm.capstone/api/seller";
-    // const sellerId = "${sessionScope.sellerId}";
-    const sellerId = 16;
+	const sellerId = <%= sellerId != null ? sellerId : "null" %>;
 
     // Get productId from query string (?id=123)
     const urlParams = new URLSearchParams(window.location.search);
@@ -102,7 +117,7 @@
             data: JSON.stringify(product),
             success: function() {
                 alert("Product updated successfully!");
-                window.location.href = "http://localhost:8080/ecomm.capstone/seller/products";
+                window.location.href = "http://localhost:8080/ecomm.capstone/app/seller/products";
             },
             error: function(xhr) {
                 alert("Error: " + xhr.responseText);
