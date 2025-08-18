@@ -14,9 +14,10 @@
             }
         }
     }
+    Long sellerId = jwtToken != null ? JwtUtil.getId(jwtToken.getValue()) : null;
 %>
 
-<h2>Welcome, <%= jwtToken != null ? jwtToken : "Guest" %>!</h2>
+
 <html>
 <head>
     <title>Seller Dashboard</title>
@@ -90,8 +91,7 @@
     <!-- AJAX -->
     <script>
         $(document).ready(function() {
-//             const sellerId = "${sessionScope.sellerId}";
-            const sellerId = 16;
+//          const sellerId = <%= sellerId != null ? sellerId : "null" %>;
             const apiBase = "http://localhost:8080/ecomm.capstone/api/seller";
 
             // Fetch Products

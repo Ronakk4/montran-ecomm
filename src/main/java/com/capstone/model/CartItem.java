@@ -9,7 +9,7 @@ public class CartItem {
 
     // Proper constructor to map Product → CartItem
     public CartItem(Product p, int qty) {
-        this.productId = p.getId();
+        this.productId = p.getProdId();
         this.productName = p.getProdName();
         this.price = p.getPrice();
         this.quantity = qty;

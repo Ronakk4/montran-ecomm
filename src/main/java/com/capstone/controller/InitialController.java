@@ -21,12 +21,11 @@ public class InitialController {
     	return "home";
     }
     
-    
-
     @GetMapping("/register")
     public String registerBuyerPage() {
         return "registerBuyer";
     }
+    
     @GetMapping("/registerseller")
     public String registerSellerPage() {
     	return "registerSeller";
@@ -41,10 +40,11 @@ public class InitialController {
     public String productsPage() {
         return "product";
     }
-    @GetMapping("/cart")
-    public String cart() {
-    	return "cart";
-    }
+    
+//    @GetMapping("/cart")
+//    public String cart() {
+//    	return "cart";
+//    }
 
     @GetMapping("/orders")
     public String ordersPage() {

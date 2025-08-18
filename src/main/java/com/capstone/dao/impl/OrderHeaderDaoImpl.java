@@ -3,10 +3,6 @@ package com.capstone.dao.impl;
 
 import java.util.List;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
 
@@ -61,38 +57,15 @@ public class OrderHeaderDaoImpl implements OrderHeaderDao{
 		// TODO Auto-generated method stub
 		sessionFactory.getCurrentSession().save(o);
 	}
-	
-	@Override
-    public List<OrderHeader> searchOrders(long sellerId, String orderStatus, String startDate, String endDate) {
-        // JPA Criteria API implementation for searching orders with filtering
-        CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
-        CriteriaQuery<OrderHeader> cq = cb.createQuery(OrderHeader.class);
-        Root<OrderHeader> root = cq.from(OrderHeader.class);
-        
-        // Start building predicates
-        Predicate predicate = cb.equal(root.get("seller").get("id"), sellerId);
-
-        if (orderStatus != null && !orderStatus.isEmpty()) {
-            predicate = cb.and(predicate, cb.equal(root.get("orderStatus"), orderStatus));
-        }
-
-        if (startDate != null && !startDate.isEmpty()) {
-            predicate = cb.and(predicate, cb.greaterThanOrEqualTo(root.get("orderDate"), startDate));
-        }
-
-        if (endDate != null && !endDate.isEmpty()) {
-            predicate = cb.and(predicate, cb.lessThanOrEqualTo(root.get("orderDate"), endDate));
-        }
-
-        // Apply the predicates to the CriteriaQuery
-        cq.select(root).where(predicate);
-        
-  
-        return sessionFactory.getCurrentSession().createQuery(cq).getResultList();
-    }
 
 	@Override
 	public List<OrderItem> getAllOrdersForSeller(long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<OrderHeader> searchOrders(long sellerId, String orderStatus, String startDate, String endDate) {
 		// TODO Auto-generated method stub
 		return null;
 	}

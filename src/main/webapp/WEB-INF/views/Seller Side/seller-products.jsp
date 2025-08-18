@@ -57,7 +57,7 @@
     </table>
 
 <script>
-const sellerId = <%= sellerId != null ? sellerId : "null" %>;
+	const sellerId = <%= sellerId != null ? sellerId : "null" %>;
 
     console.log(sellerId);
     const apiBase = "http://localhost:8080/ecomm.capstone/api/seller";

@@ -74,12 +74,12 @@ public class Product {
 
 
 
-	public long getId() {
+	public long getProdId() {
 		return prodId;
 	}
 
-	public void setId(long id) {
-		this.prodId = id;
+	public void setProdId(long prodId) {
+		this.prodId = prodId;
 	}
 	
 	public String getProdName() {

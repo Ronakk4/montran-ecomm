@@ -14,12 +14,11 @@ import org.springframework.stereotype.Service;
 
 import com.capstone.dao.OrderHeaderDao;
 import com.capstone.dao.OrderItemDao;
-import com.capstone.dao.ProductDao;
-import com.capstone.dao.UserDao;
 import com.capstone.dto.OrderDTO;
 import com.capstone.dto.OrderItemDTO;
 import com.capstone.dto.SellerOrderDTO;
 import com.capstone.model.Buyer;
+import com.capstone.model.CartItem;
 import com.capstone.model.OrderHeader;
 import com.capstone.model.OrderItem;
 import com.capstone.model.Product;
@@ -35,11 +34,6 @@ public class OrderServiceImpl implements OrderService{
 	@Autowired
 	private OrderHeaderDao orderDao;  
 	
-//	@Autowired
-//	private ProductDao productDao;
-//
-//	@Autowired
-//	private UserDao userDao;
 
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -117,7 +111,7 @@ public class OrderServiceImpl implements OrderService{
             }
 
             OrderItemDTO itemDTO = new OrderItemDTO();
-            itemDTO.setProductId(item.getProduct().getId());
+            itemDTO.setProductId(item.getProduct().getProdId());
             itemDTO.setSellerId(item.getSeller().getId());
             itemDTO.setQuantity(item.getQuantity());
             itemDTO.setPrice(item.getPrice());
@@ -134,6 +128,13 @@ public class OrderServiceImpl implements OrderService{
     public List<OrderHeader> searchOrders(long sellerId, String orderStatus, String startDate, String endDate) {
         return orderDao.searchOrders(sellerId, orderStatus, startDate, endDate);
     }
+
+	@Override
+	public OrderHeader placeOrder(List<CartItem> cartItems) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 
 

@@ -39,7 +39,7 @@ public class ProductServiceImpl implements ProductService{
 	@Transactional
 	public void saveProduct(ProductInsertDTO p) {
 		 Product product = new Product();
-		 	product.setId(p.getProdId());	
+		 	product.setProdId(p.getProdId());	
 		    product.setProdName(p.getProdName());
 		    product.setProdDescription(p.getProdDescription());
 		    product.setPrice(p.getPrice());
