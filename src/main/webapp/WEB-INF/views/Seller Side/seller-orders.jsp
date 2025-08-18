@@ -1,5 +1,22 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="com.capstone.util.JwtUtil" %>
+
+<%
+    Cookie jwtToken = null;
+    Cookie[] cookies = request.getCookies();
+    if (cookies != null) {
+        for (Cookie cookie : cookies) {
+            if ("jwtToken".equals(cookie.getName())) {
+                jwtToken = cookie;
+                break;
+            }
+        }
+    }
+    
+    Long sellerId = jwtToken != null ? JwtUtil.getId(jwtToken.getValue()) : null;
+
+%>
 <html>
 <head>
     <title>Seller Orders</title>
@@ -24,10 +41,8 @@
     </table>
 
 <script>
-    // Replace with logged-in sellerId from session or context
-//     const sellerId = "${sessionScope.sellerId}"; 
-    const sellerId = 16; 
-
+	const sellerId = <%= sellerId != null ? sellerId : "null" %>;
+	console.log(sellerId)
     function loadOrders() {
         $.get(`/ecomm.capstone/api/seller/orders?sellerId=${sellerId}`, function(data) {
             let rows = "";

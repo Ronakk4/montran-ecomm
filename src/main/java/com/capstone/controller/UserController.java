@@ -7,23 +7,23 @@ import com.capstone.dto.SellerDTO;
 import com.capstone.dto.UpdateUserDTO;
 import com.capstone.dto.UserDTO;
 //	import com.capstone.model.Buyer;
-
+import com.capstone.dto.UserRegisterDTO;
 import com.capstone.model.User;
 import com.capstone.service.UserService;
 import com.capstone.util.JwtUtil;
 
 import java.io.IOException;
 import java.util.Map;
-
+ 
 import javax.validation.Valid;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
+ 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+ 
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -33,25 +33,26 @@ public class UserController {
 	private UserService userService;
 
 	@PostMapping
-	public String registerUser(@Valid @RequestBody User user) {
-		userService.registerUser(user);
-		return "User registered successfully";
-	}
+    public String registerUser(@Valid @RequestBody UserRegisterDTO user) {
+        userService.registerUser(user);
+        return "User registered successfully";
+    }
 
 	@PostMapping("/login")
 	public void loginUser(@RequestBody LoginRequestDTO user, 
 	                      HttpServletResponse response) throws IOException {
-
-	    if (userService.loginUser(user)) {
-	        String token = JwtUtil.generateToken(user.getEmail(), user.getRole());
+		User existingUser = userService.loginUser(user);
+	    if (existingUser!=null) {
+	        String token = JwtUtil.generateToken(existingUser.getEmail(), existingUser.getRole(), existingUser.getId());
 
 	        // Store JWT in HttpOnly cookie (browser-specific)
 	        Cookie cookie = new Cookie("jwtToken", token);
 	        cookie.setHttpOnly(true); 
 	        cookie.setPath("/");      
-	        cookie.setMaxAge(3 * 60); // 30 minutes
+	        cookie.setMaxAge(30 * 60 * 1000); 
 	        response.addCookie(cookie);
 
+	        
 	        // Redirect based on role
 	       
 	    } else {
@@ -134,6 +135,7 @@ public class UserController {
 		dto.setPassword((String) json.get("password"));
 		dto.setRole((String) json.get("role"));
 	}
+
 }
 
   

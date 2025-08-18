@@ -129,6 +129,11 @@ public class OrderServiceImpl implements OrderService{
         return new ArrayList<>(ordersMap.values());
     }
 
+	
+	@Override
+    public List<OrderHeader> searchOrders(long sellerId, String orderStatus, String startDate, String endDate) {
+        return orderDao.searchOrders(sellerId, orderStatus, startDate, endDate);
+    }
 
 
 
