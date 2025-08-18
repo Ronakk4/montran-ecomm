@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.capstone.dto.OrderDTO;
 import com.capstone.dto.SellerOrderDTO;
+import com.capstone.model.CartItem;
 import com.capstone.model.OrderHeader;
 import com.capstone.model.OrderItem;
 
@@ -19,6 +20,7 @@ public interface OrderService {
     List<OrderHeader> searchOrders(long sellerId, String orderStatus, String startDate, String endDate);
 
 	void saveOrder(OrderDTO o);
+	OrderHeader placeOrder(List<CartItem> cartItems);
 
 }
 

@@ -134,12 +134,10 @@ public class UserController {
 		dto.setEmail((String) json.get("email"));
 		dto.setPassword((String) json.get("password"));
 		dto.setRole((String) json.get("role"));
-<<<<<<< HEAD
-	}}
-=======
+
 	}
 	
 }
->>>>>>> 3ac3de90508ca577f5544b11bd736df2a024a05b
+
 
   
