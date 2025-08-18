@@ -3,6 +3,7 @@ package com.capstone.dao.impl;
 import java.time.LocalDateTime;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 //import javax.persistence.Query;
 
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.capstone.dao.UserDao;
+import com.capstone.dto.UserRegisterDTO;
 import com.capstone.model.User;
 
 @Repository
@@ -27,10 +29,10 @@ public class UserDaoImpl implements UserDao{
 //    }
 
     @Override
-    public void saveUser(User u) {
-    	u.setCreatedAt(LocalDateTime.now());
-        u.setUpdatedAt(LocalDateTime.now());
-        sessionFactory.getCurrentSession().save(u);
+    public void saveUser(User user) {
+    	user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
+        sessionFactory.getCurrentSession().save(user);
     }
     
 	@Override

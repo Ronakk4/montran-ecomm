@@ -540,6 +540,7 @@ loadProducts("Electronics", "electronics-container");
 </script>
 
     
+<<<<<<< HEAD
 </body>
 
 --%>
@@ -1030,3 +1031,4 @@ window.addEventListener('scroll', () => {
 
 </body>
 </html>            
+

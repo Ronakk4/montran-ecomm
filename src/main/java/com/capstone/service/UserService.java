@@ -29,4 +29,5 @@ void updateUser(Long id ,UserDTO u);
 boolean loginUser(LoginRequestDTO u);
 void registerUser(@Valid UserRegisterDTO user);
 
+
 }
