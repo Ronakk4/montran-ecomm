@@ -91,6 +91,12 @@ public class OrderHeaderDaoImpl implements OrderHeaderDao{
         return sessionFactory.getCurrentSession().createQuery(cq).getResultList();
     }
 
+	@Override
+	public List<OrderItem> getAllOrdersForSeller(long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 
 }
