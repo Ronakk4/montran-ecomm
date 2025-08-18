@@ -57,12 +57,12 @@ public class SellerApiController {
 //        return "Product updated successfully";
 //    }
 
-   @PutMapping("/products/{id}")
-   public String updateProduct(@PathVariable long id, @Valid @RequestBody Product product) {
-       product.setId(id);
-       productService.saveProduct(product);
-       return "Product updated successfully";
-   }
+//   @PutMapping("/products/{id}")
+//   public String updateProduct(@PathVariable long id, @Valid @RequestBody Product product) {
+//       product.setId(id);
+//       productService.saveProduct(product);
+//       return "Product updated successfully";
+//   }
 
    @DeleteMapping("/products/{id}")
    public String deleteProduct(@PathVariable long id) {
