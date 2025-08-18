@@ -13,39 +13,7 @@
 
 
 <body>
-    <header class="l-header" id="header">
-        <nav class="nav bd-grid">
-            <div class="nav-toggle" id="nav-toggle">
-                <i class="bx bxs-grid"></i>
-            </div>
-
-            <a href="index.html" class="nav-logo">Ecommerce</a>
-
-           <div class="nav-menu" id="nav-menu">
-                <ul class="nav-list">
-                    <li class="nav-item"><a href="<%= request.getContextPath() %>" class="nav-link">Home</a></li>
-                    <li class="nav-item"><a href="#featured" class="nav-link">Featured</a></li>
-                   <li class="nav-item">
-    <a href="#" class="nav-link">Categories</a>
-    <ul class="dropdown-menu">
-        <li><a href="#" class="dropdown-item category-link" data-category="men">Men</a></li>
-        <li><a href="#" class="dropdown-item category-link" data-category="women">Women</a></li>
-        <li><a href="#" class="dropdown-item category-link" data-category="electronics">Electronics</a></li>
-        <li><a href="#" class="dropdown-item category-link" data-category="sneakers">Sneakers</a></li>
-    </ul>
-</li>
-
-                    <li class="nav-item"><a href="#new" class="nav-link">New</a></li>
-                    <li class="nav-item"><a href="${pageContext.request.contextPath}/app/login" class="nav-link btn btn-login"> Login</a></li>
-                    <li class="nav-item"><a href="${pageContext.request.contextPath}/app/login" class="nav-link btn btn-signup"> Sign Up</a></li>
-                </ul>
-            </div>
-
-            <div class="nav-shop">
-                <i class="bx bx-shopping-bag"></i>
-            </div>
-        </nav>
-    </header>
+   <%@ include file="/WEB-INF/views/header.jsp" %>
 
     <main class="l-main">
         <section class="product-detail section">

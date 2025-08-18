@@ -35,9 +35,7 @@
  
 
 
-<style>
 
-</style>
  
  
  <!DOCTYPE html>
@@ -56,40 +54,39 @@
 <body>
 
 
+<%@ include file="/WEB-INF/views/header.jsp" %>
 
 
-	 <header class="l-header">
-        <nav class="nav bd-grid">
-            <div class="nav-toggle" id="nav-toggle">
-                <i class="bx bxs-grid"></i>
-            </div>
+<!--	 <header class="l-header">-->
+<!--        <nav class="nav bd-grid">-->
+<!--            <div class="nav-toggle" id="nav-toggle">-->
+<!--                <i class="bx bxs-grid"></i>-->
+<!--            </div>-->
 
-            <a href="#" class="nav-logo">Ecommerce</a>
+<!--            <a href="#" class="nav-logo">Ecommerce</a>-->
 
-            <div class="nav-menu" id="nav-menu">
-                <ul class="nav-list">
-                    <li class="nav-item"><a href="<%= request.getContextPath() %>"  class="nav-link">Home</a></li>
-                    <li class="nav-item"><a href="#featured" class="nav-link">Featured</a></li>
-                    <li class="nav-item dropdown">
-                        <a href="#" class="nav-link">Categories <i class="bx bx-chevron-down"></i></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#" class="dropdown-item category-link" data-category="men">Men</a></li>
-        <li><a href="#" class="dropdown-item category-link" data-category="women">Women</a></li>
-        <li><a href="#" class="dropdown-item category-link" data-category="electronics">Electronics</a></li>
-        <li><a href="#" class="dropdown-item category-link" data-category="sneakers">Sneakers</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item"><a href="#new" class="nav-link">New</a></li>
-                    <li class="nav-item"><a href="${pageContext.request.contextPath}/app/login" class="nav-link">Login</a></li>
-                    <li class="nav-item"><a href="${pageContext.request.contextPath}/app/login" class="nav-link">Sign Up</a></li>
-                </ul>
-            </div>
+<!--            <div class="nav-menu" id="nav-menu">-->
+<!--                <ul class="nav-list">-->
+<!--                    <li class="nav-item"><a href="<%= request.getContextPath() %>"  class="nav-link">Home</a></li>-->
+<!--                    <li class="nav-item"><a href="#featured" class="nav-link">Featured</a></li>-->
+<!--                   <li class="nav-item dropdown">-->
+<!--    <a href="#" class="nav-link">Categories <i class="bx bx-chevron-down"></i></a>-->
+<!--    <ul class="dropdown-menu">-->
+<!--         categories will be injected here -->
+<!--    </ul>-->
+<!--</li>-->
 
-            <div class="nav-shop">
-                <i class="bx bx-shopping-bag"></i>
-            </div>
-        </nav>
-    </header>
+<!--                    <li class="nav-item"><a href="#new" class="nav-link">New</a></li>-->
+<!--                    <li class="nav-item"><a href="${pageContext.request.contextPath}/app/login" class="nav-link">Login</a></li>-->
+<!--                    <li class="nav-item"><a href="${pageContext.request.contextPath}/app/login" class="nav-link">Sign Up</a></li>-->
+<!--                </ul>-->
+<!--            </div>-->
+
+<!--            <div class="nav-shop">-->
+<!--                <i class="bx bx-shopping-bag"></i>-->
+<!--            </div>-->
+<!--        </nav>-->
+<!--    </header>-->
 
 
 
@@ -154,6 +151,18 @@
 <!--    <div class="product-container bd-grid" id="women-container"></div>-->
 <!--</section>-->
 
+        
+        
+<!--<section class="men section" id="men">-->
+<!--    <h2 class="section-title">MEN SNEAKERS</h2>-->
+<!--    <div class="product-container bd-grid" id="men-container"></div>-->
+<!--</section>-->
+
+<!--<section class="electronics section" id="electronics">-->
+<!--    <h2 class="section-title">ELECTRONICS</h2>-->
+<!--    <div class="product-container bd-grid" id="electronics-container"></div>-->
+<!--</section>-->
+
  <section class="women section" id="women">
             <h2 class="section-title">WOMEN SNEAKERS</h2>
             <div class="slider-container">
@@ -169,17 +178,6 @@
                 </button>
             </div>
         </section>
-        
-        
-<!--<section class="men section" id="men">-->
-<!--    <h2 class="section-title">MEN SNEAKERS</h2>-->
-<!--    <div class="product-container bd-grid" id="men-container"></div>-->
-<!--</section>-->
-
-<!--<section class="electronics section" id="electronics">-->
-<!--    <h2 class="section-title">ELECTRONICS</h2>-->
-<!--    <div class="product-container bd-grid" id="electronics-container"></div>-->
-<!--</section>-->
 
  <section class="men section" id="men">
             <h2 class="section-title">MEN SNEAKERS</h2>
@@ -367,52 +365,47 @@ categories.forEach(c => loadProducts(c.name, c.containerId));
 	
 	
 
-$(document).ready(function() {
-    $(".category-link").on("click", function(e) {
-        e.preventDefault();
-        let category = $(this).data("category");
+<!--$(document).ready(function() {-->
+<!--	loadCategories();-->
+<!--	 $(document).on("click", ".category-link", function(e) {-->
+<!--	        e.preventDefault();-->
+<!--	        let category = $(this).data("category");-->
+<!--	        console.log("Category clicked:", category);-->
 
-        $.ajax({
-            url: "<%= request.getContextPath() %>/app/product-list",
-            type: "GET",
-            data: { category: category },
-            success: function(response) {
-                // Case 1: If your product-list.jsp is a full page, then just redirect:
-                window.location.href = "<%= request.getContextPath() %>/app/product-list?category=" + category;
+<!--	        window.location.href = "<%= request.getContextPath() %>/app/product-list?category=" + category;-->
+<!--	    });-->
 
-                // Case 2 (Optional): If you want to inject results into current page:
-                // $("#content").html(response);   // assumes you have <div id="content"></div>
-            },
-            error: function(xhr) {
-                console.error("Error loading category:", xhr);
-            }
-        });
-    });
-});
+<!--});-->
 
 
-$(document).ready(function() {
-    $(".category-link").on("click", function(e) {
-        e.preventDefault();
-        let category = $(this).data("category");
 
-        $.ajax({
-            url: "<%= request.getContextPath() %>/app/product-list",
-            type: "GET",
-            data: { category: category },
-            success: function(response) {
-                // Case 1: If your product-list.jsp is a full page, then just redirect:
-                window.location.href = "<%= request.getContextPath() %>/app/product-list?category=" + category;
 
-                // Case 2 (Optional): If you want to inject results into current page:
-                // $("#content").html(response);   // assumes you have <div id="content"></div>
-            },
-            error: function(xhr) {
-                console.error("Error loading category:", xhr);
-            }
-        });
-    });
-});
+<!--function loadCategories() {-->
+<!--    $.get("http://localhost:8080/ecomm.capstone/api/seller/category", function(categories) {-->
+<!--        console.log("RAW categories:", categories);-->
+
+<!--        let items = "";-->
+<!--        categories.forEach(c => {-->
+<!--            console.log("Category:", c);-->
+<!--            console.log(`Category ${c}:`, c, typeof c);-->
+
+<!--            items += `-->
+<!--                <li>-->
+<!--                    <a href="#" -->
+<!--                       class="dropdown-item category-link" -->
+<!--                       data-category="\${c}">\${c}-->
+<!--                    </a>-->
+<!--                </li>`;-->
+<!--        });-->
+
+<!--        $(".dropdown-menu").html(items);-->
+<!--    });-->
+<!--}-->
+
+
+
+
+
 
 
 //store slider positions for each category

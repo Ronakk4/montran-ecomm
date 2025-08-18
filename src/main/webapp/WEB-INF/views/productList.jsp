@@ -12,39 +12,41 @@
 
 
 <body>
-    <header class="l-header" id="header">
-        <nav class="nav bd-grid">
-            <div class="nav-toggle" id="nav-toggle">
-                <i class="bx bxs-grid"></i>
-            </div>
+<!--    <header class="l-header" id="header">-->
+<!--        <nav class="nav bd-grid">-->
+<!--            <div class="nav-toggle" id="nav-toggle">-->
+<!--                <i class="bx bxs-grid"></i>-->
+<!--            </div>-->
 
-            <a href="index.html" class="nav-logo">Ecommerce</a>
+<!--            <a href="index.html" class="nav-logo">Ecommerce</a>-->
 
-            <div class="nav-menu" id="nav-menu">
-                <ul class="nav-list">
-                    <li class="nav-item"><a href="<%= request.getContextPath() %>" class="nav-link">Home</a></li>
-                    <li class="nav-item"><a href="#featured" class="nav-link">Featured</a></li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link active">Categories</a>
-                        <ul class="dropdown-menu">
-                            <li><a href="product-list?category=men" class="dropdown-item">Men</a></li>
-                            <li><a href="product-list?category=women" class="dropdown-item">Women</a></li>
-                            <li><a href="product-list?category=electronics" class="dropdown-item">Electronics</a></li>
-                            <li><a href="product-list?category=sneakers" class="dropdown-item">Sneakers</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item"><a href="#new" class="nav-link">New</a></li>
-                    <li class="nav-item"><a href="${pageContext.request.contextPath}/app/login" class="nav-link">Login</a></li>
-                    <li class="nav-item"><a href="${pageContext.request.contextPath}/app/login" class="nav-link">Sign Up</a></li>
+<!--            <div class="nav-menu" id="nav-menu">-->
+<!--                <ul class="nav-list">-->
+<!--                    <li class="nav-item"><a href="<%= request.getContextPath() %>" class="nav-link">Home</a></li>-->
+<!--                    <li class="nav-item"><a href="#featured" class="nav-link">Featured</a></li>-->
+<!--                    <li class="nav-item">-->
+<!--                        <a href="#" class="nav-link active">Categories</a>-->
+<!--                        <ul class="dropdown-menu">-->
+<!--                            <li><a href="product-list?category=men" class="dropdown-item">Men</a></li>-->
+<!--                            <li><a href="product-list?category=women" class="dropdown-item">Women</a></li>-->
+<!--                            <li><a href="product-list?category=electronics" class="dropdown-item">Electronics</a></li>-->
+<!--                            <li><a href="product-list?category=sneakers" class="dropdown-item">Sneakers</a></li>-->
+<!--                        </ul>-->
+<!--                    </li>-->
+<!--                    <li class="nav-item"><a href="#new" class="nav-link">New</a></li>-->
+<!--                    <li class="nav-item"><a href="${pageContext.request.contextPath}/app/login" class="nav-link">Login</a></li>-->
+<!--                    <li class="nav-item"><a href="${pageContext.request.contextPath}/app/login" class="nav-link">Sign Up</a></li>-->
                     
-                </ul>
-            </div>
+<!--                </ul>-->
+<!--            </div>-->
 
-            <div class="nav-shop">
-                <i class="bx bx-shopping-bag"></i>
-            </div>
-        </nav>
-    </header>
+<!--            <div class="nav-shop">-->
+<!--                <i class="bx bx-shopping-bag"></i>-->
+<!--            </div>-->
+<!--        </nav>-->
+<!--    </header>-->
+
+<%@ include file="/WEB-INF/views/header.jsp" %>
 
     <main class="l-main">
         <section class="breadcrumb section">
@@ -159,12 +161,12 @@ $(document).ready(function() {
             products.forEach(product => {
                 let card = `
                     <article class="sneaker">
-                        ${product.discount ? `<div class="sneaker-sale">Sale</div>` : ""}
-                        <img src="${product.imageUrl || 'https://via.placeholder.com/150'}" 
+
+                        <img src="\${product.imageUrl || '\https://i.postimg.cc/3wWGqDYn/women1.png'}" 
                              alt="${product.prodName}" 
                              class="sneaker-img">
-                        <span class="sneaker-name">${product.prodName}</span>
-                        <span class="sneaker-price">₹${product.price}</span>
+                        <span class="sneaker-name">\${product.prodName}</span>
+                        <span class="sneaker-price">₹\${product.price}</span>
                         <a href="<%= request.getContextPath() %>/app/product-details/${product.id}" 
                            class="button-light">
                            View Details <i class="bx bx-right-arrow-alt button-icon"></i>
