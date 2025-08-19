@@ -11,7 +11,7 @@ import com.capstone.model.OrderHeader;
 import com.capstone.model.OrderItem;
 
 public interface OrderService {
-	List<OrderHeader> getAllOrders(long id);
+	List<OrderDTO> getAllOrders(long id);
 	List<SellerOrderDTO> getOrdersForSeller(long sellerId);
 	OrderHeader getOrder(long id);
 	void deleteOrder(long id);
@@ -23,6 +23,9 @@ public interface OrderService {
 	void saveOrder(OrderDTO o);
 	OrderHeader placeOrder(List<CartItem> cartItems);
 	Map<String, Object> getMonthlySalesAndRevenue(long sellerId);
+
+	boolean cancelOrder(long orderId);
+
 	void updateStatus(long orderId, String status);
 
 }

@@ -1,12 +1,35 @@
 package com.capstone.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class OrderDTO {
-    private String status;
+	private long orderId;
+    public long getOrderId() {
+		return orderId;
+	}
+	public void setOrderId(long orderId) {
+		this.orderId = orderId;
+	}
+	private String status;
     private double totalAmount;
     private Long buyerId;
     private List<OrderItemDTO> items;
+    private String shippingAddress;
+    private LocalDateTime orderDate;
+
+	public String getShippingAddress() {
+		return shippingAddress;
+	}
+	public void setShippingAddress(String shippingAddress) {
+		this.shippingAddress = shippingAddress;
+	}
+	public LocalDateTime getOrderDate() {
+		return orderDate;
+	}
+	public void setOrderDate(LocalDateTime orderDate) {
+		this.orderDate = orderDate;
+	}
 	public String getStatus() {
 		return status;
 	}
