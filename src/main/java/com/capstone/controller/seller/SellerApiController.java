@@ -66,8 +66,7 @@ public class SellerApiController {
        Product product = productService.getProduct(id);
        return new ProductFetchDTO(product);  
    }
-   
-   // ========== ORDER APIs ==========
+
 
     @PutMapping("/products/{id}")
     public String updateProduct(@PathVariable long id, @Valid @RequestBody ProductInsertDTO product) {

@@ -1,10 +1,13 @@
 package com.capstone.dto;
 
+import java.time.LocalDateTime;
+
 public class OrderItemDTO {
     private Long productId;
     private Long sellerId;
     private int quantity;
     private double price;
+    private LocalDateTime orderDate;
     
     	
 	public Long getProductId() {
@@ -30,6 +33,12 @@ public class OrderItemDTO {
 	}
 	public void setPrice(double price) {
 		this.price = price;
+	}
+	public LocalDateTime getOrderDate() {
+		return orderDate;
+	}
+	public void setOrderDate(LocalDateTime orderDate) {
+		this.orderDate = orderDate;
 	}
 
     // getters and setters

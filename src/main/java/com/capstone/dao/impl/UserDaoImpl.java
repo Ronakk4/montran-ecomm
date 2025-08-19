@@ -63,5 +63,16 @@ public class UserDaoImpl implements UserDao{
 		
 	}
 
+	@Override
+	public void changePassword(String newPassword, long id) {
+		sessionFactory.getCurrentSession().createQuery("update User set password = :newPassword where id = :id")
+		.setParameter("id", id)
+		.setParameter("newPassword", newPassword).executeUpdate();
+	}
+
+	
+
+	
+
 	
 }

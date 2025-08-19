@@ -17,6 +17,7 @@ import java.util.Map;
  
 import javax.validation.Valid;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
  
@@ -62,6 +63,18 @@ public class UserController {
 	        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid credentials");
 	    }
 	}
+	
+	
+	@GetMapping("/logout")
+	public void logout(HttpServletResponse resposnse,HttpServletRequest request) throws IOException {
+		Cookie cookie=new Cookie("jwtToken", null);
+		cookie.setHttpOnly(true);
+		cookie.setPath("/");
+		cookie.setMaxAge(0);
+		resposnse.addCookie(cookie);
+		resposnse.sendRedirect(request.getContextPath()+"/app/login");
+		
+	}
 
 	@GetMapping("/id/{id}")
 	public User findUser(@PathVariable long id) {
@@ -97,6 +110,13 @@ public class UserController {
 	// userService.updateUser(id, dto);
 	// return "User updated successfully";
 	// }
+	
+	@PutMapping("/changepassword")
+	public String updatePassword(@Valid @RequestParam String newPassword, @RequestParam long id) {
+		userService.changePassword(newPassword, id);
+		return "password changed successfully";
+		
+	}
 
 	@PutMapping("/{id}")
 	public String updateUser(@PathVariable long id, @RequestBody UpdateUserDTO dto) {

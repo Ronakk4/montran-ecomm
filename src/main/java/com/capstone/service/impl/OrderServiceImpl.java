@@ -105,6 +105,7 @@ public class OrderServiceImpl implements OrderService{
             dto.setStatus(item.getOrderHeader().getStatus());
             dto.setTotalAmount(item.getOrderHeader().getTotalAmount());
             dto.setShippingAddress(item.getOrderHeader().getBuyer().getShippingAddress());
+            dto.setOrderDate(item.getOrderHeader().getOrderDate());
 
             if (dto.getItems() == null) {
                 dto.setItems(new ArrayList<>());
@@ -115,6 +116,7 @@ public class OrderServiceImpl implements OrderService{
             itemDTO.setSellerId(item.getSeller().getId());
             itemDTO.setQuantity(item.getQuantity());
             itemDTO.setPrice(item.getPrice());
+            itemDTO.setOrderDate(item.getOrderHeader().getOrderDate());
 
             dto.getItems().add(itemDTO);
             ordersMap.put(orderId, dto);
