@@ -8,13 +8,12 @@ import javax.validation.Valid;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.capstone.config.JacksonConfig;
+
 import com.capstone.dao.UserDao;
 import com.capstone.dto.BuyerDTO;
 import com.capstone.dto.LoginRequestDTO;
 import com.capstone.dto.SellerDTO;
 import com.capstone.dto.UserDTO;
-
 import com.capstone.dto.UserRegisterDTO;
 import com.capstone.exception.DuplicateEmailException;
 import com.capstone.exception.UserNotFoundException;
@@ -22,6 +21,7 @@ import com.capstone.model.Buyer;
 import com.capstone.model.Seller;
 import com.capstone.model.User;
 import com.capstone.service.UserService;
+import com.capstone.util.PasswordUtil;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -133,14 +133,16 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean changePassword(String newPassword, String oldPassword, long id) {
+    public boolean changePassword(String newPassword, String oldPassword, long id) {
+        String oldHashed = userDao.getPassword(id);
 
-		String oldPass = userDao.getPassword(id);
-		if (oldPass.equals(oldPassword)) {
-			userDao.changePassword(newPassword, id);
-			return true;
-		}
-		return false;
+        // Verify old password
+        if (PasswordUtil.verifyPassword(oldPassword, oldHashed)) {
+            String newHashed = PasswordUtil.hashPassword(newPassword);
+            userDao.changePassword(newHashed, id);
+            return true;
+        }
+        return false;
+    }
 
-	}
 }
