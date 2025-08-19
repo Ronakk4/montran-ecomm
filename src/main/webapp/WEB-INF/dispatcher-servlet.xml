@@ -27,8 +27,12 @@
         <property name="driverClassName" value="org.postgresql.Driver" />
         <property name="url" value="jdbc:postgresql://localhost:5432/SOECP" />
         <property name="username" value="postgres" />
+
         <property name="password" value="montran123" />
         <!-- Optional connection pool settings -->
+
+      <!-- Optional connection pool settings -->
+
         <property name="initialSize" value="5" />
         <property name="maxTotal" value="20" />
         <property name="maxIdle" value="10" />
