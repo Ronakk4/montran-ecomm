@@ -42,32 +42,52 @@
 
 <script>
 	const sellerId = <%= sellerId != null ? sellerId : "null" %>;
-	console.log(sellerId)
-    function loadOrders() {
-        $.get(`/ecomm.capstone/api/seller/orders?sellerId=${sellerId}`, function(data) {
-            let rows = "";
-            let total
-            data.forEach(order => {
-                let itemsHtml = "<ul class='mb-0'>";
-                let totalAmount = 0;
-                order.items.forEach(item => {
-                    itemsHtml += `<li>Product ID: ${item.productId} - Qty: ${item.quantity}, Price: ₹${item.price}</li>`;
-                    totalAmount+= item.price*item.quantity;
-                });
-                itemsHtml += "</ul>";
+	function loadOrders() {
+	    $.get(`/ecomm.capstone/api/seller/orders?sellerId=${sellerId}`, function(data) {
+	        let rows = "";
 
-                rows += `
-                    <tr>
-                        <td>${order.orderId}</td>
-                        <td>${order.shippingAddress ? order.shippingAddress : "N/A"}</td>
-                        <td><span class="badge bg-info text-dark">${order.status}</span></td>
-                        <td>₹${totalAmount}</td>
-                        <td>${itemsHtml}</td>
-                    </tr>`;
-            });
-            $("#ordersTable").html(rows);
-        });
-    }
+	        if (data.length === 0) {
+	            $("#ordersTable").html(`<tr><td colspan="5" class="text-center text-muted">No orders yet.</td></tr>`);
+	            return;
+	        }
+
+	        data.forEach(order => {
+	            let itemsHtml = "<ul class='list-unstyled mb-0'>";
+	            let totalAmount = 0;
+
+	            order.items.forEach(item => {
+	                itemsHtml += `
+	                    <li class="mb-1">
+	                        🛒 <strong>${item.productName || "Product ID: " + item.productId}</strong> 
+	                        <span class="text-muted">x${item.quantity}</span>  
+	                        <span class="badge bg-light text-dark ms-2">₹${item.price}</span>
+	                    </li>
+	                `;
+	                totalAmount += item.price * item.quantity;
+	            });
+	            itemsHtml += "</ul>";
+
+	            // status colors
+	            let statusClass = "secondary";
+	            if (order.status === "DELIVERED") statusClass = "success";
+	            else if (order.status === "PENDING") statusClass = "warning";
+	            else if (order.status === "CANCELLED") statusClass = "danger";
+	            else if (order.status === "SHIPPED") statusClass = "info";
+
+	            rows += `
+	                <tr class="align-middle">
+	                    <td><strong>#${order.orderId}</strong></td>
+	                    <td>📍 ${order.shippingAddress ? order.shippingAddress : "<span class='text-muted'>N/A</span>"}</td>
+	                    <td><span class="badge bg-${statusClass}">${order.status}</span></td>
+	                    <td><span class=" fw-bold">₹${totalAmount}</span></td>
+	                    <td>${itemsHtml}</td>
+	                </tr>
+	            `;
+	        });
+
+	        $("#ordersTable").html(rows);
+	    });
+	}
 
     loadOrders();
 </script>
