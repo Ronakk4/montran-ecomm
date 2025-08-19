@@ -32,29 +32,33 @@
     <h4 class="mt-3">Order Summary</h4>
     <div id="cartSummary" class="p-3 border rounded bg-white shadow-sm"></div>
 
-    <div class="mt-3">
-        <button class="btn btn-success">Confirm & Place Order</button>
-        <a href="${pageContext.request.contextPath}/app/cart" class="btn btn-secondary">Back to Cart</a>
-    </div>
+   <div class="mt-3">
+    <button class="btn btn-success" onclick="placeOrder()">Confirm & Place Order</button>
+    <a href="${pageContext.request.contextPath}/app/cart" class="btn btn-secondary">Back to Cart</a>
+</div>
 </div>
 
 <script>
 
-
-
+let cartItems = [];   // global variable to store items
+let grandTotal = 0;   // global variable for total
+let userID=0;
 
 function loadCart() {
     $.get("${pageContext.request.contextPath}/api/cart", function(data) {
         if (!data || data.length === 0) {
             $("#cartSummary").html("<div class='alert alert-warning'>Your cart is empty.</div>");
+            cartItems = [];
+            grandTotal = 0;
             return;
         }
+
+        cartItems = data; // store all items globally
+        grandTotal = 0;
 
         let html = "<table class='table table-bordered'>" +
                    "<thead class='table-dark'>" +
                    "<tr><th>Product</th><th>Quantity</th><th>Price</th><th>Total</th></tr></thead><tbody>";
-
-        let grandTotal = 0;
 
         $.each(data, function(i, item) {
             let lineTotal = (item.productPrice * item.quantity).toFixed(2);
@@ -75,14 +79,64 @@ function loadCart() {
     });
 }
 
+function placeOrder() {
+    if (!cartItems || cartItems.length === 0) {
+        alert("Your cart is empty. Please add items before placing an order.");
+        return;
+    }
+    
+ // Step 1: build promises to fetch sellerId for each product
+    const sellerPromises = cartItems.map(item => {
+        return $.get(`${pageContext.request.contextPath}/api/seller/products/\${item.productId}`)
+            .then(product => {
+                return {
+                    productId: item.productId,
+                    sellerId: product.sellerId,   // fetched from backend
+                    quantity: item.quantity,
+                    price: item.productPrice
+                };
+            });
+    });
+    
+ // Step 2: wait for all seller lookups before placing order
+    Promise.all(sellerPromises).then(orderItems => {
+        const orderData = {
+            status: "PENDING",
+            totalAmount: grandTotal,
+            buyerId: userID,
+            items: orderItems
+        };
+
+
+        $.ajax({
+            url: "${pageContext.request.contextPath}/buyer/orders",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(orderData),
+            success: function(response) {
+                alert(response); 
+                window.location.href = "${pageContext.request.contextPath}"; 
+            },
+            error: function(xhr) {
+                console.error("Error placing order:", xhr.responseText);
+                alert("Failed to place order. Please try again.");
+            }
+        });
+    }).catch(err => {
+        console.error("Error fetching sellerId:", err);
+        alert("Could not fetch seller info. Try again later.");
+    });
+}
+
 function loadUser() {
-	 const userId = <%= userId != null ? userId : "null" %>;
-	 $.get(`${pageContext.request.contextPath}/users/id/\${userId}`, function(user) {
-       let html = "<h5>User Details</h5>" +
-                  "<p><b>Username:</b> " + user.name + "</p>" +
-                  "<p><b>Shipping Address:</b> " + user.shippingAddress + "</p>";
-       $("#userInfo").html(html);
-   });
+    const userId = <%= userId != null ? userId : "null" %>;
+    $.get(`${pageContext.request.contextPath}/users/id/\${userId}`, function(user) {
+        let html = "<h5>User Details</h5>" +
+                   "<p><b>Username:</b> " + user.name + "</p>" +
+                   "<p><b>Shipping Address:</b> " + user.shippingAddress + "</p>";
+        $("#userInfo").html(html);
+        userID = user.id;
+    });
 }
 
 $(document).ready(function() {
