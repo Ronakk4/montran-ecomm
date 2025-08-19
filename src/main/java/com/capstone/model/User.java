@@ -29,12 +29,12 @@ public class User {
 	private String email;
 	
 	
-	@NotBlank(message="Password is required")
-	@Size(min=8,message= "Password must be atleast 8 characters")
-	@Pattern(
-			regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]+$",
-	        message = "Password must contain uppercase, lowercase, number, and special character"
-	    )
+
+//	@Size(min=8,message= "Password must be atleast 8 characters")
+//	@Pattern(
+//		regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]+$",
+//	        message = "Password must contain uppercase, lowercase, number, and special character"
+//	    )
 	private String password;
 	
 	private String role;
