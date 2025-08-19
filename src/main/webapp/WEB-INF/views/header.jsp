@@ -28,7 +28,7 @@
 
                     <li class="nav-item"><a href="#new" class="nav-link">New</a></li>
                     <li class="nav-item"><a href="${pageContext.request.contextPath}/app/login" class="nav-link">Login</a></li>
-                    <li class="nav-item"><a href="${pageContext.request.contextPath}/app/login" class="nav-link">Sign Up</a></li>
+                    <li class="nav-item"><a href="${pageContext.request.contextPath}/app/register" class="nav-link">Sign Up</a></li>
                 	<li class="nav-item"> <a href="${pageContext.request.contextPath}/app/cart" class=nav-link">
                  <i class="bx bx-shopping-bag"></i>Cart
                  </a></li>
