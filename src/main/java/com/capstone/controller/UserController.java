@@ -17,6 +17,7 @@ import java.util.Map;
  
 import javax.validation.Valid;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
  
@@ -61,6 +62,18 @@ public class UserController {
 	    } else {
 	        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid credentials");
 	    }
+	}
+	
+	
+	@GetMapping("/logout")
+	public void logout(HttpServletResponse resposnse,HttpServletRequest request) throws IOException {
+		Cookie cookie=new Cookie("jwtToken", null);
+		cookie.setHttpOnly(true);
+		cookie.setPath("/");
+		cookie.setMaxAge(0);
+		resposnse.addCookie(cookie);
+		resposnse.sendRedirect(request.getContextPath()+"/app/login");
+		
 	}
 
 	@GetMapping("/id/{id}")
