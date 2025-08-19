@@ -370,8 +370,15 @@ $("#sortSelect").on("change", function() {
             sorted.sort((a, b) => a.prodName.localeCompare(b.prodName));
             break;
         case "newest":
-            sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            sorted.sort((a, b) => {
+                // Convert createdAt array to Date object for comparison
+                const dateA = new Date(a.createdAt[0], a.createdAt[1] - 1, a.createdAt[2], a.createdAt[3], a.createdAt[4]);
+                const dateB = new Date(b.createdAt[0], b.createdAt[1] - 1, b.createdAt[2], b.createdAt[3], b.createdAt[4]);
+
+                return dateB - dateA; // Compare descending order (newest first)
+            });
             break;
+
         default:
             sorted = allProducts;
     }
