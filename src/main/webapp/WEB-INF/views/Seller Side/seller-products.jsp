@@ -15,21 +15,33 @@
     }
     
     Long sellerId = jwtToken != null ? JwtUtil.getId(jwtToken.getValue()) : null;
-
 %>
+
 <html>
 <head>
 <title>Manage Products</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
+    body {
+        background: #f8f9fa;
+        font-family: 'Segoe UI', sans-serif;
+    }
     .sortable { cursor: pointer; }
 </style>
 </head>
 <body class="container mt-4">
 
+    <!-- HEADER -->
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>Manage Products</h2>
+        <div class="d-flex align-items-center gap-2">
+            <a href="dashboard" 
+               class="btn btn-outline-secondary btn-sm">
+                ← Back to Dashboard
+            </a>
+            <h2 class="mb-0">Manage Products</h2>
+        </div>
+
         <a href="products/add-product" class="btn btn-success">+ Add New Product</a>
     </div>
 
@@ -57,12 +69,10 @@
     </table>
 
 <script>
-	const sellerId = <%= sellerId != null ? sellerId : "null" %>;
-
-    console.log(sellerId);
+    const sellerId = <%= sellerId != null ? sellerId : "null" %>;
     const apiBase = "http://localhost:8080/ecomm.capstone/api/seller";
 
-    let products = [];     // all products
+    let products = [];
     let currentSort = { key: null, order: 'asc' };
 
     // Load products
@@ -73,7 +83,7 @@
         });
     }
 
-    // Render products to table
+    // Render products
     function renderProducts(list) {
         let rows = "";
         if (list.length === 0) {
@@ -82,14 +92,14 @@
             list.forEach(p => {
                 rows += `
                     <tr>
-                        <td>${p.id}</td>
+                        <td>${p.prodId}</td>
                         <td>${p.prodName}</td>
-                        <td>${p.price}</td>
+                        <td>₹${p.price}</td>
                         <td>${p.stockQuantity}</td>
                         <td>${p.category}</td>
                         <td>
-                            <button class="btn btn-warning btn-sm" onclick="editProduct(${p.id})">Edit</button>
-                            <button class="btn btn-danger btn-sm" onclick="deleteProduct(${p.id})">Delete</button>
+                            <button class="btn btn-warning btn-sm" onclick="editProduct(${p.prodId})">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteProduct(${p.prodId})">Delete</button>
                         </td>
                     </tr>`;
             });
@@ -141,12 +151,12 @@
         });
     }
 
-    // Edit redirect
+    // Edit product
     function editProduct(id) {
         window.location.href = `products/edit-product?id=${id}`;
     }
 
-    // Category filter
+    // Categories
     function loadCategories() {
         $.get(`${apiBase}/category`, function(categories) {
             categories.forEach(c => {

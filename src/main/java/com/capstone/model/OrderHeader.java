@@ -1,8 +1,10 @@
 package com.capstone.model;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -30,6 +32,9 @@ public class OrderHeader {
 
     @OneToMany(mappedBy = "orderHeader", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items;
+    
+    @Column(name = "order_date")
+    private LocalDateTime orderDate;
 
 	public OrderHeader(String status, double totalAmount, Buyer buyer, List<OrderItem> items) {
 		super();
@@ -70,6 +75,12 @@ public class OrderHeader {
 	}
 	public void setItems(List<OrderItem> items) {
 		this.items = items;
+	}
+	public LocalDateTime getOrderDate() {
+		return orderDate;
+	}
+	public void setOrderDate(LocalDateTime orderDate) {
+		this.orderDate = orderDate;
 	}
     
     

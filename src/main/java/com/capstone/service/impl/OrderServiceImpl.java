@@ -105,6 +105,7 @@ public class OrderServiceImpl implements OrderService{
             dto.setStatus(item.getOrderHeader().getStatus());
             dto.setTotalAmount(item.getOrderHeader().getTotalAmount());
             dto.setShippingAddress(item.getOrderHeader().getBuyer().getShippingAddress());
+            dto.setOrderDate(item.getOrderHeader().getOrderDate());
 
             if (dto.getItems() == null) {
                 dto.setItems(new ArrayList<>());
@@ -115,6 +116,7 @@ public class OrderServiceImpl implements OrderService{
             itemDTO.setSellerId(item.getSeller().getId());
             itemDTO.setQuantity(item.getQuantity());
             itemDTO.setPrice(item.getPrice());
+            itemDTO.setOrderDate(item.getOrderHeader().getOrderDate());
 
             dto.getItems().add(itemDTO);
             ordersMap.put(orderId, dto);
@@ -135,6 +137,24 @@ public class OrderServiceImpl implements OrderService{
 		return null;
 	}
 
+
+	@Override
+	@Transactional
+	public Map<String, Object> getMonthlySalesAndRevenue(long sellerId) {
+	    Object[] result = orderDao.getMonthlySalesAndRevenue(sellerId);
+
+	    Map<String, Object> response = new HashMap<>();
+
+	    // COUNT(*) comes as BigInteger
+	    Number totalSales = (Number) result[0];
+	    // SUM(total_amount) comes as BigDecimal (or null)
+	    Number totalRevenue = (Number) result[1];
+
+	    response.put("totalSales", totalSales != null ? totalSales.longValue() : 0L);
+	    response.put("totalRevenue", totalRevenue != null ? totalRevenue.doubleValue() : 0.0);
+
+	    return response;
+	}
 
 
 

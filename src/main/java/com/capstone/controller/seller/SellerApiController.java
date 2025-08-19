@@ -1,5 +1,7 @@
 package com.capstone.controller.seller;
 
+import com.capstone.dto.ProductDTO;
+import com.capstone.dto.ProductFetchDTO;
 import com.capstone.dto.ProductInsertDTO;
 import com.capstone.model.OrderHeader;
 import com.capstone.model.OrderItem;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -59,12 +62,11 @@ public class SellerApiController {
 
 
    @GetMapping("/products/{id}")
-   public Product getProduct(@PathVariable long id) {
-       return productService.getProduct(id);
+   public ProductFetchDTO getProduct(@PathVariable long id) {
+       Product product = productService.getProduct(id);
+       return new ProductFetchDTO(product);  
    }
 
-   
-   // ========== ORDER APIs ==========
 
     @PutMapping("/products/{id}")
     public String updateProduct(@PathVariable long id, @Valid @RequestBody ProductInsertDTO product) {
@@ -109,6 +111,11 @@ public class SellerApiController {
 
 		return orderService.searchOrders(sellerId, orderStatus, startDate, endDate);
 	}
+	
+	@GetMapping("/analytics")
+    public Map<String, Object> getMonthlySalesAndRevenue(@RequestParam long sellerId) {
+        return orderService.getMonthlySalesAndRevenue(sellerId);
+    }
 	
 	
 
