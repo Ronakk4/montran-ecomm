@@ -8,6 +8,7 @@ public interface UserDao {
 	void saveUser(User u);
 	void updateUser(User u);
     void deleteUser(User u);
-	void changePassword(String newPassword, long id);	
+	void changePassword(String newPassword, long id);
+	String getPassword(long id);
 	
 }
