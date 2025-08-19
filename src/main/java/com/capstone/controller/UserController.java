@@ -46,7 +46,7 @@ public class UserController {
 
 		User existingUser = userService.loginUser(user);
 	    if (existingUser!=null) {
-	        String token = JwtUtil.generateToken(existingUser.getEmail(), existingUser.getRole(), existingUser.getId());
+	        String token = JwtUtil.generateToken(existingUser.getName(), existingUser.getRole(), existingUser.getId());
 
           
 	        // Store JWT in HttpOnly cookie (browser-specific)
