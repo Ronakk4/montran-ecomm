@@ -41,12 +41,11 @@ public class OrderServiceImpl implements OrderService{
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	@Override
-	@Transactional
-	public List<OrderHeader> getAllOrders(long id) {
-	    return orderDao.getAllOrders(id);
-	}
+	
 
+
+
+    
 	@Override
 	@Transactional
 	public OrderHeader getOrder(long id) {
@@ -161,8 +160,60 @@ public class OrderServiceImpl implements OrderService{
 	    return response;
 	}
 
+	@Override
+	@Transactional
+	public List<OrderDTO> getAllOrders(long id) {
+		// TODO Auto-generated method stub
+		 List<OrderHeader> orderHeaders = orderDao.getAllOrders(id);
+
+		    List<OrderDTO> orders = new ArrayList<>();
+
+		    for (OrderHeader order : orderHeaders) {
+		        OrderDTO dto = new OrderDTO();
+		        dto.setOrderId(order.getOrderId());  
+		        dto.setStatus(order.getStatus());
+		        dto.setTotalAmount(order.getTotalAmount());
+		        dto.setShippingAddress(order.getBuyer().getShippingAddress());
+		        dto.setOrderDate(order.getOrderDate());
+
+		        List<OrderItemDTO> itemDTOs = new ArrayList<>();
+		        for (OrderItem item : order.getItems()) {
+		            OrderItemDTO itemDTO = new OrderItemDTO();
+		            itemDTO.setProductId(item.getProduct().getProdId());
+		            itemDTO.setSellerId(item.getSeller().getId());
+		            itemDTO.setQuantity(item.getQuantity());
+		            itemDTO.setPrice(item.getPrice());
+		            itemDTO.setOrderDate(order.getOrderDate());
+		            itemDTOs.add(itemDTO);
+		        }
+
+		        dto.setItems(itemDTOs);
+		        orders.add(dto);
+		    }
+
+		    return orders;
+		}
+
+	  @Override
+	    @Transactional
+	    public boolean cancelOrder(long orderId) {
+	        OrderHeader order = orderDao.getOrder(orderId);
+	        if (order == null) return false;
+
+	        // Only allow cancelling if status is PLACED
+	        if (!"PLACED".equals(order.getStatus())) return false;
+
+	        order.setStatus("CANCELLED");
+	        orderDao.saveOrder(order); // Save updated status
+	        return true;
+	    }
+		
+		
+		
+	}
 
 
 
 
-}
+
+

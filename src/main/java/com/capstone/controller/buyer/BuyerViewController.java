@@ -17,7 +17,7 @@ public class BuyerViewController {
 	    }
 	  @GetMapping("/orders")
 	  public String orders() {
-		  return "orders";
+		  return "Orders";
 	  }
 	  
 	  @GetMapping("/profile")
@@ -28,6 +28,8 @@ public class BuyerViewController {
 		    response.setDateHeader("Expires", 0); // Proxies
 		    return "UserProfile"; 
 	  }
+	  
+	 
 	  public String getMethodName(@RequestParam String param) {
 	  	return new String();
 	  }

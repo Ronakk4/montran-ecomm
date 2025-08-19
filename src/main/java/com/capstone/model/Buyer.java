@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
+
 public class Buyer extends User{
 	private String shippingAddress;
 	private String phoneNumber;
