@@ -67,7 +67,9 @@
             </a>
             <h2>📦 Orders</h2>
         </div>
-
+		
+ 
+ 
         <div class="filters">
             <input type="text" id="searchBox" class="form-control form-control-sm" placeholder="🔍 Search Order ID">
             <select id="statusFilter" class="form-select form-select-sm">
@@ -80,6 +82,23 @@
             </select>
         </div>
     </div>
+    
+    <!-- ====== ADDED SEARCH BAR FOR ORDERS ====== -->
+    <section class="mt-4">
+        <h4>Search Orders</h4>
+        <form class="row g-2 align-items-center">
+            <div class="col-md-3">
+                <input type="date" id="startDate" class="form-control">
+            </div>
+            <div class="col-md-3">
+                <input type="date" id="endDate" class="form-control">
+            </div>
+            <div class="col-md-3">
+                <button type="button" class="btn btn-primary w-100" id="searchOrdersBtn">Search Orders</button>
+            </div>
+        </form>
+    </section>
+    <!-- ====== END OF SEARCH BAR ====== -->
 
     <!-- ORDERS TABLE -->
     <div class="card-table">
@@ -167,6 +186,50 @@
         let filtered = keyword ? allOrders.filter(o => o.orderId.toString().includes(keyword)) : allOrders;
         renderOrders(filtered);
     });
+    
+//  // ===== ADDED ORDER SEARCH =====
+//     $("#searchOrdersBtn").on("click", function() {
+//         const params = {
+//             sellerId: sellerId,
+//             orderStatus: $("#orderStatus").val(),
+//             startDate: $("#startDate").val(),
+//             endDate: $("#endDate").val()
+//         };
+//         $.ajax({
+//             url: `${apiBase}/searchOrders`,
+//             type: "GET",
+//             data: params,
+//             success: function(orders) {
+//                 renderOrdersTable(orders);
+//             },
+//             error: function(xhr) {
+//                 console.error("Order search failed:", xhr.responseText);
+//                 alert("Order search failed.");
+//             }
+//         });
+//     });
+//     // ===== END ORDER SEARCH =====
+
+//     function renderOrdersTable(orders) {
+//         let table = $("#ordersTable");
+//         table.empty();
+//         if (!orders || orders.length === 0) {
+//             table.append("<tr><td colspan='5' class='text-center'>No orders found.</td></tr>");
+//         } else {
+//             orders.slice(0,5).forEach(o => {
+//                 table.append(`
+//                     <tr>
+//                         <td>${o.orderHeader.orderId}</td>
+//                         <td>${o.orderHeader.buyer.name}</td>
+//                         <td>${o.product.prodName}</td>
+//                         <td>${o.quantity}</td>
+//                         <td>${o.orderHeader.status}</td>
+//                     </tr>
+//                 `);
+//             });
+//         }
+//     }
+// });
 
     // Init
     loadOrders();

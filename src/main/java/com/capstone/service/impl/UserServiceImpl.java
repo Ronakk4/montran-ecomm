@@ -127,4 +127,12 @@ public class UserServiceImpl implements UserService{
 	}
 		return null;		
 	}
+
+	@Override
+	public void changePassword(String newPassword, long id) {
+		userDao.changePassword(newPassword, id);
+		
+	}
+
+	
 }
