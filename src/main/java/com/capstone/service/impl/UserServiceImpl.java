@@ -7,7 +7,7 @@ import javax.validation.Valid;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.capstone.config.JacksonConfig;
 import com.capstone.dao.UserDao;
 import com.capstone.dto.BuyerDTO;
 import com.capstone.dto.LoginRequestDTO;
@@ -24,12 +24,16 @@ import com.capstone.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService{
+
+    //private final JacksonConfig jacksonConfig;
 	
 	@Autowired
 	private UserDao userDao;
 	
 	@Autowired
 	private SessionFactory sessionFactory;
+
+    
 
 	@Override
 	@Transactional
@@ -77,7 +81,9 @@ public class UserServiceImpl implements UserService{
 	    // Common fields update
 	    if (dto.getName() != null) existingUser.setName(dto.getName());
 	    if (dto.getEmail() != null) existingUser.setEmail(dto.getEmail());
-	    if (dto.getPassword() != null) existingUser.setPassword(dto.getPassword());
+	    if (dto.getPassword() != null && !(dto.getPassword()=="")) {
+	        existingUser.setPassword(dto.getPassword());
+	    }
 	    if (dto.getRole() != null) existingUser.setRole(dto.getRole());
 
 	    // Buyer-specific update
@@ -127,12 +133,20 @@ public class UserServiceImpl implements UserService{
 	}
 		return null;		
 	}
+	
 
 	@Override
-	public void changePassword(String newPassword, long id) {
+	public boolean changePassword(String newPassword,String oldPassword, long id) {
+	
+		String oldPass=userDao.getPassword(id);
+		if(oldPass.equals(oldPassword)) {
 		userDao.changePassword(newPassword, id);
+		return true;
+		}
+		 return false;
 		
 	}
+}
 
 	
-}
+

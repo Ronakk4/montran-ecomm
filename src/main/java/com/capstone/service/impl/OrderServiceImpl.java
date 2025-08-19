@@ -12,6 +12,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.capstone.dao.CartDao;
 import com.capstone.dao.OrderHeaderDao;
 import com.capstone.dao.OrderItemDao;
 import com.capstone.dto.OrderDTO;
@@ -34,7 +35,9 @@ public class OrderServiceImpl implements OrderService{
 	@Autowired
 	private OrderHeaderDao orderDao;  
 	
-
+	@Autowired
+	private CartDao cartDao;
+	
 	@Autowired
 	private SessionFactory sessionFactory;
 
@@ -87,6 +90,8 @@ public class OrderServiceImpl implements OrderService{
 
 	    // saving orderHeader will cascade to orderItems if mapped correctly
 	    orderDao.saveOrder(oh);
+	    
+	    cartDao.deleteAllCartItems(buyer.getId());
 	}
 
 	

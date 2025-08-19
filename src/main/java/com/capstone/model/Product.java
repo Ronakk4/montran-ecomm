@@ -146,12 +146,12 @@ public class Product {
 		this.seller = seller;
 	}
 
-	@Override
-	public String toString() {
-		return "Product [id=" + prodId + ", prodName=" + prodName + ", prodDescription=" + prodDescription + ", price="
-				+ price + ", stockQuantity=" + stockQuantity + ", category=" + category + ", createdAt=" + createdAt
-				+ ", updatedAt=" + updatedAt + ", seller=" + seller + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "Product [id=" + prodId + ", prodName=" + prodName + ", prodDescription=" + prodDescription + ", price="
+//				+ price + ", stockQuantity=" + stockQuantity + ", category=" + category + ", createdAt=" + createdAt
+//				+ ", updatedAt=" + updatedAt + ", seller=" + seller + "]";
+//	}
 	
 	
 }
