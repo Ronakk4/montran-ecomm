@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -109,6 +110,11 @@ public class SellerApiController {
 
 		return orderService.searchOrders(sellerId, orderStatus, startDate, endDate);
 	}
+	
+	@GetMapping("/analytics")
+    public Map<String, Object> getMonthlySalesAndRevenue(@RequestParam long sellerId) {
+        return orderService.getMonthlySalesAndRevenue(sellerId);
+    }
 	
 	
 

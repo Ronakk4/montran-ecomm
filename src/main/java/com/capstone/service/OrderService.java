@@ -2,6 +2,7 @@
 package com.capstone.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.capstone.dto.OrderDTO;
 import com.capstone.dto.SellerOrderDTO;
@@ -21,6 +22,7 @@ public interface OrderService {
 
 	void saveOrder(OrderDTO o);
 	OrderHeader placeOrder(List<CartItem> cartItems);
+	Map<String, Object> getMonthlySalesAndRevenue(long sellerId);
 
 }
 
