@@ -9,24 +9,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-        .order-card {
-            transition: transform 0.2s;
-        }
-        .order-card:hover {
-            transform: scale(1.02);
-        }
-        .product-image {    
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 5px;
-        }
-        .product-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 10px;
-        }
+        .order-card { transition: transform 0.2s; }
+        .order-card:hover { transform: scale(1.02); }
+        .product-image { width: 60px; height: 60px; object-fit: cover; border-radius: 5px; }
+        .product-item { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
     </style>
 </head>
 <body class="container mt-5">
@@ -35,20 +21,13 @@
     String token = null;
     if (request.getCookies() != null) {
         for (Cookie c : request.getCookies()) {
-            if ("jwtToken".equals(c.getName())) {
-                token = c.getValue();
-                break;
-            }
+            if ("jwtToken".equals(c.getName())) { token = c.getValue(); break; }
         }
     }
 
     Long buyerId = null;
     if (token != null) {
-        try {
-            buyerId = JwtUtil.getId(token);
-        } catch (Exception e) {
-            buyerId = null;
-        }
+        try { buyerId = JwtUtil.getId(token); } catch (Exception e) { buyerId = null; }
     }
 %>
 
@@ -94,6 +73,7 @@ $(document).ready(function() {
                 `;
             });
 
+            // Badge color
             let statusClass = "secondary";
             switch(order.status) {
                 case "DELIVERED": statusClass = "success"; break;
@@ -103,17 +83,11 @@ $(document).ready(function() {
                 case "PLACED": statusClass = "primary"; break;
             }
 
+            // Cancel button only if status is PLACED
             let cancelButton = '';
-            if(order.status === 'PLACED' || order.status=="PENDING") {
+            if(order.status === 'PLACED' ) {
                 cancelButton = `<button class="btn btn-danger btn-sm cancel-order-btn mt-2" data-order-id="${order.orderId}">Cancel Order</button>`;
             }
-
-            // Form for Print PDF button
-            let printButton = `
-                <form method="get" action="/ecomm.capstone/buyer/orders/${order.orderId}/pdf" style="display:inline;">
-                    <button type="submit" class="btn btn-success btn-sm mt-2 ms-2">Print PDF</button>
-                </form>
-            `;
 
             html += `
                 <div class="col-12 col-md-6 col-lg-4">
@@ -129,9 +103,7 @@ $(document).ready(function() {
                             <div class="products-container d-none">
                                 ${productsHtml}
                             </div>
-                            <div>
-                                ${cancelButton} ${printButton}
-                            </div>
+                            ${cancelButton}
                         </div>
                     </div>
                 </div>
@@ -151,11 +123,13 @@ $(document).ready(function() {
 
     loadOrders();
 
+    // Toggle products visibility
     $(document).on("click", ".toggle-products-btn", function() {
         $(this).siblings(".products-container").toggleClass("d-none");
         $(this).text($(this).text() === "View Products" ? "Hide Products" : "View Products");
     });
 
+    // Cancel order
     $(document).on("click", ".cancel-order-btn", function() {
         const orderId = $(this).data("order-id");
         const btn = $(this);
@@ -174,7 +148,7 @@ $(document).ready(function() {
             error: function() {
                 alert("Failed to cancel the order.");
             }
-        });	
+        });
     });
 });
 </script>
