@@ -192,7 +192,7 @@ function submitLogin() {
     .then(res => {
         if (res.ok) {
          
-            window.location.href = '${pageContext.request.contextPath}/app/buyer/dashboard';
+            window.location.href = '${pageContext.request.contextPath}';
         } else {
            
             return res.json().catch(() => ({ message: "Invalid email or password" }));

@@ -39,7 +39,7 @@ public class CartServiceImpl implements CartService{
 		
 		Cart existingCart = cartDao.findByBuyerAndProduct(buyer.getId(), product.getProdId());
 		if(existingCart != null) {
-			existingCart.setQuantity(existingCart.getQuantity() + cartDto.getQuantity());
+			existingCart.setQuantity(cartDto.getQuantity());
 			cartDao.updateCart(existingCart);
 			return "Product updated";
 		}
