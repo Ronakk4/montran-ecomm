@@ -127,9 +127,10 @@
     </main>
 
     <script>
-    
+    let prodId=0;
     
     function getRelatedProducts(category) {
+    	console.log("related category",category);
         $.ajax({
             url: '/ecomm.capstone/products/category/' + category,
             method: 'GET',
@@ -164,10 +165,34 @@
     // Call function on page load
     $(document).ready(function() {
         let category = "${product.category}";  // category from JSP model
+        prodId = "${product.prodId}";
         getRelatedProducts(category);
     });
     
-    
+    $(document).on("click", ".add-to-cart", function() {
+        const productId = $(this).data("product-id"); // get productId from button
+        addToCart(productId, 1); // default quantity = 1
+    });
+
+    function addToCart() {
+        $.ajax({
+            url: "http://localhost:8080/ecomm.capstone/api/cart",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                productId: prodId,
+                quantity: 1
+            }),
+            success: function(response) {
+                console.log("Cart updated:", response);
+                alert("Product added to cart");
+            },
+            error: function(xhr) {
+                console.error("Error:", xhr.responseText);
+                alert("Failed to add product to cart");
+            }
+        });
+    }
     
     
     $(document).ready(function() {
