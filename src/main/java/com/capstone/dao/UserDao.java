@@ -7,6 +7,9 @@ public interface UserDao {
 	User findUserByEmail(String email);
 	void saveUser(User u);
 	void updateUser(User u);
-    void deleteUser(User u);	
+    void deleteUser(User u);
+	void changePassword(String newPassword, long id);
+	String getPassword(long id);
+	
 	
 }

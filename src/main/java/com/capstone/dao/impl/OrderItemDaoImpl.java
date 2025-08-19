@@ -2,23 +2,21 @@ package com.capstone.dao.impl;
 
 import java.util.List;
 
-import org.hibernate.Query;
+
 import org.hibernate.SessionFactory;
-//import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-//import com.capstone.controller.BuyerController;
 
 import com.capstone.dao.OrderItemDao;
 import com.capstone.model.OrderItem;
 
 
 @Repository
-@Transactional
-public class OrderItemDaoImp implements OrderItemDao {
+public class OrderItemDaoImpl implements OrderItemDao {
+	
 	@Autowired
 	SessionFactory sessionFactory;
+	
 
 	@Override
 	public List<OrderItem> getAllItem(int id) {
@@ -57,6 +55,16 @@ public class OrderItemDaoImp implements OrderItemDao {
 		 sessionFactory.getCurrentSession().saveOrUpdate(orderItem);
 		
 	}
+
+	@Override
+	public List<OrderItem> getAllOrdersForSeller(long sellerId) {
+		return sessionFactory.getCurrentSession().createQuery("from OrderItem oi where oi.seller.id = :sellerId", OrderItem.class)
+				.setParameter("sellerId", sellerId)
+				.list();
+	}
+	
+	
+	
 }
 
     

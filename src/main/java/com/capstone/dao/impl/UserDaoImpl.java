@@ -1,6 +1,10 @@
 package com.capstone.dao.impl;
 
+import java.time.LocalDateTime;
+
 import javax.transaction.Transactional;
+
+import org.hibernate.Session;
 
 //import javax.persistence.Query;
 
@@ -26,19 +30,16 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public void saveUser(User u) {
+    	u.setCreatedAt(LocalDateTime.now());
+        u.setUpdatedAt(LocalDateTime.now());
         sessionFactory.getCurrentSession().save(u);
     }
     
 	@Override
 	public User findUserById(long id) {
 		// TODO Auto-generated method stub
-//		Query <User> query = session.createQuery("from User where id= :id", User.class);
-//		query.setParameter("id",id);
-//		return query.uniqueResult();
 		return sessionFactory.getCurrentSession().get(User.class, id);
 	}
-	
-	
 
 	@Override
 	public User findUserByEmail(String email) {
@@ -57,12 +58,50 @@ public class UserDaoImpl implements UserDao{
 		sessionFactory.getCurrentSession().delete(u);
 	}
 
-	@Override
-	public void updateUser(User u) {
-		// TODO Auto-generated method stub
-		sessionFactory.getCurrentSession().merge(u);
-		
+	@Transactional
+	public void updateUser(User updatedUser) {
+	    Session session = sessionFactory.getCurrentSession();
+
+	    
+	    User existingUser = session.get(User.class, updatedUser.getId());
+	    if (existingUser == null) {
+	        throw new RuntimeException("User not found with id " + updatedUser.getId());
+	    }
+
+	    // Update only fields that are provided
+	    if (updatedUser.getName() != null) {
+	        existingUser.setName(updatedUser.getName());
+	    }
+	    if (updatedUser.getEmail() != null) {
+	        existingUser.setEmail(updatedUser.getEmail());
+	    }
+	   
+
+	    
+	    if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
+	        existingUser.setPassword(updatedUser.getPassword());
+	    }
+
+	  
+	    session.merge(existingUser);
 	}
+
+
+	@Override
+	public void changePassword(String newPassword, long id) {
+		sessionFactory.getCurrentSession().createQuery("update User set password = :newPassword where id = :id")
+		.setParameter("id", id)
+		.setParameter("newPassword", newPassword).executeUpdate();
+	}
+	
+	
+	public String getPassword(long id) {
+		return sessionFactory.getCurrentSession().createQuery("select password from User where id=:id").setParameter("id", id).uniqueResult().toString();
+	}
+
+	
+
+	
 
 	
 }

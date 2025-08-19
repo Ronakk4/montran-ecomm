@@ -74,12 +74,12 @@ public class Product {
 
 
 
-	public long getId() {
+	public long getProdId() {
 		return prodId;
 	}
 
-	public void setId(long id) {
-		this.prodId = id;
+	public void setProdId(long prodId) {
+		this.prodId = prodId;
 	}
 	
 	public String getProdName() {
@@ -146,12 +146,12 @@ public class Product {
 		this.seller = seller;
 	}
 
-	@Override
-	public String toString() {
-		return "Product [id=" + prodId + ", prodName=" + prodName + ", prodDescription=" + prodDescription + ", price="
-				+ price + ", stockQuantity=" + stockQuantity + ", category=" + category + ", createdAt=" + createdAt
-				+ ", updatedAt=" + updatedAt + ", seller=" + seller + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "Product [id=" + prodId + ", prodName=" + prodName + ", prodDescription=" + prodDescription + ", price="
+//				+ price + ", stockQuantity=" + stockQuantity + ", category=" + category + ", createdAt=" + createdAt
+//				+ ", updatedAt=" + updatedAt + ", seller=" + seller + "]";
+//	}
 	
 	
 }

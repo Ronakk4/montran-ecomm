@@ -1,5 +1,8 @@
 package com.capstone.model;
 
+import java.time.LocalDateTime;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -10,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Positive;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "order_items")
 public class OrderItem {
@@ -19,14 +24,17 @@ public class OrderItem {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
+    @JsonIgnore  
     private OrderHeader orderHeader;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
+//    @JsonIgnore
     private Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seller_id")
+//    @JsonIgnore
     private Seller seller;
 
     @Positive(message="Order quantity must be positive")
@@ -34,9 +42,11 @@ public class OrderItem {
     
     private double price;
     
+    @Column(name = "order_date")
+    private LocalDateTime orderDate;
     
     
-    OrderItem(){}
+    public OrderItem(){}
     
 	public OrderItem(OrderHeader orderHeader, Product product, Seller seller, int quantity,
 			double price) {

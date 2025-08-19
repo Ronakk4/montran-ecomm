@@ -57,5 +57,23 @@ public class GlobalExceptionHandler {
 	    return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
 	}
 
+	@ExceptionHandler(DuplicateEmailException.class)
+	public ResponseEntity<Map<String, Object>> handleDuplicateEmail(DuplicateEmailException ex) {
+	    System.out.println("[EX-HANDLER] " + ex.getClass().getSimpleName() + ": " + ex.getMessage());
+	    Map<String, Object> errorBody = new HashMap<>();
+	    errorBody.put("status", "error");
+	    errorBody.put("message", ex.getMessage());
+	    return new ResponseEntity<>(errorBody, HttpStatus.CONFLICT); // 409 Conflict
+	}
+
+	@ExceptionHandler(DuplicateProductException.class)
+	public ResponseEntity<Map<String, Object>> handleDuplicateProduct(DuplicateProductException ex) {
+	    System.out.println("[EX-HANDLER] " + ex.getClass().getSimpleName() + ": " + ex.getMessage());
+	    Map<String, Object> errorBody = new HashMap<>();
+	    errorBody.put("status", "error");
+	    errorBody.put("message", ex.getMessage());
+	    return new ResponseEntity<>(errorBody, HttpStatus.CONFLICT); // 409 Conflict
+	}
+
 
 }

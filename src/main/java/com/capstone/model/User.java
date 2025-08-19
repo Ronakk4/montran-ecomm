@@ -2,6 +2,7 @@ package com.capstone.model;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -28,13 +30,14 @@ public class User {
 	@NotBlank(message= "Email is required")
 	private String email;
 	
-	
-	@NotBlank(message="Password is required")
-	@Size(min=8,message= "Password must be atleast 8 characters")
-	@Pattern(
-			regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]+$",
-	        message = "Password must contain uppercase, lowercase, number, and special character"
-	    )
+	@Column(name = "phone_number", unique = true)
+	private String phoneNumber;
+
+//	@Size(min=8,message= "Password must be atleast 8 characters")
+//	@Pattern(
+//		regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]+$",
+//	        message = "Password must contain uppercase, lowercase, number, and special character"
+//	    )
 	private String password;
 	
 	private String role;
@@ -45,15 +48,27 @@ public class User {
 	
 	
 	public User(String name, String email, String password, String role, LocalDateTime createdAt,
-			LocalDateTime updatedAt) {
+			LocalDateTime updatedAt, String phoneNumber) {
 		super();
 		
-		this.name = name;
+		this.name = name;	
 		this.email = email;
 		this.password = password;
 		this.role = role;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
+		this.phoneNumber = phoneNumber;
+		
+	}
+
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 
 
@@ -107,24 +122,24 @@ public class User {
 	}
 
 
-//	public LocalDateTime getCreatedAt() {
-//		return createdAt;
-//	}
-//
-//
-//	public void setCreatedAt(LocalDateTime createdAt) {
-//		this.createdAt = createdAt;
-//	}
-//
-//
-//	public LocalDateTime getUpdatedAt() {
-//		return updatedAt;
-//	}
-//
-//
-//	public void setUpdatedAt(LocalDateTime updatedAt) {
-//		this.updatedAt = updatedAt;
-//	}
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+
+
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
 	
 	
 }
