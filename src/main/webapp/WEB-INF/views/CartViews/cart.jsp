@@ -85,19 +85,64 @@
     <a href="${pageContext.request.contextPath}/cart/checkout" class="btn btn-success">Proceed to Checkout</a>
   </div>
 </div>
+<!--<script>-->
+<!--function loadCart() {-->
+<!--  $.get("${pageContext.request.contextPath}/cart/data", function(data) {-->
+<!--    renderCart(data);-->
+<!--  });-->
+<!--}-->
+<!--function renderCart(data) {-->
+<!--  if (!data.cartItems || data.cartItems.length === 0) {-->
+<!--    $("#cartTable").html("<div class='alert alert-warning'>Your cart is empty.</div>");-->
+<!--    return;-->
+<!--  }-->
+<!--  let html = "<table class='table table-bordered table-striped shadow'><thead class='table-dark'><tr><th>Name</th><th>Seller</th><th>Price</th><th>Qty</th><th>Total</th><th>Action</th></tr></thead><tbody>";-->
+<!--  $.each(data.cartItems, function(i, item) {-->
+<!--    html += "<tr>"-->
+<!--          + "<td>" + item.productName + "</td>"-->
+<!--          + "<td>" + item.sellerId + "</td>"-->
+<!--          + "<td>" + item.price + "</td>"-->
+<!--          + "<td>" + item.quantity + "</td>"-->
+<!--          + "<td>" + item.lineTotal + "</td>"-->
+<!--          + "<td><button class='btn btn-sm btn-danger' onclick='removeItem(" + item.productId + ")'>Remove</button></td>"-->
+<!--          + "</tr>";-->
+<!--  });-->
+<!--  html += "<tr><td colspan='4' align='right'><b>Grand Total</b></td><td colspan='2'><b>" + data.grandTotalAmount + "</b></td></tr>";-->
+<!--  html += "</tbody></table><button class='btn btn-warning' onclick='clearCart()'>Clear Cart</button>";-->
+<!--  $("#cartTable").html(html);-->
+<!--}-->
+<!--function removeItem(id) {-->
+<!--  $.post("${pageContext.request.contextPath}/cart/remove", { productId: id }, loadCart);-->
+<!--}-->
+<!--function clearCart() {-->
+<!--  $.post("${pageContext.request.contextPath}/cart/clear", loadCart);-->
+<!--}-->
+<!--$(document).ready(loadCart);-->
+<!--</script>-->
+
 <script>
 function loadCart() {
-  $.get("${pageContext.request.contextPath}/cart/data", function(data) {
+  // Change this to use buyerId dynamically (session, JSP EL, or hardcode for now)
+  const buyerId = 1;  // Replace with ${sessionScope.userId} or similar
+  $.get("${pageContext.request.contextPath}/api/cart?buyerId=" + buyerId, function(data) {
     renderCart(data);
   });
 }
+
 function renderCart(data) {
-  if (!data.cartItems || data.cartItems.length === 0) {
+  if (!data || data.length === 0) {
     $("#cartTable").html("<div class='alert alert-warning'>Your cart is empty.</div>");
     return;
   }
-  let html = "<table class='table table-bordered table-striped shadow'><thead class='table-dark'><tr><th>Name</th><th>Seller</th><th>Price</th><th>Qty</th><th>Total</th><th>Action</th></tr></thead><tbody>";
-  $.each(data.cartItems, function(i, item) {
+
+  let grandTotal = 0;
+  let html = "<table class='table table-bordered table-striped shadow'>" +
+             "<thead class='table-dark'>" +
+             "<tr><th>Name</th><th>Seller</th><th>Price</th><th>Qty</th><th>Total</th><th>Action</th></tr>" +
+             "</thead><tbody>";
+
+  $.each(data, function(i, item) {
+    grandTotal += item.lineTotal;
     html += "<tr>"
           + "<td>" + item.productName + "</td>"
           + "<td>" + item.sellerId + "</td>"
@@ -107,18 +152,36 @@ function renderCart(data) {
           + "<td><button class='btn btn-sm btn-danger' onclick='removeItem(" + item.productId + ")'>Remove</button></td>"
           + "</tr>";
   });
-  html += "<tr><td colspan='4' align='right'><b>Grand Total</b></td><td colspan='2'><b>" + data.grandTotalAmount + "</b></td></tr>";
-  html += "</tbody></table><button class='btn btn-warning' onclick='clearCart()'>Clear Cart</button>";
+
+  html += "<tr><td colspan='4' align='right'><b>Grand Total</b></td>" +
+          "<td colspan='2'><b>" + grandTotal.toFixed(2) + "</b></td></tr>";
+  html += "</tbody></table>";
+  html += "<button class='btn btn-warning' onclick='clearCart()'>Clear Cart</button>";
+
   $("#cartTable").html(html);
 }
-function removeItem(id) {
-  $.post("${pageContext.request.contextPath}/cart/remove", { productId: id }, loadCart);
+
+function removeItem(prodId) {
+  const buyerId = 1; // Replace with ${sessionScope.userId} or dynamic
+  $.ajax({
+    url: "${pageContext.request.contextPath}/api/cart?buyerId=" + buyerId + "&prodId=" + prodId,
+    type: "DELETE",
+    success: function() { loadCart(); }
+  });
 }
+
 function clearCart() {
-  $.post("${pageContext.request.contextPath}/cart/clear", loadCart);
+  const buyerId = 1; // Replace with ${sessionScope.userId} or dynamic
+  $.ajax({
+    url: "${pageContext.request.contextPath}/api/cart/clear?buyerId=" + buyerId,
+    type: "DELETE",
+    success: function() { loadCart(); }
+  });
 }
+
 $(document).ready(loadCart);
 </script>
+
 </body>
 </html>
 
