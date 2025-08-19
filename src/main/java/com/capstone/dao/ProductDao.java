@@ -22,6 +22,7 @@ public interface ProductDao {
 
 	List<String> getAllCategories();
 	List<Product> searchProducts(String prodName, String category, Double minPrice, Double maxPrice);
+	boolean existsByProdNameAndSellerId(String prodName, long sellerId);
 	
 	
 }

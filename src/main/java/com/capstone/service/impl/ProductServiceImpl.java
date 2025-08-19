@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.capstone.dao.ProductDao;
 import com.capstone.dto.ProductInsertDTO;
+import com.capstone.exception.DuplicateProductException;
 import com.capstone.model.Product;
 import com.capstone.model.Seller;
 import com.capstone.service.ProductService;
@@ -37,28 +38,31 @@ public class ProductServiceImpl implements ProductService{
 
 	@Override
 	@Transactional
-	public void saveProduct(ProductInsertDTO p) {
-		 Product product = new Product();
-		 	product.setProdId(p.getProdId());	
-		    product.setProdName(p.getProdName());
-		    product.setProdDescription(p.getProdDescription());
-		    product.setPrice(p.getPrice());
-		    product.setStockQuantity(p.getStockQuantity());
-		    product.setCategory(p.getCategory());
-		    product.setCreatedAt(p.getCreatedAt() != null ? p.getCreatedAt() : LocalDateTime.now());
-		    product.setUpdatedAt(p.getUpdatedAt());
+	public void saveProduct(ProductInsertDTO p) throws DuplicateProductException{
+	    // Check if seller already has product with same name
+	    if (productDao.existsByProdNameAndSellerId(p.getProdName(), p.getSellerId())) {
+	        throw new DuplicateProductException("Product '" + p.getProdName() + "' already exists for seller ID " + p.getSellerId());
+	    }
 
-		    // Fetch seller using DAO or session in same transaction
-		    Seller seller = productDao.getSellerById(p.getSellerId());
-		    if (seller == null) {
-		    	System.out.println("seller not found");
-		        throw new RuntimeException("Seller not found for ID: " + p.getSellerId());
-		    }
-		    product.setSeller(seller);
+	    Product product = new Product();
+	    product.setProdId(p.getProdId());	
+	    product.setProdName(p.getProdName());
+	    product.setProdDescription(p.getProdDescription());
+	    product.setPrice(p.getPrice());
+	    product.setStockQuantity(p.getStockQuantity());
+	    product.setCategory(p.getCategory());
+	    product.setCreatedAt(p.getCreatedAt() != null ? p.getCreatedAt() : LocalDateTime.now());
+	    product.setUpdatedAt(p.getUpdatedAt());
 
-		    
-		    productDao.saveProduct(product);
+	    Seller seller = productDao.getSellerById(p.getSellerId());
+	    if (seller == null) {
+	        throw new RuntimeException("Seller not found for ID: " + p.getSellerId());
+	    }
+	    product.setSeller(seller);
+
+	    productDao.saveProduct(product);
 	}
+
 
 	@Override
 	@Transactional
