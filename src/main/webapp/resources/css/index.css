@@ -253,6 +253,14 @@ section {
 }
 
 /* Featured Products */
+
+.sneaker-link {
+    display: block; /* Make the <a> tag block-level */
+    text-decoration: none; /* Remove the underline */
+    color: inherit; /* Inherit the color of the parent element */
+}
+
+
 .featured-container {
   row-gap: 2rem;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -302,6 +310,8 @@ section {
 .sneaker-price {
   margin-bottom: var(--m4);
 }
+
+
 
 /* Product Detail Styles */
 .product-detail {

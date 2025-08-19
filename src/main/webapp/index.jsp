@@ -102,7 +102,7 @@
                     <span class="home-new">New in</span>
                     <h1 class="home-title">YEEZY BOOST <br> SPLY - 350</h1>
                     <p class="home-description">Explore the new collections of sneakers</p>
-                    <a class="button">Explore Now</a>
+                    <button class="button" onclick="redirectToSneakers()" >Explore Now</button>
                 </div>
             </div>
         </section>
@@ -110,24 +110,32 @@
         <section class="featured" id="featured">
             <h2 class="section-title">FEATURED</h2>
 
-            <div class="featured-container bd-grid">
-                <article class="sneaker">
-                    <div class="sneaker-sale">Sale</div>
-                    <img src="https://i.postimg.cc/BbYwJ393/featured2.png" alt="" class="sneaker-img">
-                    <span class="sneaker-name">Nike Free RN</span>
-                    <span class="sneaker-price">$149.99</span>
-                    <a class="button-light">Add to Cart <i class="bx bx-right-arrow-alt button-icon"></i></a>
-                </article>
+           <div class="featured-container bd-grid">
+    <article class="sneaker">
+        <div class="sneaker-sale">Sale</div>
+        <a href="http://localhost:8080/ecomm.capstone/app/product-details/32">
+            <img src="https://rukminim1.flixcart.com/image/612/612/k4d27ww0/shirt/q/w/t/l-el024-el-senor-original-imafnadnjp5pq6tg.jpeg?q=70" alt="Nike Free RN" class="sneaker-img">
+            <span class="sneaker-name">Nike Free RN</span>
+            <span class="sneaker-price">$149.99</span>
+        </a>
+        <a href="http://localhost:8080/ecomm.capstone/app/product-details/32" class="button-light">
+            View Product <i class="bx bx-right-arrow-alt button-icon"></i>
+        </a>
+    </article>
 
-                <article class="sneaker">
-                    <div class="sneaker-sale">Sale</div>
-                    <img src="https://i.postimg.cc/k4Zj2mXv/featured3.png" alt="" class="sneaker-img">
-                    <span class="sneaker-name">Nike Free RN</span>
-                    <span class="sneaker-price">$149.99</span>
-                    <a class="button-light">Add to Cart <i class="bx bx-right-arrow-alt button-icon"></i></a>
-                </article>
+    <article class="sneaker">
+        <div class="sneaker-sale">Sale</div>
+        <a href="http://localhost:8080/ecomm.capstone/app/product-details/31">
+            <img src="https://rukminim1.flixcart.com/image/612/612/l5h2xe80/kurta/x/6/n/xl-kast-tile-green-majestic-man-original-imagg4z33hu4kzpv.jpeg?q=70" alt="Nike Free RN" class="sneaker-img">
+            <span class="sneaker-name">Nike Free RN</span>
+            <span class="sneaker-price">$149.99</span>
+        </a>
+        <a href="http://localhost:8080/ecomm.capstone/app/product-details/31" class="button-light">
+            View Product <i class="bx bx-right-arrow-alt button-icon"></i>
+        </a>
+    </article>
+</div>
 
-            </div>
         </section>
 
 <!--        <section class="collection section">-->
@@ -261,19 +269,19 @@
             </div>
         </section>
 
-        <section class="newsletter section">
-            <div class="newsletter-container bd-grid">
-                <div>
-                    <h3 class="newsletter-title">Subscribe and get <br>10% OFF</h3>
-                    <p class="newsletter-description">Get 10% discount for all products</p>
-                </div>
+<!--        <section class="newsletter section">-->
+<!--            <div class="newsletter-container bd-grid">-->
+<!--                <div>-->
+<!--                    <h3 class="newsletter-title">Subscribe and get <br>10% OFF</h3>-->
+<!--                    <p class="newsletter-description">Get 10% discount for all products</p>-->
+<!--                </div>-->
 
-                <form action="" class="newsletter-subscribe">
-                    <input type="text" class="newsletter-input" placeholder="@email.com">
-                    <a  class="button">Subscribe</a>
-                </form>
-            </div>
-        </section>
+<!--                <form action="" class="newsletter-subscribe">-->
+<!--                    <input type="text" class="newsletter-input" placeholder="@email.com">-->
+<!--                    <a  class="button">Subscribe</a>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </section>-->
 
         <footer class="footer section">
             <div class="footer-container bd-grid">
@@ -363,7 +371,9 @@ const categories = [
 
 categories.forEach(c => loadProducts(c.name, c.containerId));
 	
-	
+function redirectToSneakers() {
+            window.location.href = "http://localhost:8080/ecomm.capstone/app/product-list?category=Sneaker";
+}
 
 
 $(document).on("click", ".add-to-cart-btn", function() {

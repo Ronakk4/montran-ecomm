@@ -231,7 +231,8 @@ $(document).ready(function() {
         'men': "Men's Products",
         'women': "Women's Products",
         'electronics': "Electronics",
-        'sneakers': "Sneakers",
+        'sneaker': "Sneakers",
+        'furniture': "Furniture",
         'all': "All Products"
     };
     $("#categoryName").text(categoryNames[category]);
