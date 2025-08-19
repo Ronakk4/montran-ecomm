@@ -12,7 +12,15 @@
         }
     }
     boolean isLoggedIn = (jwtToken != null);
-    Long userId = isLoggedIn ? JwtUtil.getId(jwtToken.getValue()) : null;
+    Long userId = null;
+    if (isLoggedIn) {
+        try {
+            userId = JwtUtil.getId(jwtToken.getValue());
+        } catch (Exception e) {
+            // expired or invalid token
+            isLoggedIn = false;
+        }
+    }
 %>
 
 <header class="l-header">
