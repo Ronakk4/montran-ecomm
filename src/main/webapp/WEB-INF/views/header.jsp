@@ -65,14 +65,23 @@ $(document).ready(function() {
 });
 
 function loadCategories() {
-    $.get("<%= request.getContextPath() %>/api/seller/category", function(categories) {
+    $.get("http://localhost:8080/ecomm.capstone/api/seller/category", function(categories) {
+        console.log("RAW categories:", categories);
+
         let items = "";
         categories.forEach(c => {
+<!--            console.log("Category:", c);-->
+            console.log(`Category ${c}:`, c, typeof c);
+
             items += `
                 <li>
-                    <a href="#" class="dropdown-item category-link" data-category="${c}">${c}</a>
+                    <a href="#" 
+                       class="dropdown-item category-link" 
+                       data-category="\${c}">\${c}
+                    </a>
                 </li>`;
         });
+
         $(".dropdown-menu").html(items);
     });
 }
