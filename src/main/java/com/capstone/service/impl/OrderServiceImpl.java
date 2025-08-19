@@ -161,7 +161,13 @@ public class OrderServiceImpl implements OrderService{
 	    return response;
 	}
 
+	@Override
+	public void updateStatus(long orderId, String status) {
+		orderDao.updateStatus(orderId, status);
+		
+	}
 
+	
 
 
 
