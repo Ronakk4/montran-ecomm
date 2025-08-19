@@ -2,6 +2,8 @@ package com.capstone.dao.impl;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -53,5 +55,15 @@ public class CartDaoImpl implements CartDao {
 		.list();
 		
 	}
+
+	@Override
+	@Transactional
+	public void deleteAllCartItems(long userId) {
+	    sessionFactory.getCurrentSession()
+	        .createQuery("DELETE FROM Cart c WHERE c.buyer.id = :userId")
+	        .setParameter("userId", userId)
+	        .executeUpdate();
+	}
+
 
 }
