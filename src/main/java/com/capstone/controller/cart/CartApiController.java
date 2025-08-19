@@ -162,7 +162,9 @@ public class CartApiController {
 	private CartService cartService;
 
 	@GetMapping
-	public List<CartResponseDTO> getCartForBuyer(@RequestParam long buyerId) {
+	public List<CartResponseDTO> getCartForBuyer( HttpServletRequest request) {
+		 Long buyerId = (Long) request.getAttribute("userId");
+		 System.out.println(buyerId);
 		return cartService.getCartForBuyer(buyerId);
 	}
 
@@ -173,7 +175,8 @@ public class CartApiController {
 //	}
 
 	@DeleteMapping
-	public String deleteProductFromCart(@RequestParam long buyerId, @RequestParam long prodId) {
+	public String deleteProductFromCart(HttpServletRequest request, @RequestParam long prodId) {
+		 Long buyerId = (Long) request.getAttribute("userId");
 		cartService.deleteProductFromCart(buyerId, prodId);
 		return "product deleted successfully";
 	}
@@ -181,7 +184,7 @@ public class CartApiController {
 	 @PostMapping
 	    public ResponseEntity<String> addProductToCart(@RequestBody AddToCartDTO cartItem,
 	                                                   HttpServletRequest request) {
-		 System.out.println("called addcart");
+//		 System.out.println("called addcart");
 	        Long buyerId = (Long) request.getAttribute("userId");
 	        System.out.println(buyerId);
 	        if (buyerId == null) {
