@@ -80,7 +80,7 @@ body {
 	<!-- TOP BAR -->
 	<div class="top-bar">
 		<span class="username">👤 <%= jwtToken != null ? JwtUtil.getUsername(jwtToken.getValue()) : "Guest" %></span>
-		<a href="${pageContext.request.contextPath}/profile"
+		<a href="profile"
 			class="btn btn-outline-secondary btn-sm me-2">Profile</a> <a
 			href="${pageContext.request.contextPath}/logout"
 			class="btn btn-danger btn-sm">Logout</a>

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class Buyer extends User{
 	private String shippingAddress;
-	private String phoneNumber;
+	
 
 	@OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
@@ -23,9 +23,8 @@ public class Buyer extends User{
 	
 	public Buyer(String name, String email, String password, String role, LocalDateTime createdAt,
 			LocalDateTime updatedAt, String shippingAddress, String phoneNumber) {
-		super(name, email, password, role, createdAt, updatedAt);
-		this.shippingAddress = shippingAddress;
-		this.phoneNumber = phoneNumber;
+		super(name, email, password, role, createdAt, updatedAt, phoneNumber);
+		this.shippingAddress = shippingAddress;	
 	}
 
 	public String getShippingAddress() {
@@ -34,14 +33,6 @@ public class Buyer extends User{
 
 	public void setShippingAddress(String shippingAddress) {
 		this.shippingAddress = shippingAddress;
-	}
-
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
 	}
 
 	public List<OrderHeader> getOrders() {

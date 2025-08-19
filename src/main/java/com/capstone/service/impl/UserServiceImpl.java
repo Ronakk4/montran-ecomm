@@ -1,4 +1,5 @@
 package com.capstone.service.impl;
+
 import java.time.LocalDateTime;
 
 import javax.transaction.Transactional;
@@ -23,130 +24,123 @@ import com.capstone.model.User;
 import com.capstone.service.UserService;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
-    //private final JacksonConfig jacksonConfig;
-	
+	// private final JacksonConfig jacksonConfig;
+
 	@Autowired
 	private UserDao userDao;
-	
+
 	@Autowired
 	private SessionFactory sessionFactory;
 
-    
-
 	@Override
 	@Transactional
-	public User findUser(long id) throws UserNotFoundException{
+	public User findUser(long id) throws UserNotFoundException {
 		// TODO Auto-generated method stub
 		User user = userDao.findUserById(id);
-		if(user == null) {
-			throw new UserNotFoundException("User with ID "+ id + " not found !!");
+		if (user == null) {
+			throw new UserNotFoundException("User with ID " + id + " not found !!");
 		}
 		return user;
 	}
 
 	@Override
-	@Transactional	
-	public void registerUser(@Valid UserRegisterDTO user) throws DuplicateEmailException{
-	    // Check if email already exists
-	    if (user.getEmail() != null && userDao.findUserByEmail(user.getEmail().trim()) != null) {
-	        throw new DuplicateEmailException("Email already registered: " + user.getEmail());
-	    }
-	 	
-	    if ("SELLER".equalsIgnoreCase(user.getRole())) {
-	        Seller seller = new Seller(
-	            user.getName(), user.getEmail(), user.getPassword(),
-	            "SELLER", LocalDateTime.now(), LocalDateTime.now(),
-	            user.getShopName(), user.getShopDescription(), user.getGstNumber()
-	        );
-	        userDao.saveUser(seller);
+	@Transactional
+	public void registerUser(@Valid UserRegisterDTO user) throws DuplicateEmailException {
+		// Check if email already exists
+		if (user.getEmail() != null && userDao.findUserByEmail(user.getEmail().trim()) != null) {
+			throw new DuplicateEmailException("Email already registered: " + user.getEmail());
+		}
 
-	    } else if ("BUYER".equalsIgnoreCase(user.getRole())) {
-	        Buyer buyer = new Buyer(
-	            user.getName(), user.getEmail(), user.getPassword(),
-	            "BUYER", LocalDateTime.now(), LocalDateTime.now(),
-	            user.getShippingAddress(), user.getPhoneNumber()
-	        );
-	        userDao.saveUser(buyer);
-	    }
+		if ("SELLER".equalsIgnoreCase(user.getRole())) {
+			Seller seller = new Seller(user.getName(), user.getEmail(), user.getPassword(), "SELLER",
+					LocalDateTime.now(), LocalDateTime.now(), user.getShopName(), user.getShopDescription(),
+					user.getGstNumber(), user.getPhoneNumber());
+			userDao.saveUser(seller);
+
+		} else if ("BUYER".equalsIgnoreCase(user.getRole())) {
+			Buyer buyer = new Buyer(user.getName(), user.getEmail(), user.getPassword(), "BUYER", LocalDateTime.now(),
+					LocalDateTime.now(), user.getShippingAddress(), user.getPhoneNumber());
+			userDao.saveUser(buyer);
+		}
 	}
-
 
 	@Override
 	@Transactional
 	public void updateUser(Long id, UserDTO dto) {
-	    User existingUser = userDao.findUserById(id);
+		User existingUser = userDao.findUserById(id);
 
-	    // Common fields update
-	    if (dto.getName() != null) existingUser.setName(dto.getName());
-	    if (dto.getEmail() != null) existingUser.setEmail(dto.getEmail());
-	    if (dto.getPassword() != null && !(dto.getPassword()=="")) {
-	        existingUser.setPassword(dto.getPassword());
-	    }
-	    if (dto.getRole() != null) existingUser.setRole(dto.getRole());
+		// Common fields update
+		if (dto.getName() != null)
+			existingUser.setName(dto.getName());
+		if (dto.getEmail() != null)
+			existingUser.setEmail(dto.getEmail());
+		if (dto.getPassword() != null && !(dto.getPassword() == "")) {
+			existingUser.setPassword(dto.getPassword());
+		}
+		if (dto.getRole() != null)
+			existingUser.setRole(dto.getRole());
 
-	    // Buyer-specific update
-	    if (existingUser instanceof Buyer && dto instanceof BuyerDTO) {
-	        Buyer buyer = (Buyer) existingUser;
-	        BuyerDTO buyerDTO = (BuyerDTO) dto;
+		// Buyer-specific update
+		if (existingUser instanceof Buyer && dto instanceof BuyerDTO) {
+			Buyer buyer = (Buyer) existingUser;
+			BuyerDTO buyerDTO = (BuyerDTO) dto;
 
-	        if (buyerDTO.getShippingAddress() != null) buyer.setShippingAddress(buyerDTO.getShippingAddress());
-	        if (buyerDTO.getPhoneNumber() != null) buyer.setPhoneNumber(buyerDTO.getPhoneNumber());
-	    }
+			if (buyerDTO.getShippingAddress() != null)
+				buyer.setShippingAddress(buyerDTO.getShippingAddress());
+			if (buyerDTO.getPhoneNumber() != null)
+				buyer.setPhoneNumber(buyerDTO.getPhoneNumber());
+		}
 
-	    // Seller-specific update
-	    if (existingUser instanceof Seller && dto instanceof SellerDTO) {
-	        Seller seller = (Seller) existingUser;
-	        SellerDTO sellerDTO = (SellerDTO) dto;
+		// Seller-specific update
+		if (existingUser instanceof Seller && dto instanceof SellerDTO) {
+			Seller seller = (Seller) existingUser;
+			SellerDTO sellerDTO = (SellerDTO) dto;
 
-	        if (sellerDTO.getShopName() != null) seller.setShopName(sellerDTO.getShopName());
-	        if (sellerDTO.getShopDescription() != null) seller.setShopDescription(sellerDTO.getShopDescription());
-	        if (sellerDTO.getGstNumber() != null) seller.setGstNumber(sellerDTO.getGstNumber());
-	    }
+			if (sellerDTO.getShopName() != null)
+				seller.setShopName(sellerDTO.getShopName());
+			if (sellerDTO.getShopDescription() != null)
+				seller.setShopDescription(sellerDTO.getShopDescription());
+			if (sellerDTO.getGstNumber() != null)
+				seller.setGstNumber(sellerDTO.getGstNumber());
+		}
 
-	    userDao.updateUser(existingUser);
+		userDao.updateUser(existingUser);
 	}
-
 
 	@Override
 	public User loginUser(LoginRequestDTO user) {
-	    if (user.getEmail() == null || user.getPassword() == null) {
-	        System.out.println("Email and password must be provided");
-	        return null;
-	    }
+		if (user.getEmail() == null || user.getPassword() == null) {
+			System.out.println("Email and password must be provided");
+			return null;
+		}
 
-	    User existingUser = userDao.findUserByEmail(user.getEmail().trim());
+		User existingUser = userDao.findUserByEmail(user.getEmail().trim());
 
-	    if (existingUser == null) {
-	        System.out.println("User does not exist");
-	    } 
-	    else {
-	        if (user.getPassword().equals(existingUser.getPassword())) {
-	            System.out.println("Authenticated");
-	            return existingUser;
-	        } 
-	        else {
-	            System.out.println("Not authenticated");
-	            return null;
-	        }
+		if (existingUser == null) {
+			System.out.println("User does not exist");
+		} else {
+			if (user.getPassword().equals(existingUser.getPassword())) {
+				System.out.println("Authenticated");
+				return existingUser;
+			} else {
+				System.out.println("Not authenticated");
+				return null;
+			}
+		}
+		return null;
 	}
-		return null;		
-	}
-	
 
 	@Override
-	public boolean changePassword(String newPassword,String oldPassword, long id) {
-	
-		String oldPass=userDao.getPassword(id);
-		if(oldPass.equals(oldPassword)) {
-		userDao.changePassword(newPassword, id);
-		return true;
+	public boolean changePassword(String newPassword, String oldPassword, long id) {
+
+		String oldPass = userDao.getPassword(id);
+		if (oldPass.equals(oldPassword)) {
+			userDao.changePassword(newPassword, id);
+			return true;
 		}
-		 return false;
-		
+		return false;
+
 	}
 }
-
-	
-

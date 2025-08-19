@@ -20,10 +20,9 @@ import javax.validation.Valid;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
  
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
  
 @RestController
@@ -81,36 +80,6 @@ public class UserController {
 	public User findUser(@PathVariable long id) {
 		return userService.findUser(id);
 	}
-
-	// @PutMapping("/{id}")
-	// public String updateUser(@PathVariable long id, @RequestBody Map<String,
-	// Object> json) {
-	// String role = json.get("role") != null ? json.get("role").toString() : null;
-	//
-	// UserDTO dto;
-	//
-	// if ("BUYER".equalsIgnoreCase(role)) {
-	// BuyerDTO buyerDTO = new BuyerDTO();
-	// mapCommonFields(buyerDTO, json);
-	// buyerDTO.setShippingAddress((String) json.get("shippingAddress"));
-	// buyerDTO.setPhoneNumber((String) json.get("phoneNumber"));
-	// dto = buyerDTO;
-	// }
-	// else if ("SELLER".equalsIgnoreCase(role)) {
-	// SellerDTO sellerDTO = new SellerDTO();
-	// mapCommonFields(sellerDTO, json);
-	// sellerDTO.setShopName((String) json.get("shopName"));
-	// sellerDTO.setShopDescription((String) json.get("shopDescription"));
-	// sellerDTO.setGstNumber((String) json.get("gstNumber"));
-	// dto = sellerDTO;
-	// }
-	// else {
-	// throw new RuntimeException("Invalid role. Must be BUYER or SELLER.");
-	// }
-	//
-	// userService.updateUser(id, dto);
-	// return "User updated successfully";
-	// }
 	
 	@PutMapping("/changepassword")
 	public String updatePassword( @RequestBody ChangePasswordDTO changePasswordDTO) {

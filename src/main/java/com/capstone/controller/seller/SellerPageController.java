@@ -15,7 +15,12 @@ public class SellerPageController {
         // Will resolve to /WEB-INF/views/Seller Side/seller-dashboard.jsp
         return "Seller Side/seller-dashboard";
     }
-
+    
+    @GetMapping("/profile")
+    public String sellerProfilePage() {
+    	// Will resolve to /WEB-INF/views/Seller Side/seller-dashboard.jsp
+    	return "Seller Side/seller-profile";
+    }
     
     @GetMapping("/products")
     public String productsPage() {

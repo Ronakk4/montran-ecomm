@@ -64,7 +64,7 @@ public class SellerApiController {
    @GetMapping("/products/{id}")
    public ProductFetchDTO getProduct(@PathVariable long id) {
        Product product = productService.getProduct(id);
-       return new ProductFetchDTO(product);  
+       return new ProductFetchDTO(product);
    }
 
 
