@@ -19,7 +19,7 @@ public class BuyerViewController {
 	  }
 	  @GetMapping("/profile")
 	  public String profile() {
-		  return "profile";
+		  return "UserProfile";
 	  }
 	  
 	  public String getMethodName(@RequestParam String param) {
