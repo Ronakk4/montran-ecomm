@@ -24,7 +24,7 @@
   --m5: 2.5rem;
   --m6: 3rem;
   --z-fixed: 100;
-  --rotate-img: rotate(-30deg);
+  --rotate-img: rotate(0deg);
 }
 
 @media screen and (min-width: 768px) {
@@ -327,7 +327,7 @@ section {
   align-items: center;
 }
 .product-main-img {
-  max-width: 400px;
+  max-width: 280px;
   transform: var(--rotate-img);
   filter: drop-shadow(0 12px 8px rgba(0, 0, 0, 0.2));
 }

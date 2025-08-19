@@ -243,6 +243,7 @@ $(document).ready(function() {
         url: '/ecomm.capstone/products/category/' + displayCategory,
         method: "GET",
         success: function(products) {
+        	console.log("page", products);
             allProducts = products;
             renderProducts(allProducts, currentPage);
         },
@@ -272,9 +273,11 @@ function renderProducts(products, page = 1) {
     paginated.forEach(product => {
         let card = `
             <article class="sneaker">
-                <img src="\${product.imageUrl || 'https://i.postimg.cc/3wWGqDYn/women1.png'}" 
-                     alt="${product.prodName}" 
-                     class="sneaker-img">
+        	  <img src="\${(product.images && product.images.length > 0) 
+            ? product.images[0] 
+            : 'https://i.postimg.cc/3wWGqDYn/women1.png'}" 
+   alt="\${product.prodName}" 
+   class="sneaker-img">
                 <span class="sneaker-name">\${product.prodName}</span>
                 <span class="sneaker-price">₹\${product.price}</span>
                 <a href="<%= request.getContextPath() %>/app/product-details/\${product.prodId}" 

@@ -24,7 +24,7 @@
   --m5: 2.5rem;
   --m6: 3rem;
   --z-fixed: 100;
-  --rotate-img: rotate(-30deg);
+  --rotate-img: rotate(0deg);
 }
 
 @media screen and (min-width: 768px) {
@@ -284,7 +284,7 @@ section {
 }
 
 .sneaker-img {
-  width: 220px;
+  width: 320px;
   margin-top: var(--m3);
   margin-bottom: var(--m6);
   transform: var(--rotate-img);
@@ -327,8 +327,7 @@ section {
   align-items: center;
 }
 .product-main-img {
-  max-width: 400px;
-  transform: var(--rotate-img);
+  max-width: 280px;
   filter: drop-shadow(0 12px 8px rgba(0, 0, 0, 0.2));
 }
 
