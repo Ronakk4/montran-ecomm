@@ -74,5 +74,12 @@ public class CartServiceImpl implements CartService{
 	    }).collect(Collectors.toList()); // ✅ requires import
 	}
 
+	@Override
+	public void deleteAllCartItems(long id) {
+		// TODO Auto-generated method stub
+		cartDao.deleteAllCartItems(id);
+		
+	}
+
 
 }

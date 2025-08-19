@@ -10,4 +10,5 @@ public interface CartService {
 	String addProductToCart(AddToCartDTO cartDto);
 	void deleteProductFromCart(long buyerId, long prodId);
 	List<CartResponseDTO> getCartForBuyer(long buyerId);
+	void deleteAllCartItems(long id);
 }

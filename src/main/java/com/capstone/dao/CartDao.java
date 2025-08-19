@@ -10,4 +10,5 @@ public interface CartDao {
 	void saveCart(Cart cart);
 	void deleteCart(long buyerId, long prodId);
 	void updateCart(Cart existingCart);
+	void deleteAllCartItems(long id);
 }
