@@ -50,7 +50,7 @@ public class CartDaoImpl implements CartDao {
 
 	@Override
 	public List<Cart> getCartForBuyer(long buyerId) {
-		return sessionFactory.getCurrentSession().createQuery("from Cart c where c.buyer.id = :buyerId", Cart.class)
+		return sessionFactory.getCurrentSession().createQuery("from Cart c where c.buyer.id = :buyerId order by product_id", Cart.class)
 		.setParameter("buyerId", buyerId)
 		.list();
 		
