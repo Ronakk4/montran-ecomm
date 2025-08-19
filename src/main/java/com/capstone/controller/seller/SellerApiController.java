@@ -1,5 +1,7 @@
 package com.capstone.controller.seller;
 
+import com.capstone.dto.ProductDTO;
+import com.capstone.dto.ProductFetchDTO;
 import com.capstone.dto.ProductInsertDTO;
 import com.capstone.model.OrderHeader;
 import com.capstone.model.OrderItem;
@@ -60,8 +62,9 @@ public class SellerApiController {
 
 
    @GetMapping("/products/{id}")
-   public Product getProduct(@PathVariable long id) {
-       return productService.getProduct(id);
+   public ProductFetchDTO getProduct(@PathVariable long id) {
+       Product product = productService.getProduct(id);
+       return new ProductFetchDTO(product);  
    }
 
 
