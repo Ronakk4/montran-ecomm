@@ -277,7 +277,7 @@ function renderProducts(products, page = 1) {
                      class="sneaker-img">
                 <span class="sneaker-name">\${product.prodName}</span>
                 <span class="sneaker-price">₹\${product.price}</span>
-                <a href="<%= request.getContextPath() %>/app/product-details/${product.prodId}" 
+                <a href="<%= request.getContextPath() %>/app/product-details/\${product.prodId}" 
                    class="button-light">
                    View Details <i class="bx bx-right-arrow-alt button-icon"></i>
                 </a>
