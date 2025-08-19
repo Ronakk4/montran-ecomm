@@ -193,5 +193,18 @@ public class CartApiController {
 	        cartItem.setBuyerId(buyerId);  // backend decides userId
 	        return ResponseEntity.ok(cartService.addProductToCart(cartItem));
 	    }
+	 
+	 @PutMapping
+	    public ResponseEntity<String> UpdateProductToCart(@RequestBody AddToCartDTO cartItem,
+	                                                   HttpServletRequest request) {
+//		 System.out.println("called addcart");
+	        Long buyerId = (Long) request.getAttribute("userId");
+	        System.out.println(buyerId);
+	        if (buyerId == null) {
+	            return ResponseEntity.status(401).body("Unauthorized");
+	        }
+	        cartItem.setBuyerId(buyerId);  // backend decides userId
+	        return ResponseEntity.ok(cartService.addProductToCart(cartItem));
+	    }
 
 }

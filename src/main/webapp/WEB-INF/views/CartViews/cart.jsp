@@ -86,6 +86,8 @@
   </div>
 </div>
 <script>
+
+
 function loadCart() {
   $.get("${pageContext.request.contextPath}/api/cart", function(data) {
     renderCart(data);
@@ -104,9 +106,11 @@ function renderCart(data) {
 	                 "<tr>" +
 	                   "<th>Name</th>" +
 	                   "<th>Price</th>" +
+	                   "<th>Decrease Qty</th>"+
 	                   "<th>Qty</th>" +
+		               "<th>Increase Qty</th>"+  
 	                   "<th>Total</th>" +
-	                   "<th>Action</th>" +
+	                   "<th>Action</th>" +           
 	                 "</tr>" +
 	               "</thead><tbody>";
 
@@ -116,7 +120,9 @@ function renderCart(data) {
 	    html += "<tr>"
 	          + "<td>" + item.productName + "</td>"
 	          + "<td>" + item.productPrice + "</td>"
+	          + "<td class='text-center'> <button class='btn btn-sm btn-success' onclick='decrease(" + item.productId + ", " + item.quantity + ")'>-</button></td>"
 	          + "<td>" + item.quantity + "</td>"
+	          + "<td class='text-center'> <button class='btn btn-sm btn-success' onclick='increase("+ item.productId + ", " + item.quantity +  ")'>+</button></td>"
 	          + "<td>" + lineTotal + "</td>"
 	          + "<td><button class='btn btn-sm btn-danger' onclick='removeItem(" + item.productId + ")'>Remove</button></td>"
 	          + "</tr>";
@@ -147,7 +153,58 @@ function removeItem(id) {
 function clearCart() {
   $.post("${pageContext.request.contextPath}/api/cart/clear", loadCart);
 }
+
+
+
 $(document).ready(loadCart);
+
+
+
+
+
+function increase(productId, quantity) {
+	console.log(quantity);
+    $.ajax({
+        url: "http://localhost:8080/ecomm.capstone/api/cart",
+        type: "PUT",
+        contentType: "application/json",
+        data: JSON.stringify({
+            productId: productId,
+            quantity: quantity+1
+        }),
+        success: function(response) {
+        	loadCart();
+<!--            console.log("Cart updated:", data);-->
+            alert("quantity increased");
+        },
+        error: function(xhr) {
+            console.error("Error:", xhr.responseText);
+            alert("Failed to add product to cart");
+        }
+    });
+}
+function decrease(productId, quantity) {
+	console.log(quantity);
+    $.ajax({
+        url: "http://localhost:8080/ecomm.capstone/api/cart",
+        type: "PUT",
+        contentType: "application/json",
+        data: JSON.stringify({
+            productId: productId,
+            quantity: quantity-1
+        }),
+        success: function(response) {
+        	loadCart();
+<!--            console.log("Cart updated:", data);-->
+            alert("quantity decreased");
+        },
+        error: function(xhr) {
+            console.error("Error:", xhr.responseText);
+            alert("Failed to add product to cart");
+        }
+    });
+}
+
 </script>
 </body>
 </html>
