@@ -23,7 +23,10 @@ public interface OrderService {
 	void saveOrder(OrderDTO o);
 	OrderHeader placeOrder(List<CartItem> cartItems);
 	Map<String, Object> getMonthlySalesAndRevenue(long sellerId);
+
 	boolean cancelOrder(long orderId);
+
+	void updateStatus(long orderId, String status);
 
 }
 

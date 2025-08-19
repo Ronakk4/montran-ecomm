@@ -161,6 +161,7 @@ public class OrderServiceImpl implements OrderService{
 	}
 
 	@Override
+
 	@Transactional
 	public List<OrderDTO> getAllOrders(long id) {
 		// TODO Auto-generated method stub
@@ -210,10 +211,17 @@ public class OrderServiceImpl implements OrderService{
 		
 		
 		
+	
+
+
+	public void updateStatus(long orderId, String status) {
+		orderDao.updateStatus(orderId, status);
+		
 	}
+}
 
 
-
+	
 
 
 
