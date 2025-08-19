@@ -97,6 +97,13 @@ public class UserController {
 	// userService.updateUser(id, dto);
 	// return "User updated successfully";
 	// }
+	
+	@PutMapping("/changepassword")
+	public String updatePassword(@Valid @RequestParam String newPassword, @RequestParam long id) {
+		userService.changePassword(newPassword, id);
+		return "password changed successfully";
+		
+	}
 
 	@PutMapping("/{id}")
 	public String updateUser(@PathVariable long id, @RequestBody UpdateUserDTO dto) {

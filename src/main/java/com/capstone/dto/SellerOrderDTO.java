@@ -1,5 +1,6 @@
 package com.capstone.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class SellerOrderDTO {
@@ -8,6 +9,8 @@ public class SellerOrderDTO {
     private double totalAmount;
     private String shippingAddress;   // or just city/state
     private List<OrderItemDTO> items;
+    private LocalDateTime orderDate;
+    
 	public Long getOrderId() {
 		return orderId;
 	}
@@ -38,6 +41,13 @@ public class SellerOrderDTO {
 	public void setItems(List<OrderItemDTO> items) {
 		this.items = items;
 	}
+	public LocalDateTime getOrderDate() {
+		return orderDate;
+	}
+	public void setOrderDate(LocalDateTime orderDate) {
+		this.orderDate = orderDate;
+	}
+	
 
     
 }
