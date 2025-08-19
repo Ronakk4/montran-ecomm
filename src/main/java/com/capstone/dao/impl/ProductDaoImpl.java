@@ -143,6 +143,17 @@ public class ProductDaoImpl implements ProductDao {
 		
 	}
 
+	@Override
+	public boolean existsByProdNameAndSellerId(String prodName, long sellerId) {
+	    String hql = "SELECT COUNT(p) FROM Product p WHERE p.prodName = :name AND p.seller.id = :sellerId";
+	    Long count = (Long) sessionFactory.getCurrentSession()
+	                    .createQuery(hql)
+	                    .setParameter("name", prodName)
+	                    .setParameter("sellerId", sellerId)
+	                    .uniqueResult();
+	    return count != null && count > 0;
+	}
+
 	
 
 }
