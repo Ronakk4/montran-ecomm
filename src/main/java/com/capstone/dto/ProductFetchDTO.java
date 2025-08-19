@@ -30,4 +30,70 @@ public class ProductFetchDTO {
     // getters & setters ...
     public List<String> getImages() { return images; }
     public void setImages(List<String> images) { this.images = images; }
+
+	public Long getProdId() {
+		return prodId;
+	}
+
+	public void setProdId(Long prodId) {
+		this.prodId = prodId;
+	}
+
+	public String getProdName() {
+		return prodName;
+	}
+
+	public void setProdName(String prodName) {
+		this.prodName = prodName;
+	}
+
+	public String getProdDescription() {
+		return prodDescription;
+	}
+
+	public void setProdDescription(String prodDescription) {
+		this.prodDescription = prodDescription;
+	}
+
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+
+	public Integer getStockQuantity() {
+		return stockQuantity;
+	}
+
+	public void setStockQuantity(Integer stockQuantity) {
+		this.stockQuantity = stockQuantity;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	public Long getSellerId() {
+		return sellerId;
+	}
+
+	public void setSellerId(Long sellerId) {
+		this.sellerId = sellerId;
+	}
+
+	public String getSellerName() {
+		return sellerName;
+	}
+
+	public void setSellerName(String sellerName) {
+		this.sellerName = sellerName;
+	}
+    
+    
 }
