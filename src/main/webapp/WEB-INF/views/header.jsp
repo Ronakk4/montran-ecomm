@@ -33,7 +33,9 @@
             </div>
 
             <div class="nav-shop">
-                <i class="bx bx-shopping-bag"></i>
+                 <a href="${pageContext.request.contextPath}/app/cart">
+                 <i class="bx bx-shopping-bag"></i>
+                 </a>
             </div>
         </nav>
     </header>
