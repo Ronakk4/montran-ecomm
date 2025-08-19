@@ -22,7 +22,7 @@ public class BuyerController {
 
 
     @GetMapping("/orders")
-    public List<OrderHeader> getAllOrders(@RequestParam("buyerId") long buyerId) {
+    public List<OrderDTO> getAllOrders(@RequestParam("buyerId") long buyerId) {
         return orderService.getAllOrders(buyerId);
     }
 
@@ -40,10 +40,15 @@ public class BuyerController {
     }
 
 
-    @DeleteMapping("/orders/{id}")
-    public String cancelOrder(@PathVariable long id) {
-        orderService.deleteOrder(id);
-        return "Order cancelled successfully";
+    @PutMapping("/orders/{id}")
+    public ResponseEntity<String> cancelOrder(@PathVariable long id) {
+        boolean cancelled = orderService.cancelOrder(id);
+
+        if (cancelled) {
+            return ResponseEntity.ok("Order cancelled successfully");
+        } else {
+            return ResponseEntity.badRequest().body("Order cannot be cancelled");
+        }
     }
     
     @PostMapping("/checkout")
