@@ -1,6 +1,7 @@
 <%@page import="com.capstone.util.JwtUtil"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,25 +10,47 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-        .order-card { transition: transform 0.2s; }
-        .order-card:hover { transform: scale(1.02); }
-        .product-image { width: 60px; height: 60px; object-fit: cover; border-radius: 5px; }
-        .product-item { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
+        .order-card {
+            transition: transform 0.2s;
+        }
+        .order-card:hover {
+            transform: scale(1.02);
+        }
+        .product-image {	
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .product-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body class="container mt-5">
+
 
 <%
     String token = null;
     if (request.getCookies() != null) {
         for (Cookie c : request.getCookies()) {
-            if ("jwtToken".equals(c.getName())) { token = c.getValue(); break; }
+            if ("jwtToken".equals(c.getName())) {
+                token = c.getValue();
+                break;
+            }
         }
     }
 
     Long buyerId = null;
     if (token != null) {
-        try { buyerId = JwtUtil.getId(token); } catch (Exception e) { buyerId = null; }
+        try {
+            buyerId = JwtUtil.getId(token);
+        } catch (Exception e) {
+            buyerId = null;
+        }
     }
 %>
 
@@ -63,9 +86,10 @@ $(document).ready(function() {
                     <div class="product-item">
                         ${item.imageUrl ? `<img src="${item.imageUrl}" class="product-image">` : ""}
                         <div>
-                            <strong>${item.name || "Product ID: " + item.productId}</strong><br>
+                            <strong>${item.name || "Product name: " + item.productName}</strong><br>
                             <small class="text-muted">${item.description || ""}</small><br>
                             <span class="badge bg-light text-dark">x${item.quantity}</span>
+                            <span class="badge bg-light text-dark">x${item.sellerName}</span>
                             <span class="badge bg-primary ms-1">₹${item.price}</span>
                         </div>
                     </div>
@@ -135,8 +159,10 @@ $(document).ready(function() {
         if(!confirm("Are you sure you want to cancel this order?")) return;
 
         $.ajax({
-            url: `/ecomm.capstone/buyer/orders/${orderId}/`,
+            url: `/ecomm.capstone/buyer/orders/${orderId}/status`,
             type: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify({ status: "CANCELLED" }),
             success: function() {
                 btn.closest(".card").find(".order-status-badge")
                    .removeClass()
@@ -154,3 +180,4 @@ $(document).ready(function() {
 
 </body>
 </html>
+	
