@@ -27,7 +27,11 @@
         <property name="driverClassName" value="org.postgresql.Driver" />
         <property name="url" value="jdbc:postgresql://localhost:5432/SOECP" />
         <property name="username" value="postgres" />
-        <property name="password" value="admin" />
+<<<<<<< HEAD
+        <property name="password" value="admin5234" />
+=======
+        <property name="password" value="admin1" />
+>>>>>>> 4a3d845e7d0f8894601b4d27bba25cd9b703755c
 
         <!-- Optional connection pool settings -->
         <property name="initialSize" value="5" />
