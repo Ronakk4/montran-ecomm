@@ -38,10 +38,7 @@
     <filter-name>JWTAuthenticationFilter</filter-name>
     <url-pattern>/api/cart</url-pattern>   
 </filter-mapping>
-<filter-mapping>
-    <filter-name>JWTAuthenticationFilter</filter-name>
-    <url-pattern>/api/checkout</url-pattern>   
-</filter-mapping>
+
 
 </web-app>
 
