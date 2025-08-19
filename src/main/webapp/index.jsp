@@ -342,7 +342,7 @@ async function loadProducts(category, containerId) {
             <span class="sneaker-name">` + p.prodName + `</span>
             <span class="sneaker-price">$` + p.price + `</span>
             </a>
-            <button class="button-light add-to-cart-btn" data-product-id="${p.id}">
+            <button class="button-light add-to-cart-btn" data-product-id="\${p.prodId}">
             Add to Cart <i class="bx bx-right-arrow-alt button-icon"></i>
         </button>
         </article>
