@@ -88,6 +88,12 @@ public class SellerApiController {
         return orderService.getOrdersForSeller(sellerId);
     }
     
+    @PutMapping("/order-status")
+    public String updateOrderStatus(@RequestParam long orderId, @RequestParam String status) {
+    	orderService.updateStatus(orderId, status);
+    	return "order updated";
+    }
+    
     @GetMapping("/category")
     public List<String> getAllCategories(){
     	return productService.getAllCategories();
