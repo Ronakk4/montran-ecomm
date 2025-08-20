@@ -336,37 +336,50 @@ async function loadProducts(category, containerId) {
         const url = `/ecomm.capstone/products/category/\${category}`;
         console.log("Final URL:", url);
 
-
         const response = await fetch(url);
         console.log("Response status:", response.status);
 
         const products = await response.json();
         products.forEach(p => {
-        	  console.log("Rendering product:", p.id, "Price:", p.price);
-        	});
-
-
+            console.log("Rendering product:", p.prodId, "Price:", p.price);
+        });
 
         const container = document.getElementById(containerId);
-        container.innerHTML = products.map(p => `
-        <article class="sneaker">
-        <a href="/ecomm.capstone/app/product-details/\${p.prodId}">
-        <img src="https://i.postimg.cc/3wWGqDYn/women1.png" alt="${p.name}" class="sneaker-img">
-            <span class="sneaker-name" style="display:flex; justify-content:center">` + p.prodName + `</span>
-            <span class="sneaker-price" style="display:flex; justify-content:center">$` + p.price + `</span>
-            </a>
-            <button class="button-light add-to-cart-btn" data-product-id="\${p.prodId}">
-            Add to Cart <i class="bx bx-right-arrow-alt button-icon"></i>
-        </button>
-        </article>
-    `).join('');
+        container.innerHTML = products.map(p => {
+            // Check stock availability and conditionally render the button
+            let buttonHtml = "";
+            if (p.stockQuantity > 0) {
+                buttonHtml = `
+                    <button class="button-light add-to-cart-btn" data-product-id="\${p.prodId}">
+                        Add to Cart <i class="bx bx-right-arrow-alt button-icon"></i>
+                    </button>
+                `;
+            } else {
+                buttonHtml = `
+                    <button class="button-light add-to-cart-btn" disabled style="cursor: not-allowed; opacity: 0.6;">
+                        Out of Stock
+                    </button>
+                `;
+            }
 
-<!--        console.log("Final HTML injected:", container.innerHTML);-->
+            return `
+                <article class="sneaker">
+                    <a href="/ecomm.capstone/app/product-details/\${p.prodId}">
+                        <img src="${(p.images && p.images.length > 0) ? p.images[0] : 'https://i.postimg.cc/3wWGqDYn/women1.png'}" 
+                            alt="${p.prodName}" class="sneaker-img">
+                        <span class="sneaker-name" style="display:flex; justify-content:center">\${p.prodName}</span>
+                        <span class="sneaker-price" style="display:flex; justify-content:center">$\${p.price}</span>
+                    </a>
+                    \${buttonHtml}
+                </article>
+            `;
+        }).join('');
 
     } catch (err) {
         console.error("Failed to load products:", err);
     }
 }
+
 
 const categories = [
     { name: "Women", containerId: "women-slider" },
