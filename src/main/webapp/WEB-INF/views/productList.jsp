@@ -281,12 +281,12 @@ function renderProducts(products, page = 1) {
    class="sneaker-img">
                 <span class="sneaker-name">\${product.prodName}</span>
                 <span class="sneaker-price">₹\${product.price}</span>
-               <button class=" add-to-cart-btn button-light">
+<!--               <button class=" add-to-cart-btn button-light">-->
                <a href="<%= request.getContextPath() %>/app/product-details/\${product.prodId}" 
-                   class="button-light">
+                   class="button">
                    View Details <i class="bx bx-right-arrow-alt button-icon"></i>
                 </a>
-               </button>
+<!--               </button>-->
             </article>
         `;
         grid.append(card);

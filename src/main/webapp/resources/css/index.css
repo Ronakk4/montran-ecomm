@@ -197,6 +197,13 @@ section {
   border-radius: 50%;
 }
 
+.shop-more{
+	    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
 /* Dropdown Menu */
 .dropdown-menu {
   position: absolute;
@@ -306,10 +313,13 @@ section {
 
 .sneaker-name,
 .sneaker-price {
+	
   font-size: var(--h2-font-size);
   letter-spacing: 0.1rem;
   font-weight: var(--font-bold);
   text-align: center; /* Ensure text alignment is center */
+  display:flex;
+  justify-content:center
 }
 
 .sneaker-name {
