@@ -85,7 +85,7 @@ $(document).ready(function() {
 
             // Cancel button only if status is PLACED
             let cancelButton = '';
-            if(order.status === 'PLACED' ) {
+            if(order.status === 'PLACED' || order.status==='PENDING') {
                 cancelButton = `<button class="btn btn-danger btn-sm cancel-order-btn mt-2" data-order-id="${order.orderId}">Cancel Order</button>`;
             }
 

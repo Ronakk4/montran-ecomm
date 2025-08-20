@@ -1,7 +1,12 @@
 package com.capstone.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 import javax.validation.constraints.*;
+
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,9 +19,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 
 @Entity
 @Table(name="products")
+@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)  // <-- register here
 public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,6 +56,11 @@ public class Product {
 	@Column(name = "updated_at")
 	private LocalDateTime updatedAt;
 
+	
+	 @Type(type = "jsonb")
+	    @Column(name = "images", columnDefinition = "jsonb")
+	    private List<String> images;  // Store multiple URLs as JSON array
+	
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "seller_id")
@@ -145,6 +157,9 @@ public class Product {
 	public void setSeller(Seller seller) {
 		this.seller = seller;
 	}
+	
+	public List<String> getImages() { return images; }
+    public void setImages(List<String> images) { this.images = images; }
 
 //	@Override
 //	public String toString() {

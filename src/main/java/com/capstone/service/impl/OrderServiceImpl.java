@@ -206,11 +206,20 @@ public class OrderServiceImpl implements OrderService{
 	        if (order == null) return false;
 
 	        // Only allow cancelling if status is PLACED
-	        if (!"PLACED".equals(order.getStatus())) return false;
+//	        if (!"PLACED".equals(order.getStatus())) {
+//	        	return false;
+//	        }else if( !"PENDING".equals(order.getStatus())) return false;
+	        
+	        
+	        if("PLACED".equals(order.getStatus()) || "PENDING".equals(order.getStatus())) {
+
 
 	        order.setStatus("CANCELLED");
 	        orderDao.saveOrder(order); // Save updated status
 	        return true;
+	        }
+	        
+	        return false;
 	    }
 		
 		

@@ -18,17 +18,41 @@
     <main class="l-main">
         <section class="product-detail section">
             <div class="product-detail-container bd-grid">
-                <div class="product-images">
-                    <div class="main-image">
-                        <img src="https://i.postimg.cc/BbYwJ393/featured2.png" alt="Nike Free RN" class="product-main-img" id="mainImage">
-                    </div>
-                    <div class="thumbnail-images">
-                        <img src="https://i.postimg.cc/BbYwJ393/featured2.png" alt="Nike Free RN" class="thumbnail active" onclick="changeImage(this.src)">
-                        <img src="https://i.postimg.cc/k4Zj2mXv/featured3.png" alt="Nike Free RN" class="thumbnail" onclick="changeImage(this.src)">
-                        <img src="https://i.postimg.cc/3wWGqDYn/women1.png" alt="Nike Free RN" class="thumbnail" onclick="changeImage(this.src)">
-                        <img src="https://i.postimg.cc/8CqqJMCY/new1.png" alt="Nike Free RN" class="thumbnail" onclick="changeImage(this.src)">
-                    </div>
-                </div>
+              <div class="product-images">
+    <div class="main-image">
+        <img src="${empty product.images[0] 
+                     ? 'https://i.postimg.cc/BbYwJ393/featured2.png' 
+                     : product.images[0]}" 
+             alt="${product.prodName}" 
+             class="product-main-img" id="mainImage">
+    </div>
+
+    <div class="thumbnail-images">
+        <img src="${empty product.images[0] 
+                     ? 'https://i.postimg.cc/BbYwJ393/featured2.png' 
+                     : product.images[0]}" 
+             alt="${product.prodName}" 
+             class="thumbnail active" onclick="changeImage(this.src)">
+
+        <img src="${empty product.images[1] 
+                     ? 'https://i.postimg.cc/k4Zj2mXv/featured3.png' 
+                     : product.images[1]}" 
+             alt="${product.prodName}" 
+             class="thumbnail" onclick="changeImage(this.src)">
+
+        <img src="${empty product.images[2] 
+                     ? 'https://i.postimg.cc/3wWGqDYn/women1.png' 
+                     : product.images[2]}" 
+             alt="${product.prodName}" 
+             class="thumbnail" onclick="changeImage(this.src)">
+
+        <img src="${empty product.images[3] 
+                     ? 'https://i.postimg.cc/8CqqJMCY/new1.png' 
+                     : product.images[3]}" 
+             alt="${product.prodName}" 
+             class="thumbnail" onclick="changeImage(this.src)">
+    </div>
+</div>
 
                 <div class="product-info">
                     <div class="product-badge">Sale</div>

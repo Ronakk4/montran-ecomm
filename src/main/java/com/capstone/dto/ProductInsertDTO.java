@@ -1,9 +1,10 @@
 				package com.capstone.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class ProductInsertDTO {
-	private long prodId;
+    private long prodId;
     private String prodName;
     private String prodDescription;
     private Double price;
@@ -13,11 +14,14 @@ public class ProductInsertDTO {
     private LocalDateTime updatedAt;
     private long sellerId;
 
-    public ProductInsertDTO() {
-    }
+    // ✅ new field
+    private List<String> images;
+
+    public ProductInsertDTO() {}
 
     public ProductInsertDTO(String prodName, String prodDescription, Double price, int stockQuantity,
-                            String category, LocalDateTime createdAt, LocalDateTime updatedAt, Long sellerId) {
+                            String category, LocalDateTime createdAt, LocalDateTime updatedAt,
+                            Long sellerId, List<String> images) {
         this.prodName = prodName;
         this.prodDescription = prodDescription;
         this.price = price;
@@ -26,79 +30,37 @@ public class ProductInsertDTO {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.sellerId = sellerId;
-    }
-    
-    
-
-    public long getProdId() {
-		return prodId;
-	}
-
-	public void setProdId(long prodId) {
-		this.prodId = prodId;
-	}
-
-	public String getProdName() {
-        return prodName;
+        this.images = images;
     }
 
-    public void setProdName(String prodName) {
-        this.prodName = prodName;
-    }
+    // getters & setters
+    public long getProdId() { return prodId; }
+    public void setProdId(long prodId) { this.prodId = prodId; }
 
-    public String getProdDescription() {
-        return prodDescription;
-    }
+    public String getProdName() { return prodName; }
+    public void setProdName(String prodName) { this.prodName = prodName; }
 
-    public void setProdDescription(String prodDescription) {
-        this.prodDescription = prodDescription;
-    }
+    public String getProdDescription() { return prodDescription; }
+    public void setProdDescription(String prodDescription) { this.prodDescription = prodDescription; }
 
-    public Double getPrice() {
-        return price;
-    }
+    public Double getPrice() { return price; }
+    public void setPrice(Double price) { this.price = price; }
 
-    public void setPrice(Double price) {
-        this.price = price;
-    }
+    public int getStockQuantity() { return stockQuantity; }
+    public void setStockQuantity(int stockQuantity) { this.stockQuantity = stockQuantity; }
 
-    public int getStockQuantity() {
-        return stockQuantity;
-    }
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
 
-    public void setStockQuantity(int stockQuantity) {
-        this.stockQuantity = stockQuantity;
-    }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 
-    public String getCategory() {
-        return category;
-    }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
+    public long getSellerId() { return sellerId; }
+    public void setSellerId(long sellerId) { this.sellerId = sellerId; }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public long getSellerId() {
-        return sellerId;
-    }
-
-    public void setSellerId(long sellerId) {
-        this.sellerId = sellerId;
-    }
+    public List<String> getImages() { return images; }
+    public void setImages(List<String> images) { this.images = images; }
 }

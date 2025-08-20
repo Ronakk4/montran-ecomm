@@ -46,6 +46,11 @@
                 <% if(isLoggedIn) { %>
                     <li class="nav-item"><a href="<%= request.getContextPath() %>/app/buyer/profile" class="nav-link">Profile</a></li>
                     <li class="nav-item"><a href="<%= request.getContextPath() %>/users/logout" class="nav-link">Logout</a></li>
+              		<li class="nav-tem cart-icon"> 
+            <a href="${pageContext.request.contextPath}/app/cart" class="nav-link ">
+                <i class="bx bx-shopping-bag"></i>Cart
+            </a>
+        </li>	
                 <% } else { %>
                     <li class="nav-item"><a href="<%= request.getContextPath() %>/app/login" class="nav-link">Login</a></li>
                     <li class="nav-item"><a href="<%= request.getContextPath() %>/app/register" class="nav-link">Sign Up</a></li>
@@ -54,11 +59,11 @@
             </ul>
         </div>
 
-        <div class="nav-shop">
-            <a href="${pageContext.request.contextPath}/app/cart">
-                <i class="bx bx-shopping-bag"></i>
-            </a>
-        </div>
+<!--        <div class="nav-shop">-->
+<!--            <a href="${pageContext.request.contextPath}/app/cart">-->
+<!--                <i class="bx bx-shopping-bag"></i>-->
+<!--            </a>-->
+<!--        </div>-->
     </nav>
 </header>
 
@@ -78,7 +83,7 @@ function loadCategories() {
 
         let items = "";
         categories.forEach(c => {
-<!--            console.log("Category:", c);-->
+            console.log("Category:", c);
             console.log(`Category ${c}:`, c, typeof c);
 
             items += `
@@ -93,4 +98,38 @@ function loadCategories() {
         $(".dropdown-menu").html(items);
     });
 }
+
+<!--function loadCategories() {-->
+<!--    const jwtToken = localStorage.getItem("jwtToken"); // Or wherever you're storing it-->
+<!--    console.log("jwttoken",  jwtToken);-->
+
+<!--    $.ajax({-->
+<!--        url: "http://localhost:8080/ecomm.capstone/api/seller/category",-->
+<!--        method: "GET",-->
+<!--        headers: {-->
+<!--            "Authorization": `Bearer ${jwtToken}`-->
+<!--        },-->
+<!--        success: function(categories) {-->
+<!--            console.log("RAW categories:", categories);-->
+
+<!--            let items = "";-->
+<!--            categories.forEach(c => {-->
+<!--                console.log(`Category ${c}:`, c, typeof c);-->
+
+<!--                items += `-->
+<!--                    <li>-->
+<!--                        <a href="#"-->
+<!--                           class="dropdown-item category-link"-->
+<!--                           data-category="${c}">${c}-->
+<!--                        </a>-->
+<!--                    </li>`;-->
+<!--            });-->
+
+<!--            $(".dropdown-menu").html(items);-->
+<!--        },-->
+<!--        error: function(xhr, status, error) {-->
+<!--            console.error("Failed to load categories:", status, error);-->
+<!--        }-->
+<!--    });-->
+<!--}-->
 </script>
