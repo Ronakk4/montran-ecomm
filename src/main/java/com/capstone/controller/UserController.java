@@ -1,6 +1,7 @@
 package com.capstone.controller;
 
 import com.capstone.dto.BuyerDTO;
+import com.capstone.dto.ChangePasswordDTO;
 import com.capstone.dto.LoginRequestDTO;
 import com.capstone.dto.LoginResponseDTO;
 import com.capstone.dto.SellerDTO;
@@ -112,9 +113,10 @@ public class UserController {
 	// }
 	
 	@PutMapping("/changepassword")
-	public String updatePassword(@Valid @RequestParam String newPassword, @RequestParam long id) {
-		userService.changePassword(newPassword, id);
+	public String updatePassword( @RequestBody ChangePasswordDTO changePasswordDTO) {
+		if(userService.changePassword(changePasswordDTO.getNewPassword(),changePasswordDTO.getOldPassword(),changePasswordDTO.getId()))
 		return "password changed successfully";
+		return "password cannot be changed";
 		
 	}
 
@@ -124,20 +126,26 @@ public class UserController {
 			BuyerDTO buyerDTO = new BuyerDTO();
 			buyerDTO.setName(dto.getName());
 			buyerDTO.setEmail(dto.getEmail());
-			buyerDTO.setPassword(dto.getPassword());
+			
 			buyerDTO.setRole(dto.getRole());
-			buyerDTO.setShippingAddress(dto.getShippingAddress());
+			if(dto.getPassword()==null || dto.getPassword()=="") {
+				buyerDTO.setPassword("");
+			}
+				buyerDTO.setShippingAddress(dto.getShippingAddress());
 			buyerDTO.setPhoneNumber(dto.getPhoneNumber());
+		
+			
 			userService.updateUser(id, buyerDTO);
 		} else if ("SELLER".equalsIgnoreCase(dto.getRole())) {
 			SellerDTO sellerDTO = new SellerDTO();
 			sellerDTO.setName(dto.getName());
 			sellerDTO.setEmail(dto.getEmail());
-			sellerDTO.setPassword(dto.getPassword());
+		
 			sellerDTO.setRole(dto.getRole());
 			sellerDTO.setShopName(dto.getShopName());
 			sellerDTO.setShopDescription(dto.getShopDescription());
 			sellerDTO.setGstNumber(dto.getGstNumber());
+			
 			userService.updateUser(id, sellerDTO);
 		} else {
 			throw new RuntimeException("Invalid role. Must be BUYER or SELLER.");

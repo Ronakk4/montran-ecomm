@@ -187,13 +187,16 @@ $(document).ready(function() {
     $('#editProfileForm').submit(function(e) {
         e.preventDefault();
         $.ajax({
-            url: `${apiBase}/ecomm.capstone/users/id/${userId}`,
+            url: `${apiBase}/ecomm.capstone/users/${userId}`,
             method: 'PUT',
             contentType: 'application/json',
             data: JSON.stringify({
                 name: $('#editName').val(),
                 phoneNumber: $('#editPhone').val(),
-                shippingAddress: $('#editAddress').val()
+                shippingAddress: $('#editAddress').val(),
+                role:"BUYER",
+                password:"",
+                
             }),
             success: function() {
                 $('#editProfileModal').modal('hide');
@@ -219,12 +222,14 @@ $(document).ready(function() {
         }
 
         $.ajax({
-            url: `${apiBase}/ecomm.capstone/users/id/${userId}/change-password`,
+            url: `${apiBase}/ecomm.capstone/users/changepassword`,
             method: 'PUT',
             contentType: 'application/json',
             data: JSON.stringify({
-                currentPassword: $('#currentPassword').val(),
-                newPassword: newPassword
+            		oldPassword: $('#currentPassword').val(),
+                newPassword: newPassword,
+                id:userId
+                
             }),
             success: function() {
                 $('#changePasswordModal').modal('hide');

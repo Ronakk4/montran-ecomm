@@ -394,57 +394,57 @@ function addToCart(productId, quantity) {
 
 
 
-//store slider positions for each category
-const sliderPositions = {};
+<!--//store slider positions for each category-->
+<!--const sliderPositions = {};-->
 
-function initializeSlider(category) {
-    sliderPositions[category] = 0;
-    updateSliderPosition(category);
-}
+<!--function initializeSlider(category) {-->
+<!--    sliderPositions[category] = 0;-->
+<!--    updateSliderPosition(category);-->
+<!--}-->
 
-function slideProducts(category, direction) {
-    const slider = document.getElementById(`${category}-slider`);
-    if (!slider || slider.children.length === 0) return;
+<!--function slideProducts(category, direction) {-->
+<!--    const slider = document.getElementById(`${category}-slider`);-->
+<!--    if (!slider || slider.children.length === 0) return;-->
 
-    const totalSlides = slider.children.length;
-    const slidesToShow = window.innerWidth > 768 ? 3 : 1;
-    const maxPosition = Math.max(0, totalSlides - slidesToShow);
+<!--    const totalSlides = slider.children.length;-->
+<!--    const slidesToShow = window.innerWidth > 768 ? 3 : 1;-->
+<!--    const maxPosition = Math.max(0, totalSlides - slidesToShow);-->
 
-    // Initialize position if not exists
-    if (!(category in sliderPositions)) {
-        sliderPositions[category] = 0;
-    }
+<!--    // Initialize position if not exists-->
+<!--    if (!(category in sliderPositions)) {-->
+<!--        sliderPositions[category] = 0;-->
+<!--    }-->
 
-    // Update position
-    sliderPositions[category] += direction;
+<!--    // Update position-->
+<!--    sliderPositions[category] += direction;-->
 
-    // Boundary checks
-    if (sliderPositions[category] < 0) {
-        sliderPositions[category] = 0;
-    }
-    if (sliderPositions[category] > maxPosition) {
-        sliderPositions[category] = maxPosition;
-    }
+<!--    // Boundary checks-->
+<!--    if (sliderPositions[category] < 0) {-->
+<!--        sliderPositions[category] = 0;-->
+<!--    }-->
+<!--    if (sliderPositions[category] > maxPosition) {-->
+<!--        sliderPositions[category] = maxPosition;-->
+<!--    }-->
 
-    updateSliderPosition(category);
-}
+<!--    updateSliderPosition(category);-->
+<!--}-->
 
-function updateSliderPosition(category) {
-    const slider = document.getElementById(`${category}-slider`);
-    if (!slider) return;
+<!--function updateSliderPosition(category) {-->
+<!--    const slider = document.getElementById(`${category}-slider`);-->
+<!--    if (!slider) return;-->
 
-    const slidesToShow = window.innerWidth > 768 ? 3 : 1;
-    const slideWidth = 100 / slidesToShow;
-    const translateX = -(sliderPositions[category] * slideWidth);
+<!--    const slidesToShow = window.innerWidth > 768 ? 3 : 1;-->
+<!--    const slideWidth = 100 / slidesToShow;-->
+<!--    const translateX = -(sliderPositions[category] * slideWidth);-->
     
-    slider.style.transform = `translateX(${translateX}%)`;
-}
+<!--    slider.style.transform = `translateX(${translateX}%)`;-->
+<!--}-->
 
-window.addEventListener('resize', function() {
-    Object.keys(sliderPositions).forEach(category => {
-        updateSliderPosition(category);
-    });
-});
+<!--window.addEventListener('resize', function() {-->
+<!--    Object.keys(sliderPositions).forEach(category => {-->
+<!--        updateSliderPosition(category);-->
+<!--    });-->
+<!--});-->
 
 
 

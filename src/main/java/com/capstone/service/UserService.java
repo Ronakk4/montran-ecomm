@@ -12,6 +12,7 @@ public interface UserService {
 	void updateUser(Long id ,UserDTO u);
 	User loginUser(LoginRequestDTO u);
 	void registerUser(@Valid UserRegisterDTO user);
-	void changePassword(@Valid String newPassword, long id);	
+	//void changePassword(@Valid String newPassword, long id);
+	boolean changePassword(String newPassword, String oldPassword, long id);	
 
 }

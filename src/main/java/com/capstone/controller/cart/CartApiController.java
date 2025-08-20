@@ -71,4 +71,12 @@ public class CartApiController {
 	        return ResponseEntity.ok(cartService.addProductToCart(cartItem));
 	    }
 
+//	 @DeleteMapping("/deleteCart")
+//	    public ResponseEntity<String> DeleteAllCartItems(long userId){
+////		 System.out.println("called addcart");
+//	          
+//	       
+//	        return ResponseEntity.ok(cartService.deleteAllCartItems(userId));
+//	    }
+
 }
