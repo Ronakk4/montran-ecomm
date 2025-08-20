@@ -11,4 +11,5 @@ public interface UserDao {
 	void changePassword(String newPassword, long id);
 	String getPassword(long id);
 	
+	
 }

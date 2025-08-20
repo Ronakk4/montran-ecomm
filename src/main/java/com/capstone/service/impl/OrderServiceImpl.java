@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.capstone.dao.CartDao;
 import com.capstone.dao.OrderHeaderDao;
 import com.capstone.dao.OrderItemDao;
+import com.capstone.dao.ProductDao;
 import com.capstone.dto.OrderDTO;
 import com.capstone.dto.OrderItemDTO;
 import com.capstone.dto.SellerOrderDTO;
@@ -41,12 +42,11 @@ public class OrderServiceImpl implements OrderService{
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	@Override
-	@Transactional
-	public List<OrderHeader> getAllOrders(long id) {
-	    return orderDao.getAllOrders(id);
-	}
+	
 
+
+
+    
 	@Override
 	@Transactional
 	public OrderHeader getOrder(long id) {
@@ -161,8 +161,71 @@ public class OrderServiceImpl implements OrderService{
 	    return response;
 	}
 
+	@Override
+
+	@Transactional
+	public List<OrderDTO> getAllOrders(long id) {
+		// TODO Auto-generated method stub
+		 List<OrderHeader> orderHeaders = orderDao.getAllOrders(id);
+
+		    List<OrderDTO> orders = new ArrayList<>();
+
+		    for (OrderHeader order : orderHeaders) {
+		        OrderDTO dto = new OrderDTO();
+		        dto.setOrderId(order.getOrderId());  
+		        dto.setStatus(order.getStatus());
+		        dto.setTotalAmount(order.getTotalAmount());
+		        dto.setShippingAddress(order.getBuyer().getShippingAddress());
+		        dto.setOrderDate(order.getOrderDate());
+
+		        List<OrderItemDTO> itemDTOs = new ArrayList<>();
+		        for (OrderItem item : order.getItems()) {
+		            OrderItemDTO itemDTO = new OrderItemDTO();
+		            itemDTO.setProductId(item.getProduct().getProdId());
+		            itemDTO.setSellerId(item.getSeller().getId());
+		            itemDTO.setQuantity(item.getQuantity());
+		            itemDTO.setProductName(item.getProduct().getProdName());
+		            itemDTO.setSellerName(item.getProduct().getSeller().getName());
+		            
+		            itemDTO.setPrice(item.getPrice());
+		            itemDTO.setOrderDate(order.getOrderDate());
+		            itemDTOs.add(itemDTO);
+		        }
+
+		        dto.setItems(itemDTOs);
+		        orders.add(dto);
+		    }
+
+		    return orders;
+		}
+
+	  @Override
+	    @Transactional
+	    public boolean cancelOrder(long orderId) {
+	        OrderHeader order = orderDao.getOrder(orderId);
+	        if (order == null) return false;
+
+	        // Only allow cancelling if status is PLACED
+	        if (!"PLACED".equals(order.getStatus())) return false;
+
+	        order.setStatus("CANCELLED");
+	        orderDao.saveOrder(order); // Save updated status
+	        return true;
+	    }
+		
+		
+		
+	
 
 
-
-
+	public void updateStatus(long orderId, String status) {
+		orderDao.updateStatus(orderId, status);
+		
+	}
 }
+
+
+	
+
+
+

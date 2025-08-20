@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.capstone.dao.OrderHeaderDao;
+import com.capstone.dto.OrderDTO;
 import com.capstone.model.OrderHeader;
 import com.capstone.model.OrderItem;
 
@@ -56,7 +57,7 @@ public class OrderHeaderDaoImpl implements OrderHeaderDao {
 
 	@Override
 	public void saveOrder(OrderHeader o) {
-		// TODO Auto-generated method stub
+		o.setOrderDate(LocalDateTime.now());
 		sessionFactory.getCurrentSession().save(o);
 	}
 
@@ -114,6 +115,13 @@ public class OrderHeaderDaoImpl implements OrderHeaderDao {
 		                 "AND oi.seller_id = :sellerId")
 				.setParameter("sellerId", sellerId)
 				.uniqueResult();
+	}
+	
+	public void updateStatus(long orderId, String status) {
+		sessionFactory.getCurrentSession().createQuery	("update OrderHeader set status = :status where orderId = :orderId")
+		.setParameter("status", status)
+		.setParameter("orderId", orderId)
+		.executeUpdate();
 	}
 	
 
