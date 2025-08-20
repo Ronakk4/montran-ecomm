@@ -1,6 +1,7 @@
 package com.capstone.dto;
 
 import com.capstone.model.Product;
+import java.util.List;
 
 public class ProductFetchDTO {
     private Long prodId;
@@ -12,6 +13,9 @@ public class ProductFetchDTO {
     private Long sellerId;
     private String sellerName;
 
+    // ✅ new field
+    private List<String> images;
+
     public ProductFetchDTO(Product product) {
         this.prodId = product.getProdId();
         this.prodName = product.getProdName();
@@ -19,9 +23,13 @@ public class ProductFetchDTO {
         this.price = product.getPrice();
         this.stockQuantity = product.getStockQuantity();
         this.category = product.getCategory();
-
         this.sellerId = product.getSeller() != null ? product.getSeller().getId() : null;
+        this.images = product.getImages(); // ✅ fetch images
     }
+
+    // getters & setters ...
+    public List<String> getImages() { return images; }
+    public void setImages(List<String> images) { this.images = images; }
 
 	public Long getProdId() {
 		return prodId;
@@ -88,7 +96,4 @@ public class ProductFetchDTO {
 	}
     
     
-    
-
-    // Getters & Setters
 }

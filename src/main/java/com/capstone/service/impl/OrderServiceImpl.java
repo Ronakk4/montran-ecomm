@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.capstone.dao.CartDao;
 import com.capstone.dao.OrderHeaderDao;
 import com.capstone.dao.OrderItemDao;
+import com.capstone.dao.ProductDao;
 import com.capstone.dto.OrderDTO;
 import com.capstone.dto.OrderItemDTO;
 import com.capstone.dto.SellerOrderDTO;
@@ -178,6 +179,9 @@ public class OrderServiceImpl implements OrderService{
 		            itemDTO.setProductId(item.getProduct().getProdId());
 		            itemDTO.setSellerId(item.getSeller().getId());
 		            itemDTO.setQuantity(item.getQuantity());
+		            itemDTO.setProductName(item.getProduct().getProdName());
+		            itemDTO.setSellerName(item.getProduct().getSeller().getName());
+		            
 		            itemDTO.setPrice(item.getPrice());
 		            itemDTO.setOrderDate(order.getOrderDate());
 		            itemDTOs.add(itemDTO);
@@ -197,11 +201,20 @@ public class OrderServiceImpl implements OrderService{
 	        if (order == null) return false;
 
 	        // Only allow cancelling if status is PLACED
-	        if (!"PLACED".equals(order.getStatus())) return false;
+//	        if (!"PLACED".equals(order.getStatus())) {
+//	        	return false;
+//	        }else if( !"PENDING".equals(order.getStatus())) return false;
+	        
+	        
+	        if("PLACED".equals(order.getStatus()) || "PENDING".equals(order.getStatus())) {
+
 
 	        order.setStatus("CANCELLED");
 	        orderDao.saveOrder(order); // Save updated status
 	        return true;
+	        }
+	        
+	        return false;
 	    }
 		
 		
