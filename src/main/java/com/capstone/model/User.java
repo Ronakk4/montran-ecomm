@@ -2,6 +2,7 @@ package com.capstone.model;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -28,7 +30,8 @@ public class User {
 	@NotBlank(message= "Email is required")
 	private String email;
 	
-	
+	@Column(name = "phone_number", unique = true)
+	private String phoneNumber;
 
 //	@Size(min=8,message= "Password must be atleast 8 characters")
 //	@Pattern(
@@ -45,7 +48,7 @@ public class User {
 	
 	
 	public User(String name, String email, String password, String role, LocalDateTime createdAt,
-			LocalDateTime updatedAt) {
+			LocalDateTime updatedAt, String phoneNumber) {
 		super();
 		
 		this.name = name;	
@@ -54,7 +57,19 @@ public class User {
 		this.role = role;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
+		this.phoneNumber = phoneNumber;
+		
 	}
+
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+	
 
 
 	public long getId() {

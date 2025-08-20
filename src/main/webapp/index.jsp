@@ -115,10 +115,10 @@
         <div class="sneaker-sale">Sale</div>
         <a href="http://localhost:8080/ecomm.capstone/app/product-details/32">
             <img src="https://rukminim1.flixcart.com/image/612/612/k4d27ww0/shirt/q/w/t/l-el024-el-senor-original-imafnadnjp5pq6tg.jpeg?q=70" alt="Nike Free RN" class="sneaker-img">
-            <span class="sneaker-name">Men Shirt</span>
-            <span class="sneaker-price">$1899.99</span>
+            <span class="sneaker-name style="display:flex; justify-content:center">Men Shirt</span>
+            <span class="sneaker-price style="display:flex; justify-content:center">$1899.99</span>
         </a>
-        <a href="http://localhost:8080/ecomm.capstone/app/product-details/32" class="button-light">
+        <a href="http://localhost:8080/ecomm.capstone/app/product-details/32" class="button">
             View Product <i class="bx bx-right-arrow-alt button-icon"></i>
         </a>
     </article>
@@ -127,10 +127,10 @@
         <div class="sneaker-sale">Sale</div>
         <a href="http://localhost:8080/ecomm.capstone/app/product-details/31">
             <img src="https://rukminim1.flixcart.com/image/612/612/l5h2xe80/kurta/x/6/n/xl-kast-tile-green-majestic-man-original-imagg4z33hu4kzpv.jpeg?q=70" alt="Nike Free RN" class="sneaker-img">
-            <span class="sneaker-name">Men Kurta</span>
-            <span class="sneaker-price">$1899.99</span>
+            <span class="sneaker-name" style="display:flex; justify-content:center">Men Kurta</span>
+            <span class="sneaker-price style="display:flex; justify-content:center">$1899.99</span>
         </a>
-        <a href="http://localhost:8080/ecomm.capstone/app/product-details/31" class="button-light">
+        <a href="http://localhost:8080/ecomm.capstone/app/product-details/31" class="button">
             View Product <i class="bx bx-right-arrow-alt button-icon"></i>
         </a>
     </article>
@@ -184,8 +184,11 @@
 <!--                <button class="slider-btn next-btn" onclick="slideProducts('women', 1)">-->
 <!--                    <i class="bx bx-chevron-right"></i>-->
 <!--                </button>-->
+        <a  class="shop-more" href="http://localhost:8080/ecomm.capstone/app/product-list?category=Women"  style="display: flex; align-items: center; justify-content: center; margin-top: 20px;" > <button style="background-color: white; color: black; border: 1px solid black;" class="button "  >Explore Women Section</button></a>
             </div>
         </section>
+        
+        
 
  <section class="men section" id="men">
             <h2 class="section-title">MEN SNEAKERS</h2>
@@ -201,6 +204,7 @@
 <!--                <button class="slider-btn next-btn" onclick="slideProducts('men', 1)">-->
 <!--                    <i class="bx bx-chevron-right"></i>-->
 <!--                </button>-->
+ <a  class="shop-more" href="http://localhost:8080/ecomm.capstone/app/product-list?category=Men"  style="display: flex; align-items: center; justify-content: center; margin-top: 20px;" > <button style="background-color: white; color: black; border: 1px solid black;" class="button "  >Explore Men Section</button></a>
             </div>
         </section>
 
@@ -217,6 +221,7 @@
 <!--                <button class="slider-btn next-btn" onclick="slideProducts('electronics', 1)">-->
 <!--                    <i class="bx bx-chevron-right"></i>-->
 <!--                </button>-->
+ <a  class="shop-more" href="http://localhost:8080/ecomm.capstone/app/product-list?category=Electronics"  style="display: flex; align-items: center; justify-content: center; margin-top: 20px;" > <button style="background-color: white; color: black; border: 1px solid black;" class="button "  >Explore Electronics Section</button></a>
             </div>
         </section>
 
@@ -331,37 +336,50 @@ async function loadProducts(category, containerId) {
         const url = `/ecomm.capstone/products/category/\${category}`;
         console.log("Final URL:", url);
 
-
         const response = await fetch(url);
         console.log("Response status:", response.status);
 
         const products = await response.json();
         products.forEach(p => {
-        	  console.log("Rendering product:", p.id, "Price:", p.price);
-        	});
-
-
+            console.log("Rendering product:", p.prodId, "Price:", p.price);
+        });
 
         const container = document.getElementById(containerId);
-        container.innerHTML = products.map(p => `
-        <article class="sneaker">
-        <a href="/ecomm.capstone/app/product-details/\${p.prodId}">
-        <img src="https://i.postimg.cc/3wWGqDYn/women1.png" alt="${p.name}" class="sneaker-img">
-            <span class="sneaker-name">` + p.prodName + `</span>
-            <span class="sneaker-price">$` + p.price + `</span>
-            </a>
-            <button class="button-light add-to-cart-btn" data-product-id="\${p.prodId}">
-            Add to Cart <i class="bx bx-right-arrow-alt button-icon"></i>
-        </button>
-        </article>
-    `).join('');
+        container.innerHTML = products.map(p => {
+            // Check stock availability and conditionally render the button
+            let buttonHtml = "";
+            if (p.stockQuantity > 0) {
+                buttonHtml = `
+                    <button class="button-light add-to-cart-btn" data-product-id="\${p.prodId}">
+                        Add to Cart <i class="bx bx-right-arrow-alt button-icon"></i>
+                    </button>
+                `;
+            } else {
+                buttonHtml = `
+                    <button class="button-light add-to-cart-btn" disabled style="cursor: not-allowed; opacity: 0.6;">
+                        Out of Stock
+                    </button>
+                `;
+            }
 
-<!--        console.log("Final HTML injected:", container.innerHTML);-->
+            return `
+                <article class="sneaker">
+                    <a href="/ecomm.capstone/app/product-details/\${p.prodId}">
+                        <img src="${(p.images && p.images.length > 0) ? p.images[0] : 'https://i.postimg.cc/3wWGqDYn/women1.png'}" 
+                            alt="${p.prodName}" class="sneaker-img">
+                        <span class="sneaker-name" style="display:flex; justify-content:center">\${p.prodName}</span>
+                        <span class="sneaker-price" style="display:flex; justify-content:center">$\${p.price}</span>
+                    </a>
+                    \${buttonHtml}
+                </article>
+            `;
+        }).join('');
 
     } catch (err) {
         console.error("Failed to load products:", err);
     }
 }
+
 
 const categories = [
     { name: "Women", containerId: "women-slider" },

@@ -28,8 +28,9 @@
         <property name="url" value="jdbc:postgresql://localhost:5432/SOECP" />
         <property name="username" value="postgres" />
 
+
         <property name="password" value="montran123" />
-        <!-- Optional connection pool settings -->
+ 
 
       <!-- Optional connection pool settings -->
 

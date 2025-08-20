@@ -115,7 +115,7 @@ function placeOrder() {
             data: JSON.stringify(orderData),
             success: function(response) {
                 alert(response); 
-                window.location.href = "${pageContext.request.contextPath}"; 
+                window.location.href = "order-success"; 
             },
             error: function(xhr) {
                 console.error("Error placing order:", xhr.responseText);
