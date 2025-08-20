@@ -115,8 +115,8 @@
         <div class="sneaker-sale">Sale</div>
         <a href="http://localhost:8080/ecomm.capstone/app/product-details/32">
             <img src="https://rukminim1.flixcart.com/image/612/612/k4d27ww0/shirt/q/w/t/l-el024-el-senor-original-imafnadnjp5pq6tg.jpeg?q=70" alt="Nike Free RN" class="sneaker-img">
-            <span class="sneaker-name">Nike Free RN</span>
-            <span class="sneaker-price">$149.99</span>
+            <span class="sneaker-name">Men Shirt</span>
+            <span class="sneaker-price">$1899.99</span>
         </a>
         <a href="http://localhost:8080/ecomm.capstone/app/product-details/32" class="button-light">
             View Product <i class="bx bx-right-arrow-alt button-icon"></i>
@@ -127,8 +127,8 @@
         <div class="sneaker-sale">Sale</div>
         <a href="http://localhost:8080/ecomm.capstone/app/product-details/31">
             <img src="https://rukminim1.flixcart.com/image/612/612/l5h2xe80/kurta/x/6/n/xl-kast-tile-green-majestic-man-original-imagg4z33hu4kzpv.jpeg?q=70" alt="Nike Free RN" class="sneaker-img">
-            <span class="sneaker-name">Nike Free RN</span>
-            <span class="sneaker-price">$149.99</span>
+            <span class="sneaker-name">Men Kurta</span>
+            <span class="sneaker-price">$1899.99</span>
         </a>
         <a href="http://localhost:8080/ecomm.capstone/app/product-details/31" class="button-light">
             View Product <i class="bx bx-right-arrow-alt button-icon"></i>
@@ -174,49 +174,49 @@
  <section class="women section" id="women">
             <h2 class="section-title">WOMEN SNEAKERS</h2>
             <div class="slider-container">
-                <button class="slider-btn prev-btn" onclick="slideProducts('women', -1)">
-                    <i class="bx bx-chevron-left"></i>
-                </button>
+<!--                <button class="slider-btn prev-btn" onclick="slideProducts('women', -1)">-->
+<!--                    <i class="bx bx-chevron-left"></i>-->
+<!--                </button>-->
                 <div class="slider-wrapper">
                     <div class="product-slider" id="women-slider">
                     </div>
                 </div>
-                <button class="slider-btn next-btn" onclick="slideProducts('women', 1)">
-                    <i class="bx bx-chevron-right"></i>
-                </button>
+<!--                <button class="slider-btn next-btn" onclick="slideProducts('women', 1)">-->
+<!--                    <i class="bx bx-chevron-right"></i>-->
+<!--                </button>-->
             </div>
         </section>
 
  <section class="men section" id="men">
             <h2 class="section-title">MEN SNEAKERS</h2>
             <div class="slider-container">
-                <button class="slider-btn prev-btn" onclick="slideProducts('men', -1)">
-                    <i class="bx bx-chevron-left"></i>
-                </button>
+<!--                <button class="slider-btn prev-btn" onclick="slideProducts('men', -1)">-->
+<!--                    <i class="bx bx-chevron-left"></i>-->
+<!--                </button>-->
                 <div class="slider-wrapper">
                     <div class="product-slider" id="men-slider">
                        
                     </div>
                 </div>
-                <button class="slider-btn next-btn" onclick="slideProducts('men', 1)">
-                    <i class="bx bx-chevron-right"></i>
-                </button>
+<!--                <button class="slider-btn next-btn" onclick="slideProducts('men', 1)">-->
+<!--                    <i class="bx bx-chevron-right"></i>-->
+<!--                </button>-->
             </div>
         </section>
 
   <section class="electronics section" id="electronics">
             <h2 class="section-title">ELECTRONICS</h2>
             <div class="slider-container">
-                <button class="slider-btn prev-btn" onclick="slideProducts('electronics', -1)">
-                    <i class="bx bx-chevron-left"></i>
-                </button>
+<!--                <button class="slider-btn prev-btn" onclick="slideProducts('electronics', -1)">-->
+<!--                    <i class="bx bx-chevron-left"></i>-->
+<!--                </button>-->
                 <div class="slider-wrapper">
                     <div class="product-slider" id="electronics-slider">
                     </div>
                 </div>
-                <button class="slider-btn next-btn" onclick="slideProducts('electronics', 1)">
-                    <i class="bx bx-chevron-right"></i>
-                </button>
+<!--                <button class="slider-btn next-btn" onclick="slideProducts('electronics', 1)">-->
+<!--                    <i class="bx bx-chevron-right"></i>-->
+<!--                </button>-->
             </div>
         </section>
 

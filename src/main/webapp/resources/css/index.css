@@ -275,6 +275,7 @@ section {
   border-radius: .5rem;
   transition: .4s;
 }
+
 .sneaker:hover {
   transform: translateY(-.5rem);
 }
@@ -298,19 +299,39 @@ section {
   transform: var(--rotate-img);
   filter: drop-shadow(0 12px 8px rgba(0, 0, 0, 0.2));
 }
+
 .sneaker-name,
 .sneaker-price {
   font-size: var(--h2-font-size);
   letter-spacing: 0.1rem;
   font-weight: var(--font-bold);
+  text-align: center; /* Ensure text alignment is center */
 }
+
 .sneaker-name {
   margin-bottom: var(--m1);
 }
+
 .sneaker-price {
+  margin-top: var(--m2);  /* Adds some spacing between the name and price */
   margin-bottom: var(--m4);
 }
 
+.add-to-cart-btn {
+  margin-top: auto; /* Flexbox pushes this to the bottom */
+  padding: 0.5rem 2.5rem;
+  background-color: #fff;
+  border: 1px solid #000;
+  border-radius: 5px;
+  cursor: pointer;
+  align-self: center; /* Center horizontally */
+  transition: background-color 0.3s ease;
+}
+
+.add-to-cart-btn:hover {
+  background-color: #000;
+  color: #fff;
+}
 
 
 /* Product Detail Styles */
