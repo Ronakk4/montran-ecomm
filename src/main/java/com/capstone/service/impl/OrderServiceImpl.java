@@ -42,10 +42,6 @@ public class OrderServiceImpl implements OrderService{
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	
-
-
-
     
 	@Override
 	@Transactional
@@ -131,10 +127,9 @@ public class OrderServiceImpl implements OrderService{
     }
 
 	
-	@Override
-    public List<OrderHeader> searchOrders(long sellerId, String orderStatus, String startDate, String endDate) {
-        return orderDao.searchOrders(sellerId, orderStatus, startDate, endDate);
-    }
+	
+
+
 
 	@Override
 	public OrderHeader placeOrder(List<CartItem> cartItems) {
@@ -206,11 +201,20 @@ public class OrderServiceImpl implements OrderService{
 	        if (order == null) return false;
 
 	        // Only allow cancelling if status is PLACED
-	        if (!"PLACED".equals(order.getStatus())) return false;
+//	        if (!"PLACED".equals(order.getStatus())) {
+//	        	return false;
+//	        }else if( !"PENDING".equals(order.getStatus())) return false;
+	        
+	        
+	        if("PLACED".equals(order.getStatus()) || "PENDING".equals(order.getStatus())) {
+
 
 	        order.setStatus("CANCELLED");
 	        orderDao.saveOrder(order); // Save updated status
 	        return true;
+	        }
+	        
+	        return false;
 	    }
 		
 		
@@ -222,10 +226,47 @@ public class OrderServiceImpl implements OrderService{
 		orderDao.updateStatus(orderId, status);
 		
 	}
+
+	@Override
+	@Transactional
+	public List<SellerOrderDTO> searchOrders(long sellerId, String orderStatus, String startDate, String endDate) {
+	    // Fetch filtered OrderItems from DAO
+	    List<OrderItem> orderItems = orderDao.searchOrders(sellerId, orderStatus, startDate, endDate);
+
+	    Map<Long, SellerOrderDTO> ordersMap = new HashMap<>();
+
+	    for (OrderItem item : orderItems) {
+	        Long orderId = item.getOrderHeader().getOrderId();
+
+	        SellerOrderDTO dto = ordersMap.getOrDefault(orderId, new SellerOrderDTO());
+	        dto.setOrderId(orderId);
+	        dto.setStatus(item.getOrderHeader().getStatus());
+	        dto.setTotalAmount(item.getOrderHeader().getTotalAmount());
+	        dto.setShippingAddress(item.getOrderHeader().getBuyer().getShippingAddress());
+	        dto.setOrderDate(item.getOrderHeader().getOrderDate());
+	        
+	        if (dto.getItems() == null) {
+	            dto.setItems(new ArrayList<>());
+	        }
+
+	        // Map current item → OrderItemDTO
+	        OrderItemDTO itemDTO = new OrderItemDTO();
+	        itemDTO.setProductId(item.getProduct().getProdId());
+	        itemDTO.setSellerId(item.getSeller().getId());
+	        itemDTO.setQuantity(item.getQuantity());
+	        itemDTO.setPrice(item.getPrice());
+	        itemDTO.setOrderDate(item.getOrderHeader().getOrderDate());
+
+	        dto.getItems().add(itemDTO);
+
+	        ordersMap.put(orderId, dto);
+	    }
+
+	    return new ArrayList<>(ordersMap.values());
+	}
+
+
 }
-
-
-	
 
 
 

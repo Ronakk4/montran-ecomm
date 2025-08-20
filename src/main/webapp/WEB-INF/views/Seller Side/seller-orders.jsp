@@ -115,6 +115,7 @@ table tbody tr:hover {
 			<thead class="table-dark">
 				<tr>
 					<th>Order ID</th>
+					<th>Order Date</th>
 					<th>Shipping Address</th>
 					<th>Status</th>
 					<th>Total Amount</th>
@@ -137,6 +138,7 @@ table tbody tr:hover {
         $.get(`/ecomm.capstone/api/seller/orders?sellerId=${sellerId}`, function(data) {
             allOrders = data;
             renderOrders(allOrders);
+            
         });
     }
 
@@ -146,6 +148,7 @@ table tbody tr:hover {
             rows = `<tr><td colspan="5" class="text-center text-muted">No orders found.</td></tr>`;
         } else {
             orders.forEach(order => {
+            	console.log(order);
                 let itemsHtml = "<ul class='list-unstyled mb-0'>";
                 let totalAmount = 0;
 
@@ -169,30 +172,37 @@ table tbody tr:hover {
                 else if (order.status === "SHIPPED") statusClass = "info";
                 else if (order.status === "PLACED") statusClass = "primary";
 
-                // dropdown for status update
-                let statusOptions = ["PLACED", "PENDING", "SHIPPED", "DELIVERED", "CANCELLED"]
-                    .map(s => `<option value="${s}" ${s === order.status ? "selected" : ""}>${s}</option>`)
-                    .join("");
+                // status cell
+                let statusCell = `
+                    <span class="badge bg-${statusClass}" id="badge-${order.orderId}">
+                        ${order.status}
+                    </span>
+                `;
+
+                // if not cancelled → add dropdown
+                if (order.status !== "CANCELLED") {
+                    let statusOptions = ["PLACED", "PENDING", "SHIPPED", "DELIVERED", "CANCELLED"]
+                        .map(s => `<option value="${s}" ${s === order.status ? "selected" : ""}>${s}</option>`)
+                        .join("");
+
+                    statusCell += `
+                        <select class="form-select form-select-sm w-auto order-status-dropdown" 
+                                data-order-id="${order.orderId}">
+                            ${statusOptions}
+                        </select>
+                        <div class="spinner-border spinner-border-sm text-secondary ms-2 d-none" 
+                             role="status" id="loader-${order.orderId}">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    `;
+                }
 
                 rows += `
                     <tr>
                         <td><strong>#${order.orderId}</strong></td>
+                        <td>${formatOrderDate(order.orderDate)}</td>
                         <td>📍 ${order.shippingAddress || "<span class='text-muted'>N/A</span>"}</td>
-                        <td>
-                            <div class="d-flex align-items-center gap-2">
-                                <span class="badge bg-${statusClass}" id="badge-${order.orderId}">
-                                    ${order.status}
-                                </span>
-                                <select class="form-select form-select-sm w-auto order-status-dropdown" 
-                                        data-order-id="${order.orderId}">
-                                    ${statusOptions}
-                                </select>
-                                <div class="spinner-border spinner-border-sm text-secondary ms-2 d-none" 
-                                     role="status" id="loader-${order.orderId}">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                            </div>
-                        </td>
+                        <td><div class="d-flex align-items-center gap-2">${statusCell}</div></td>
                         <td><span class="fw-bold">₹${totalAmount}</span></td>
                         <td>${itemsHtml}</td>
                     </tr>
@@ -206,14 +216,12 @@ table tbody tr:hover {
             const orderId = $(this).data("order-id");
             const newStatus = $(this).val();
 
-            // show loader
             $(`#loader-${orderId}`).removeClass("d-none");
 
             $.ajax({
                 url: `/ecomm.capstone/api/seller/order-status?orderId=${orderId}&status=${newStatus}`,
                 type: "PUT",
                 success: function () {
-                    // reload with fresh badge color
                     loadOrders();
                 },
                 error: function (xhr) {
@@ -225,6 +233,7 @@ table tbody tr:hover {
             });
         });
     }
+
 
 
 
@@ -242,48 +251,51 @@ table tbody tr:hover {
     });
     
 //  // ===== ADDED ORDER SEARCH =====
-//     $("#searchOrdersBtn").on("click", function() {
-//         const params = {
-//             sellerId: sellerId,
-//             orderStatus: $("#orderStatus").val(),
-//             startDate: $("#startDate").val(),
-//             endDate: $("#endDate").val()
-//         };
-//         $.ajax({
-//             url: `${apiBase}/searchOrders`,
-//             type: "GET",
-//             data: params,
-//             success: function(orders) {
-//                 renderOrdersTable(orders);
-//             },
-//             error: function(xhr) {
-//                 console.error("Order search failed:", xhr.responseText);
-//                 alert("Order search failed.");
-//             }
-//         });
-//     });
-//     // ===== END ORDER SEARCH =====
+// --- Search Orders Button ---
+$("#searchOrdersBtn").on("click", function () {
+    const params = {
+        sellerId: sellerId,
+        orderStatus: $("#statusFilter").val(),   // take from dropdown filter
+        startDate: $("#startDate").val(),
+        endDate: $("#endDate").val()
+    };
 
-//     function renderOrdersTable(orders) {
-//         let table = $("#ordersTable");
-//         table.empty();
-//         if (!orders || orders.length === 0) {
-//             table.append("<tr><td colspan='5' class='text-center'>No orders found.</td></tr>");
-//         } else {
-//             orders.slice(0,5).forEach(o => {
-//                 table.append(`
-//                     <tr>
-//                         <td>${o.orderHeader.orderId}</td>
-//                         <td>${o.orderHeader.buyer.name}</td>
-//                         <td>${o.product.prodName}</td>
-//                         <td>${o.quantity}</td>
-//                         <td>${o.orderHeader.status}</td>
-//                     </tr>
-//                 `);
-//             });
-//         }
-//     }
-// });
+    $.ajax({
+        url: `/ecomm.capstone/api/seller/searchOrders`,
+        type: "GET",
+        data: params,
+        success: function (orders) {
+            allOrders = orders;
+            renderOrders(allOrders);
+        },
+        error: function (xhr) {
+            console.error("Order search failed:", xhr.responseText);
+            alert("❌ Order search failed.");
+        }
+    });
+});
+
+function formatOrderDate(dateString) {
+    if (!dateString) return "<span class='text-muted'>N/A</span>";
+
+    // Handles both array format [2025, 8, 13, 10, 30] and ISO string
+    let dateObj;
+    if (Array.isArray(dateString)) {
+        dateObj = new Date(dateString[0], dateString[1] - 1, dateString[2], dateString[3], dateString[4]);
+    } else {
+        dateObj = new Date(dateString);
+    }
+
+    const options = { 
+        year: 'numeric', 
+        month: 'short', 
+        day: 'numeric', 
+        hour: '2-digit', 
+        minute: '2-digit' 
+    };
+    return dateObj.toLocaleDateString('en-GB', options);
+}
+	
 
     // Init
     loadOrders();

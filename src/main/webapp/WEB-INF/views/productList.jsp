@@ -231,7 +231,8 @@ $(document).ready(function() {
         'men': "Men's Products",
         'women': "Women's Products",
         'electronics': "Electronics",
-        'sneakers': "Sneakers",
+        'sneaker': "Sneakers",
+        'furniture': "Furniture",
         'all': "All Products"
     };
     $("#categoryName").text(categoryNames[category]);
@@ -243,6 +244,7 @@ $(document).ready(function() {
         url: '/ecomm.capstone/products/category/' + displayCategory,
         method: "GET",
         success: function(products) {
+        	console.log("page", products);
             allProducts = products;
             renderProducts(allProducts, currentPage);
         },
@@ -272,15 +274,19 @@ function renderProducts(products, page = 1) {
     paginated.forEach(product => {
         let card = `
             <article class="sneaker">
-                <img src="\${product.imageUrl || 'https://i.postimg.cc/3wWGqDYn/women1.png'}" 
-                     alt="${product.prodName}" 
-                     class="sneaker-img">
+        	  <img src="\${(product.images && product.images.length > 0) 
+            ? product.images[0] 
+            : 'https://i.postimg.cc/3wWGqDYn/women1.png'}" 
+   alt="\${product.prodName}" 
+   class="sneaker-img">
                 <span class="sneaker-name">\${product.prodName}</span>
                 <span class="sneaker-price">₹\${product.price}</span>
-                <a href="<%= request.getContextPath() %>/app/product-details/\${product.prodId}" 
-                   class="button-light">
+<!--               <button class=" add-to-cart-btn button-light">-->
+               <a href="<%= request.getContextPath() %>/app/product-details/\${product.prodId}" 
+                   class="button">
                    View Details <i class="bx bx-right-arrow-alt button-icon"></i>
                 </a>
+<!--               </button>-->
             </article>
         `;
         grid.append(card);
@@ -367,8 +373,15 @@ $("#sortSelect").on("change", function() {
             sorted.sort((a, b) => a.prodName.localeCompare(b.prodName));
             break;
         case "newest":
-            sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            sorted.sort((a, b) => {
+                // Convert createdAt array to Date object for comparison
+                const dateA = new Date(a.createdAt[0], a.createdAt[1] - 1, a.createdAt[2], a.createdAt[3], a.createdAt[4]);
+                const dateB = new Date(b.createdAt[0], b.createdAt[1] - 1, b.createdAt[2], b.createdAt[3], b.createdAt[4]);
+
+                return dateB - dateA; // Compare descending order (newest first)
+            });
             break;
+
         default:
             sorted = allProducts;
     }
