@@ -88,7 +88,8 @@
                     <span>Total</span>
                     <span>₹ ${cart.total}</span>
                 </div>
-                <a href="checkout.jsp" class="btn btn-primary w-100 mt-3">Proceed to Checkout</a>
+                <a href="checkout.jsp" class="btn btn-primary w-100 mt-3">Proceed to Checkoutt</a>
+                 <a href="index.jsp" class="btn btn-primary w-100 mt-3">Go TO Home</a>
             </div>
         </c:when>
         <c:otherwise>
