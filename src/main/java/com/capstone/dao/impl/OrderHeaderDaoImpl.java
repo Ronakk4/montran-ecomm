@@ -20,9 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.capstone.dao.OrderHeaderDao;
-import com.capstone.dto.OrderDTO;
 import com.capstone.model.OrderHeader;
 import com.capstone.model.OrderItem;
+import com.capstone.model.Seller;
 
 @Repository
 @Transactional
@@ -62,15 +62,16 @@ public class OrderHeaderDaoImpl implements OrderHeaderDao {
 	}
 
 	@Override
-	public List<OrderHeader> searchOrders(long sellerId, String orderStatus, String startDate, String endDate) {
+	public List<OrderItem> searchOrders(long sellerId, String orderStatus, String startDate, String endDate) {
 	    CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
-	    CriteriaQuery<OrderHeader> cq = cb.createQuery(OrderHeader.class);
-	    Root<OrderHeader> root = cq.from(OrderHeader.class);
+	    CriteriaQuery<OrderItem> cq = cb.createQuery(OrderItem.class);
+	    Root<OrderItem> root = cq.from(OrderItem.class);
 
-	    // join with items
-	    Join<Object, Object> itemsJoin = root.join("items");  // "items" is the list in OrderHeader
-	    Join<Object, Object> productJoin = itemsJoin.join("product"); 
-	    Join<Object, Object> sellerJoin = productJoin.join("seller");
+	    // joins
+	    Join<OrderItem, Seller> sellerJoin = root.join("seller"); 
+	    Join<OrderItem, OrderHeader> orderHeaderJoin = root.join("orderHeader");
+	    // (optional if you need buyer info)
+	    // Join<OrderHeader, Buyer> buyerJoin = orderHeaderJoin.join("buyer");  
 
 	    List<Predicate> predicates = new ArrayList<>();
 
@@ -79,7 +80,7 @@ public class OrderHeaderDaoImpl implements OrderHeaderDao {
 
 	    // 2. Order Status filter (optional)
 	    if (orderStatus != null && !orderStatus.isEmpty()) {
-	        predicates.add(cb.equal(root.get("status"), orderStatus));
+	        predicates.add(cb.equal(orderHeaderJoin.get("status"), orderStatus));
 	    }
 
 	    // 3. Date range filter (optional)
@@ -87,20 +88,22 @@ public class OrderHeaderDaoImpl implements OrderHeaderDao {
 	    if (startDate != null && !startDate.isEmpty()) {
 	        LocalDate start = LocalDate.parse(startDate, formatter);
 	        LocalDateTime startDateTime = start.atStartOfDay();
-	        predicates.add(cb.greaterThanOrEqualTo(root.get("orderDate"), startDateTime));
+	        predicates.add(cb.greaterThanOrEqualTo(orderHeaderJoin.get("orderDate"), startDateTime));
 	    }
 	    if (endDate != null && !endDate.isEmpty()) {
 	        LocalDate end = LocalDate.parse(endDate, formatter);
 	        LocalDateTime endDateTime = end.atTime(23, 59, 59);
-	        predicates.add(cb.lessThanOrEqualTo(root.get("orderDate"), endDateTime));
+	        predicates.add(cb.lessThanOrEqualTo(orderHeaderJoin.get("orderDate"), endDateTime));
 	    }
 
-	    cq.select(root).distinct(true)  // prevent duplicates due to join
-	      .where(cb.and(predicates.toArray(new Predicate[0])))
-	      .orderBy(cb.desc(root.get("orderDate")));
+	    cq.select(root)
+	    .where(cb.and(predicates.toArray(new Predicate[0])))
+	    .orderBy(cb.desc(orderHeaderJoin.get("orderDate")));
+
 
 	    return sessionFactory.getCurrentSession().createQuery(cq).getResultList();
 	}
+
 
 
 	

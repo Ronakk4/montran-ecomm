@@ -84,7 +84,7 @@
 	            <p><strong>Shipping Address:</strong> <span id="profileAddress"></span></p>
 	            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">Edit Profile</button>
 	            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Change Password</button>
-	            <button class="btn btn-success" onclick="window.location.href='<%=request.getContextPath()%>/app/buyer/orders">See Orders</button>
+	            <button class="btn btn-success" onclick="window.location.href='<%=request.getContextPath()%>/app/buyer/orders'">See Orders</button>
 	            <button class="btn btn-danger" onclick="window.location.href='<%=request.getContextPath()%>/users/logout'">
 	    Logout
 	</button>

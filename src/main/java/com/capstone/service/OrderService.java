@@ -8,7 +8,7 @@ import com.capstone.dto.OrderDTO;
 import com.capstone.dto.SellerOrderDTO;
 import com.capstone.model.CartItem;
 import com.capstone.model.OrderHeader;
-import com.capstone.model.OrderItem;
+
 
 public interface OrderService {
 	List<OrderDTO> getAllOrders(long id);
@@ -16,9 +16,7 @@ public interface OrderService {
 	OrderHeader getOrder(long id);
 	void deleteOrder(long id);
 
-//	void saveOrder(OrderHeader o);
-	// New method to search orders with filters
-    List<OrderHeader> searchOrders(long sellerId, String orderStatus, String startDate, String endDate);
+
 
 	void saveOrder(OrderDTO o);
 	OrderHeader placeOrder(List<CartItem> cartItems);
@@ -27,6 +25,7 @@ public interface OrderService {
 	boolean cancelOrder(long orderId);
 
 	void updateStatus(long orderId, String status);
+	List<SellerOrderDTO> searchOrders(long sellerId, String orderStatus, String startDate, String endDate);
 
 }
 

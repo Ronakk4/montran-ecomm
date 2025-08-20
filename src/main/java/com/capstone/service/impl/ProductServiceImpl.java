@@ -38,14 +38,16 @@ public class ProductServiceImpl implements ProductService{
 
 	@Override
 	@Transactional
-	public void saveProduct(ProductInsertDTO p) throws DuplicateProductException{
+	public void saveProduct(ProductInsertDTO p) throws DuplicateProductException {
 	    // Check if seller already has product with same name
 	    if (productDao.existsByProdNameAndSellerId(p.getProdName(), p.getSellerId())) {
-	        throw new DuplicateProductException("Product '" + p.getProdName() + "' already exists for seller ID " + p.getSellerId());
+	        throw new DuplicateProductException(
+	            "Product '" + p.getProdName() + "' already exists for seller ID " + p.getSellerId()
+	        );
 	    }
 
 	    Product product = new Product();
-	    product.setProdId(p.getProdId());	
+	    product.setProdId(p.getProdId());
 	    product.setProdName(p.getProdName());
 	    product.setProdDescription(p.getProdDescription());
 	    product.setPrice(p.getPrice());
@@ -53,6 +55,11 @@ public class ProductServiceImpl implements ProductService{
 	    product.setCategory(p.getCategory());
 	    product.setCreatedAt(p.getCreatedAt() != null ? p.getCreatedAt() : LocalDateTime.now());
 	    product.setUpdatedAt(p.getUpdatedAt());
+
+	    // ✅ set images only on create (never update later)
+	    if (p.getImages() != null && !p.getImages().isEmpty()) {
+	        product.setImages(p.getImages());
+	    }
 
 	    Seller seller = productDao.getSellerById(p.getSellerId());
 	    if (seller == null) {
@@ -62,6 +69,7 @@ public class ProductServiceImpl implements ProductService{
 
 	    productDao.saveProduct(product);
 	}
+
 
 
 	@Override

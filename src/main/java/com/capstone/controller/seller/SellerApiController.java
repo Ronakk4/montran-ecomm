@@ -110,7 +110,7 @@ public class SellerApiController {
 
 	// New endpoint for searching orders
 	@GetMapping("/searchOrders")
-	public List<OrderHeader> searchOrders(@RequestParam("sellerId") long sellerId,
+	public List<SellerOrderDTO> searchOrders(@RequestParam("sellerId") long sellerId,
 			@RequestParam(value = "orderStatus", required = false) String orderStatus,
 			@RequestParam(value = "startDate", required = false) String startDate,
 			@RequestParam(value = "endDate", required = false) String endDate) {
