@@ -24,7 +24,7 @@
   --m5: 2.5rem;
   --m6: 3rem;
   --z-fixed: 100;
-  --rotate-img: rotate(-30deg);
+  --rotate-img: rotate(0deg);
 }
 
 @media screen and (min-width: 768px) {
@@ -108,8 +108,8 @@ section {
 
 .button {
   display: inline-block;
-  background-color: var(--dark-color);
-  color: var(--white-color);
+  background-color: white;
+  color: black;
   padding: 1.125rem 2rem;
   font-weight: var(--font-medium);
   border-radius: .5rem;
@@ -124,6 +124,7 @@ section {
 .button-light {
   display: inline-flex;
   color: var(--dark-color);
+  width:2.5rem;
   font-weight: var(--font-bold);
   align-items: center;
   transition: .4s;
@@ -252,6 +253,94 @@ section {
   transform: rotate(180deg);
 }
 
+
+
+
+/* Container for the product card */
+.product-card {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 250px;
+    margin: 20px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    text-align: center;
+}
+
+/* Hover effect to scale the card */
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Product image style */
+.product-image {
+    width: 100%;
+    height: auto;
+    border-bottom: 2px solid #f1f1f1;
+}
+
+/* Product name style */
+.product-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 15px 0 5px;
+    color: #333;
+}
+
+/* Product price style */
+.product-price {
+    font-size: 16px;
+    font-weight: 600;
+    color: #e91e63;
+    margin-bottom: 20px;
+}
+
+/* Button style for view details */
+.btn-view-details {
+    background-color: transparent;
+    border: none;
+}
+
+/* Link style inside button */
+.link-view-details {
+    color: #007bff;
+    font-size: 14px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: color 0.3s ease;
+}
+
+/* Hover effect on link */
+.link-view-details:hover {
+    color: #0056b3;
+}
+
+/* Icon inside button */
+.icon-arrow {
+    margin-left: 5px;
+    font-size: 18px;
+}
+
+/* Optional: Responsive design for mobile devices */
+@media (max-width: 768px) {
+    .product-card {
+        width: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .product-card {
+        width: 100%;
+        margin: 10px;
+    }
+}
+
+
+
+
 /* Featured Products */
 .featured-container {
   row-gap: 2rem;
@@ -327,7 +416,7 @@ section {
   align-items: center;
 }
 .product-main-img {
-  max-width: 400px;
+  max-width: 280px;
   transform: var(--rotate-img);
   filter: drop-shadow(0 12px 8px rgba(0, 0, 0, 0.2));
 }
