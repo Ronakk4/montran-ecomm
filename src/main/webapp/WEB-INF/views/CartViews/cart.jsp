@@ -83,6 +83,7 @@
   <div id="cartTable"></div>
   <div class="mt-3">
     <a href="${pageContext.request.contextPath}/app/cart/checkout" class="btn btn-success">Proceed to Checkout</a>
+    <a href="${pageContext.request.contextPath}" class="btn btn-success">Shop More</a>
   </div>
 </div>
 <script>
