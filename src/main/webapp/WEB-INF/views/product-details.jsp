@@ -106,23 +106,31 @@
                                 <button class="color-btn" style="background-color: #4ecdc4;"></button>
                             </div>
                         </div>
+                         <div class="quantity-selector">
+                <h4>Quantity</h4>
+                <div class="quantity-controls">
+                    <button class="qty-btn" onclick="decreaseQty()">-</button>
+                    <span class="qty-display" id="quantity">1</span>
+                    <button class="qty-btn" onclick="increaseQty()">+</button>
+                </div>
+            </div>
 
-                        <div class="quantity-selector">
-                            <h4>Quantity</h4>
-                            <div class="quantity-controls">
-                                <button class="qty-btn" onclick="decreaseQty()">-</button>
-                                <span class="qty-display" id="quantity">1</span>
-                                <button class="qty-btn" onclick="increaseQty()">+</button>
-                            </div>
-                        </div>
                     </div>
 
-                    <div class="product-actions">
-                        <button class="button add-to-cart" style="background-color:black; color:white">Add to Cart</button>
+<!--                    <div class="product-actions">-->
+<!--                        <button class="button add-to-cart" style="background-color:black; color:white">Add to Cart</button>-->
 <!--                        <button class="button-light wishlist-btn">-->
 <!--                            <i class="bx bx-heart"></i> Add to Wishlist-->
 <!--                        </button>-->
+<!--                    </div>-->
+
+
+					 <!-- Product Actions (Add to Cart) -->
+                    <div class="product-actions" id="product-actions">
+                        <!-- Button will be injected dynamically -->
                     </div>
+
+					
 
                     <div class="product-meta">
                         <div class="meta-item">
@@ -153,6 +161,49 @@
     <script>
     let prodId=0;
     let qty=0;
+    
+    
+    // Step 1: Get product details from the JSP page dynamically
+
+      let  stockQuantity="${product.stockQuantity}"  // Stock quantity as a number
+      let pid = "${product.prodId}"
+
+	console.log(stockQuantity);
+    // Step 2: Function to dynamically update the product actions button
+    function updateProductActions() {
+        const actionsContainer = document.getElementById('product-actions');
+
+        if (stockQuantity > 0) {
+            // Show Add to Cart button
+            actionsContainer.innerHTML = `
+               
+
+                <button class="button add-to-cart" style="background-color:black; color:white" 
+                        data-product-id=pid>
+                    Add to Cart
+                </button>
+            `;
+        } else {
+            // Show Out of Stock button
+            actionsContainer.innerHTML = `
+                <button class="button add-to-cart" disabled style="background-color:gray; color:white; cursor: not-allowed; opacity: 0.6;">
+                    Out of Stock
+                </button>
+            `;
+        }
+    }
+
+    // Step 3: Call the function to set the button based on stock quantity
+    document.addEventListener('DOMContentLoaded', updateProductActions);
+
+    // Add event listener for Add to Cart button
+<!--    $(document).on("click", ".add-to-cart", function() {-->
+<!--        const productId = $(this).data("product-id"); // Get productId from button-->
+<!--        addToCart(productId, 1); // Add to cart with default quantity of 1-->
+<!--    });-->
+    
+    
+    
     
     function getRelatedProducts(category) {
     	console.log("related category",category);
