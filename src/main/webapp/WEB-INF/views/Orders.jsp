@@ -63,9 +63,10 @@ $(document).ready(function() {
                     <div class="product-item">
                         ${item.imageUrl ? `<img src="${item.imageUrl}" class="product-image">` : ""}
                         <div>
-                            <strong>${item.name || "Product ID: " + item.productId}</strong><br>
+                            <strong>${item.name || "Product name: " + item.productName}</strong><br>
                             <small class="text-muted">${item.description || ""}</small><br>
                             <span class="badge bg-light text-dark">x${item.quantity}</span>
+                            <span class="badge bg-light text-dark">x${item.sellerName}</span>
                             <span class="badge bg-primary ms-1">₹${item.price}</span>
                         </div>
                     </div>
@@ -84,7 +85,7 @@ $(document).ready(function() {
 
             // Cancel button only if status is PLACED
             let cancelButton = '';
-            if(order.status === 'PLACED') {
+            if(order.status === 'PLACED' ) {
                 cancelButton = `<button class="btn btn-danger btn-sm cancel-order-btn mt-2" data-order-id="${order.orderId}">Cancel Order</button>`;
             }
 
