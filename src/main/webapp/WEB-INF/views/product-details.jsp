@@ -118,10 +118,10 @@
                     </div>
 
                     <div class="product-actions">
-                        <button class="button add-to-cart">Add to Cart</button>
-                        <button class="button-light wishlist-btn">
-                            <i class="bx bx-heart"></i> Add to Wishlist
-                        </button>
+                        <button class="button add-to-cart" style="background-color:black; color:white">Add to Cart</button>
+<!--                        <button class="button-light wishlist-btn">-->
+<!--                            <i class="bx bx-heart"></i> Add to Wishlist-->
+<!--                        </button>-->
                     </div>
 
                     <div class="product-meta">
@@ -152,6 +152,7 @@
 
     <script>
     let prodId=0;
+    let qty=0;
     
     function getRelatedProducts(category) {
     	console.log("related category",category);
@@ -168,14 +169,22 @@
                         <article class="sneaker">
                             ${p.onSale ? '<div class="sneaker-sale">Sale</div>' : ''}
                     	  <a href="/ecomm.capstone/app/product-details/\${p.prodId}">
-                            <img src="https://i.postimg.cc/3wWGqDYn/women1.png" alt="" class="sneaker-img">
-                            <span class="sneaker-name">` + p.prodName + `</span>
-                            <span class="sneaker-price">$` + p.price + `</span>
-                            <a href="/app/product-details/${p.id}" class="button-light">
+                    	 <img src="\${(p.images && p.images.length > 0) 
+                        ? p.images[0] 
+                        : 'https://i.postimg.cc/3wWGqDYn/women1.png'}" 
+               alt="\${p.prodName}" 
+               class="sneaker-img">
+                            <span class="sneaker-name"  style="display:flex; justify-content:center">` + p.prodName + `</span>
+                            <span class="sneaker-price"  style="display:flex; justify-content:center">$` + p.price + `</span>
+                            <a href="<%= request.getContextPath() %>/app/product-details/\${p.prodId}" 
+                                class="button">
                                 View Details <i class="bx bx-right-arrow-alt button-icon"></i>
-                            </a>
+                             </a>
                             </a>
                         </article>
+                        
+                           
+                          
                     `;
                     container.append(productHtml);
                 });
@@ -205,7 +214,7 @@
             contentType: "application/json",
             data: JSON.stringify({
                 productId: prodId,
-                quantity: 1
+                quantity: qty+1
             }),
             success: function(response) {
                 console.log("Cart updated:", response);
@@ -258,12 +267,14 @@
         function increaseQty() {
             const qtyDisplay = document.getElementById('quantity');
             let currentQty = parseInt(qtyDisplay.textContent);
+            qty=currentQty;
             qtyDisplay.textContent = currentQty + 1;
         }
 
         function decreaseQty() {
             const qtyDisplay = document.getElementById('quantity');
             let currentQty = parseInt(qtyDisplay.textContent);
+            qty=currentQty;
             if (currentQty > 1) {
                 qtyDisplay.textContent = currentQty - 1;
             }
