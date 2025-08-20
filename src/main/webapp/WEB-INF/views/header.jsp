@@ -46,6 +46,11 @@
                 <% if(isLoggedIn) { %>
                     <li class="nav-item"><a href="<%= request.getContextPath() %>/app/buyer/profile" class="nav-link">Profile</a></li>
                     <li class="nav-item"><a href="<%= request.getContextPath() %>/users/logout" class="nav-link">Logout</a></li>
+              		<li class="nav-tem cart-icon"> 
+            <a href="${pageContext.request.contextPath}/app/cart" class="nav-link cart-icon">
+                <i class="bx bx-shopping-bag"></i>
+            </a>
+        </li>	
                 <% } else { %>
                     <li class="nav-item"><a href="<%= request.getContextPath() %>/app/login" class="nav-link">Login</a></li>
                     <li class="nav-item"><a href="<%= request.getContextPath() %>/app/register" class="nav-link">Sign Up</a></li>
@@ -54,11 +59,11 @@
             </ul>
         </div>
 
-        <div class="nav-shop">
-            <a href="${pageContext.request.contextPath}/app/cart">
-                <i class="bx bx-shopping-bag"></i>
-            </a>
-        </div>
+<!--        <div class="nav-shop">-->
+<!--            <a href="${pageContext.request.contextPath}/app/cart">-->
+<!--                <i class="bx bx-shopping-bag"></i>-->
+<!--            </a>-->
+<!--        </div>-->
     </nav>
 </header>
 
