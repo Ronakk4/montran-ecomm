@@ -5,18 +5,18 @@ import java.time.LocalDateTime;
 public class OrderItemDTO {
     private Long productId;
     private String productName;
+    private Long sellerId;
+    private int quantity;
+    private double price;
+    private LocalDateTime orderDate;
+    private String sellerName;
+    
     public String getProductName() {
 		return productName;
 	}
 	public void setProductName(String productName) {
 		this.productName = productName;
 	}
-	private Long sellerId;
-    private int quantity;
-    private double price;
-    private LocalDateTime orderDate;
-    private String sellerName;
-    
     	
 	public String getSellerName() {
 		return sellerName;
