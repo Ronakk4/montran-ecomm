@@ -47,8 +47,8 @@ public class SellerApiController {
     	
     	// Set seller from session
     	
-    	long sellerId = product.getSellerId();
-        product.setSellerId(sellerId);
+//    	long sellerId = product.getSellerId();
+//        product.setSellerId(sellerId);
         
         productService.saveProduct(product);
         return "Product added successfully";
