@@ -74,16 +74,23 @@ body {
 	padding: 6px 18px;
 }
 </style>
+
+<meta http-equiv="Cache-Control"
+	content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
 </head>
 <body>
 
 	<!-- TOP BAR -->
 	<div class="top-bar">
 		<span class="username">👤 <%= jwtToken != null ? JwtUtil.getUsername(jwtToken.getValue()) : "Guest" %></span>
-		<a href="profile"
-			class="btn btn-outline-secondary btn-sm me-2">Profile</a> <a
-			href="${pageContext.request.contextPath}/logout"
-			class="btn btn-danger btn-sm">Logout</a>
+		<a href="profile" class="btn btn-outline-secondary btn-sm me-2">Profile</a>
+
+<%-- 		<a href=<%=request.getContextPath()%> class="btn btn-danger btn-sm">Logout</a> --%>
+		<button class="btn btn-danger btn-sm"
+			onclick="window.location.href='<%=request.getContextPath()%>/users/logout'">Logout
+	</button>
 	</div>
 
 	<div class="container mt-4">
@@ -115,8 +122,8 @@ body {
 				</div>
 			</div>
 		</div>
-		
-		
+
+
 
 		<!-- RECENT ORDERS -->
 		<div class="section">
@@ -157,6 +164,12 @@ body {
 
 	<!-- AJAX -->
 	<script>
+	
+	history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+        window.location.href = '<%=request.getContextPath()%>/'; // home page
+    };
+    
         $(document).ready(function() {
             const apiBase = "http://localhost:8080/ecomm.capstone/api/seller";
             const sellerId = <%= sellerId != null ? sellerId : "null" %>;
