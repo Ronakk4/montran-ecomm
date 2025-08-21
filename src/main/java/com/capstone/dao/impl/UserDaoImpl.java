@@ -58,33 +58,11 @@ public class UserDaoImpl implements UserDao{
 		sessionFactory.getCurrentSession().delete(u);
 	}
 
-	@Transactional
-	public void updateUser(User updatedUser) {
+	public void updateUser(User user) {
 	    Session session = sessionFactory.getCurrentSession();
-
-	    
-	    User existingUser = session.get(User.class, updatedUser.getId());
-	    if (existingUser == null) {
-	        throw new RuntimeException("User not found with id " + updatedUser.getId());
-	    }
-
-	    // Update only fields that are provided
-	    if (updatedUser.getName() != null) {
-	        existingUser.setName(updatedUser.getName());
-	    }
-	    if (updatedUser.getEmail() != null) {
-	        existingUser.setEmail(updatedUser.getEmail());
-	    }
-	   
-
-	    
-	    if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
-	        existingUser.setPassword(updatedUser.getPassword());
-	    }
-
-	  
-	    session.merge(existingUser);
+	    session.merge(user);   // merge updated entity
 	}
+
 
 
 	@Override

@@ -96,7 +96,7 @@ public class OrderServiceImpl implements OrderService{
 	public List<SellerOrderDTO> getOrdersForSeller(long sellerId) {
         List<OrderItem> orderItems = orderItemDao.getAllOrdersForSeller(sellerId);
 
-        Map<Long, SellerOrderDTO> ordersMap = new HashMap<>();
+        Map<Long, SellerOrderDTO> ordersMap = new HashMap<>();    // to add multiple products of same order which are of particular seller
 
         for (OrderItem item : orderItems) {
             Long orderId = item.getOrderHeader().getOrderId();
