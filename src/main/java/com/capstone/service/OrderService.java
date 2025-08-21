@@ -26,6 +26,7 @@ public interface OrderService {
 
 	void updateStatus(long orderId, String status);
 	List<SellerOrderDTO> searchOrders(long sellerId, String orderStatus, String startDate, String endDate);
+	OrderDTO getOrderDTO(long orderId);
 
 }
 

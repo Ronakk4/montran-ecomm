@@ -32,7 +32,7 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-
+	
 	@PostMapping
     public String registerUser(@Valid @RequestBody UserRegisterDTO user) {
         userService.registerUser(user);
@@ -57,8 +57,7 @@ public class UserController {
 	        response.addCookie(cookie);
 
 	        
-	        // Redirect based on role
-	       
+	    	       
 	    } else {
 	        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid credentials");
 	    }
@@ -67,15 +66,15 @@ public class UserController {
 	
 	@GetMapping("/logout")
 	public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
-	    // 1. Invalidate session
+
 	    if (request.getSession(false) != null) {
 	        request.getSession().invalidate();
 	    }
 
-	    // 2. Remove JWT cookie
+	   
 	    Cookie cookie = new Cookie("jwtToken", null);
 	    cookie.setHttpOnly(true);
-	    cookie.setPath("/"); // make sure path matches cookie path in login
+	    cookie.setPath("/"); 
 	    cookie.setMaxAge(0); // expire immediately
 	    response.addCookie(cookie);
 

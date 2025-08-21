@@ -24,7 +24,7 @@ public class JWTAuthenticationFilter implements Filter {
       // These endpoints are not mapped to this filter anyway, but harmless to allow:
       String servletPath = req.getServletPath(); // NO context path here
 
-      if ("/login".equals(servletPath) || "/register".equals(servletPath) || servletPath.startsWith("/public")) {
+      if ("/login".equals(servletPath) || "/register".equals(servletPath) ) {
         chain.doFilter(request, response);
         return;
       }
@@ -49,8 +49,9 @@ public class JWTAuthenticationFilter implements Filter {
 
       try {
         Claims claims = JwtUtil.validateToken(token).getBody();
-        String userType = claims.get("userType", String.class); // exact key
+        String userType = claims.get("userType", String.class); // exact type
         Long userId = claims.get("userId", Long.class);
+        String sub=claims.getSubject();
 
         req.setAttribute("userId", userId);
         req.setAttribute("userType", userType);
