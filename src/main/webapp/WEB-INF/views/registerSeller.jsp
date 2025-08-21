@@ -184,6 +184,7 @@
                 <div id="gstValid" class="valid-feedback"></div>
             </div>
         </div>
+ <%--       
         <!-- ✅ Added Phone Number -->
     <div class="mb-3">
         <label class="form-label">Phone Number</label>
@@ -191,6 +192,13 @@
                placeholder="+91XXXXXXXXXX" pattern="[0-9]{10}">
         <div class="form-text">Include country code (e.g., +91).</div>
     </div>
+--%>
+	    <div class="mb-3">
+            <label for="phoneNumber" class="form-label">Phone Number</label>
+            <input type="tel" id="phoneNumber" class="form-control" placeholder="Enter your phone number" required>
+            <div id="phoneError" class="invalid-feedback"></div>
+            <div id="phoneValid" class="valid-feedback"></div>
+	    </div>
  
         <div class="mb-4">
             <label for="shopDescription" class="form-label">Shop Description</label>
@@ -366,6 +374,25 @@ function validateShopName() {
         return true;
     }
 }
+
+function validatePhone() {
+    const phone = $("phoneNumber").value.trim();
+    const phoneDigits = phone.replace(/[^\d]/g, "");
+    
+    if (!phone) {
+        setFieldError("phoneNumber", "phoneError", "phoneValid", "Phone number is required.");
+        return false;
+    } else if (phoneDigits.length !== 10) {
+        setFieldError("phoneNumber", "phoneError", "phoneValid", "Please enter a valid 10-digit phone number.");
+        return false;
+    } else if (!/^[+\d\s\-()]+$/.test(phone)) {
+        setFieldError("phoneNumber", "phoneError", "phoneValid", "Phone number contains invalid characters.");
+        return false;
+    } else {
+        setFieldValid("phoneNumber", "phoneError", "phoneValid", "Valid phone number");
+        return true;
+    }
+}
  
 function validateGSTNumber() {
     const gstNumber = $("gstNumber").value.trim().toUpperCase();
@@ -407,11 +434,12 @@ function validateForm() {
     const emailFormatValid = isValidEmail($("email").value.trim());
     const passwordValid = validatePassword();
     const shopNameValid = validateShopName();
+    const phoneValid = validatePhone();
     const gstValid = validateGSTNumber();
     const descValid = validateShopDescription();
     
     // Form is valid if all fields are valid AND email is available
-    isFormValid = nameValid && emailFormatValid && isEmailValid && passwordValid && shopNameValid && gstValid && descValid;
+    isFormValid = nameValid && emailFormatValid && isEmailValid && passwordValid && phoneValid && shopNameValid && gstValid && descValid;
     
     // Update submit button state
     const submitBtn = $("submitBtn");
@@ -518,6 +546,11 @@ $("gstNumber").addEventListener("input", function() {
 $("shopDescription").addEventListener("input", function() {
     validateShopDescription();
     validateForm();
+});
+
+$("phoneNumber").addEventListener("input", function() {
+	validatePhone();
+	validateForm();
 });
  
 // Initialize form validation state

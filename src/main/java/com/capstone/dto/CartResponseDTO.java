@@ -6,6 +6,8 @@ public class CartResponseDTO {
     private String productName;
     private Double productPrice;
     private int quantity;
+    private int stockQuantity;
+    
 	public Long getCartId() {
 		return cartId;
 	}
@@ -35,6 +37,12 @@ public class CartResponseDTO {
 	}
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+	public int getStockQuantity() {
+		return stockQuantity;
+	}
+	public void setStockQuantity(int stockQuantity) {
+		this.stockQuantity = stockQuantity;
 	}
     
     
