@@ -14,7 +14,14 @@ public class OrderDTO {
 	private String status;
     private double totalAmount;
     private Long buyerId;
-    private List<OrderItemDTO> items;
+    private String buyerName;
+    public String getBuyerName() {
+		return buyerName;
+	}
+	public void setBuyerName(String buyerName) {
+		this.buyerName = buyerName;
+	}
+	private List<OrderItemDTO> items;
     private String shippingAddress;
     private LocalDateTime orderDate;
 
@@ -48,6 +55,7 @@ public class OrderDTO {
 	public void setBuyerId(Long buyerId) {
 		this.buyerId = buyerId;
 	}
+	
 	public List<OrderItemDTO> getItems() {
 		return items;
 	}
