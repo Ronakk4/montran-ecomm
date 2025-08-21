@@ -232,6 +232,7 @@ function decrease(productId, quantity) {
   <div class="mt-3">
     <a id="checkoutBtn" href="${pageContext.request.contextPath}/app/cart/checkout" 
        class="btn btn-success">Proceed to Checkout</a>
+       <a href="${pageContext.request.contextPath}" class="btn btn-primary ">Go To Home</a>
   </div>
 </div>
 <script>

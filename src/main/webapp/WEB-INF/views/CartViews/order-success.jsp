@@ -17,7 +17,7 @@
 <body class="bg-light">
 <div class="container mt-5 text-center">
   <h2 class="text-success">Your order has been placed successfully!</h2>
-  <a href="${pageContext.request.contextPath}/products" class="btn btn-primary mt-3">Continue Shopping</a>
+  <a href="${pageContext.request.contextPath}" class="btn btn-primary mt-3">Continue Shopping</a>
 </div>
 </body>
 </html>
