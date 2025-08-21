@@ -45,10 +45,7 @@ public class SellerApiController {
     @PostMapping("/products")
     public String addProduct(@Valid @RequestBody ProductInsertDTO product, HttpSession session) {
     	
-    	// Set seller from session
     	
-    	long sellerId = product.getSellerId();
-        product.setSellerId(sellerId);
         
         productService.saveProduct(product);
         return "Product added successfully";
