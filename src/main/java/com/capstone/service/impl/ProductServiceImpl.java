@@ -82,15 +82,24 @@ public class ProductServiceImpl implements ProductService{
 	
 	@Override
 	public void updateProduct(ProductInsertDTO p) {
-		productDao.updateProduct(p);
+	    Product product = new Product();
+	    product.setProdId(p.getProdId());
+	    product.setProdName(p.getProdName());
+	    product.setProdDescription(p.getProdDescription());
+	    product.setPrice(p.getPrice());
+	    product.setStockQuantity(p.getStockQuantity());
+	    product.setCategory(p.getCategory());
+	    product.setUpdatedAt(LocalDateTime.now());
+
+	    // ✅ Only set images if provided
+	    if (p.getImages() != null && !p.getImages().isEmpty()) {
+	        product.setImages(p.getImages());
+	    }
+
+	    productDao.updateProduct(product);
 	}
 
 
-//	@Override
-//	public void saveProduct(@Valid Product product) {
-//		// TODO Auto-generated method stub
-//		
-//	}
 
 
 	@Override
