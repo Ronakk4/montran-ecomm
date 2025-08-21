@@ -69,12 +69,12 @@ function loadCart() {
             html += "<tr>" +
                         "<td>" + item.productName + "</td>" +
                         "<td>" + item.quantity + "</td>" +
-                        "<td>" + item.productPrice + "</td>" +
-                        "<td>" + lineTotal + "</td>" +
+                        "<td> ₹" + item.productPrice + "</td>" +
+                        "<td> ₹" + lineTotal + "</td>" +
                     "</tr>";
         });
 
-        html += "<tr><td colspan='3' class='text-end'><b>Grand Total</b></td><td><b>" + grandTotal.toFixed(2) + "</b></td></tr>";
+        html += "<tr><td colspan='3' class='text-end'><b>Grand Total</b></td><td><b> ₹" + grandTotal.toFixed(2) + "</b></td></tr>";
         html += "</tbody></table>";
 
         $("#cartSummary").html(html);

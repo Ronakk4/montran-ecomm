@@ -67,7 +67,7 @@
 					</div>
 
 					<div class="product-price">
-						<span class="current-price">$${product.price}</span> <span
+						<span class="current-price">₹${product.price}</span> <span
 							class="original-price">$1999.99</span> <span class="discount">25%
 							OFF</span>
 					</div>
@@ -214,7 +214,7 @@
                alt="\${p.prodName}" 
                class="sneaker-img">
                             <span class="sneaker-name"  style="display:flex; justify-content:center">` + p.prodName + `</span>
-                            <span class="sneaker-price"  style="display:flex; justify-content:center">$` + p.price + `</span>
+                            <span class="sneaker-price"  style="display:flex; justify-content:center">₹` + p.price + `</span>
                             <a href="<%= request.getContextPath() %>/app/product-details/\${p.prodId}" 
                                 class="button">
                                 View Details <i class="bx bx-right-arrow-alt button-icon"></i>
@@ -261,7 +261,7 @@
             },
             error: function(xhr) {
                 console.error("Error:", xhr.responseText);
-                alert("Failed to add product to cart");
+                alert("Please Login first");
             }
         });
     }

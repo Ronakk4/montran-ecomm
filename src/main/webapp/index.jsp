@@ -116,7 +116,7 @@
         <a href="http://localhost:8080/ecomm.capstone/app/product-details/32">
             <img src="https://rukminim1.flixcart.com/image/612/612/k4d27ww0/shirt/q/w/t/l-el024-el-senor-original-imafnadnjp5pq6tg.jpeg?q=70" alt="Nike Free RN" class="sneaker-img">
             <span class="sneaker-name style="display:flex; justify-content:center">Men Shirt</span>
-            <span class="sneaker-price style="display:flex; justify-content:center">$1899.99</span>
+            <span class="sneaker-price style="display:flex; justify-content:center">₹1899.99</span>
         </a>
         <a href="http://localhost:8080/ecomm.capstone/app/product-details/32" class="button">
             View Product <i class="bx bx-right-arrow-alt button-icon"></i>
@@ -128,7 +128,7 @@
         <a href="http://localhost:8080/ecomm.capstone/app/product-details/31">
             <img src="https://rukminim1.flixcart.com/image/612/612/l5h2xe80/kurta/x/6/n/xl-kast-tile-green-majestic-man-original-imagg4z33hu4kzpv.jpeg?q=70" alt="Nike Free RN" class="sneaker-img">
             <span class="sneaker-name" style="display:flex; justify-content:center">Men Kurta</span>
-            <span class="sneaker-price style="display:flex; justify-content:center">$1899.99</span>
+            <span class="sneaker-price style="display:flex; justify-content:center">₹1899.99</span>
         </a>
         <a href="http://localhost:8080/ecomm.capstone/app/product-details/31" class="button">
             View Product <i class="bx bx-right-arrow-alt button-icon"></i>
@@ -245,7 +245,7 @@
                 <div class="new-mens">
                     <img src="https://i.postimg.cc/8CqqJMCY/new1.png" alt="" class="new-mens-img">
                     <h3 class="new-title">Mens Shoes</h3>
-                    <span class="new-price">From $79.99</span>
+                    <span class="new-price">From ₹799.99</span>
                     <a class=" button"  onclick="redirectToSneakers()" >View Collection <i class="bx bx-right-arrow-alt button-icon"></i></a>
                 </div>
 
@@ -368,7 +368,7 @@ async function loadProducts(category, containerId) {
                         <img src="\${(p.images && p.images.length > 0) ? p.images[0] : 'https://i.postimg.cc/3wWGqDYn/women1.png'}" 
                             alt="${p.prodName}" class="sneaker-img">
                         <span class="sneaker-name" style="display:flex; justify-content:center">\${p.prodName}</span>
-                        <span class="sneaker-price" style="display:flex; justify-content:center">$\${p.price}</span>
+                        <span class="sneaker-price" style="display:flex; justify-content:center">₹\${p.price}</span>
                     </a>
                     \${buttonHtml}
                 </article>
