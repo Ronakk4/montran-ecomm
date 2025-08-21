@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
     public void updateUser(Long id, UserDTO dto) {
         User existingUser = userDao.findUserById(id);
         if (existingUser == null) {
-            throw new RuntimeException("User not found with id " + id);
+            throw new UserNotFoundException("User not found with id " + id);
         }
 
         // Common fields
