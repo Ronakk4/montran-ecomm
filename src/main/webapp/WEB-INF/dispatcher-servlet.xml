@@ -29,7 +29,7 @@
         <property name="username" value="postgres" />
 
 
-        <property name="password" value="montran123" />
+        <property name="password" value="admin1" />
  
 
       <!-- Optional connection pool settings -->

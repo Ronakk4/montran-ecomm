@@ -74,6 +74,16 @@ public class GlobalExceptionHandler {
 	    errorBody.put("message", ex.getMessage());
 	    return new ResponseEntity<>(errorBody, HttpStatus.CONFLICT); // 409 Conflict
 	}
+	
+	@ExceptionHandler(OutOfStockException.class)
+	public ResponseEntity<Map<String, Object>> handleOutOfStock(OutOfStockException ex) {
+	    System.out.println("[EX-HANDLER] " + ex.getClass().getSimpleName() + ": " + ex.getMessage());
+	    Map<String, Object> errorBody = new HashMap<>();
+	    errorBody.put("status", "error");
+	    errorBody.put("message", ex.getMessage());
+	    return new ResponseEntity<>(errorBody, HttpStatus.BAD_REQUEST); // or HttpStatus.CONFLICT
+	}
+
 
 
 }
