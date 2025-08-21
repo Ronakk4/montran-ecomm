@@ -74,13 +74,11 @@ table tbody tr:hover {
 			<h2>📦 Orders</h2>
 		</div>
 
-
-
 		<div class="filters">
 			<input type="text" id="searchBox"
 				class="form-control form-control-sm"
-				placeholder="🔍 Search Order ID"> <select id="statusFilter"
-				class="form-select form-select-sm">
+				placeholder="🔍 Search Order ID"> 
+			<select id="statusFilter" class="form-select form-select-sm">
 				<option value="">All Status</option>
 				<option value="PLACED">Placed</option>
 				<option value="PENDING">Pending</option>
@@ -88,10 +86,15 @@ table tbody tr:hover {
 				<option value="DELIVERED">Delivered</option>
 				<option value="CANCELLED">Cancelled</option>
 			</select>
+
+			<!-- ✅ Excel Download Button -->
+			<a id="downloadExcelBtn" class="btn btn-success btn-sm">
+			   ⬇️ Download Excel
+			</a>
 		</div>
 	</div>
 
-	<!-- ====== ADDED SEARCH BAR FOR ORDERS ====== -->
+	<!-- ====== SEARCH BAR ====== -->
 	<section class="mt-4">
 		<h4>Search Orders</h4>
 		<form class="row g-2 align-items-center">
@@ -110,7 +113,7 @@ table tbody tr:hover {
 	<!-- ====== END OF SEARCH BAR ====== -->
 
 	<!-- ORDERS TABLE -->
-	<div class="card-table">
+	<div class="card-table mt-3">
 		<table class="table table-hover align-middle mb-0">
 			<thead class="table-dark">
 				<tr>
@@ -124,7 +127,7 @@ table tbody tr:hover {
 			</thead>
 			<tbody id="ordersTable">
 				<tr>
-					<td colspan="5" class="text-center text-muted">Loading...</td>
+					<td colspan="6" class="text-center text-muted">Loading...</td>
 				</tr>
 			</tbody>
 		</table>
@@ -138,17 +141,15 @@ table tbody tr:hover {
         $.get(`/ecomm.capstone/api/seller/orders?sellerId=${sellerId}`, function(data) {
             allOrders = data;
             renderOrders(allOrders);
-            
         });
     }
 
     function renderOrders(orders) {
         let rows = "";
         if (orders.length === 0) {
-            rows = `<tr><td colspan="5" class="text-center text-muted">No orders found.</td></tr>`;
+            rows = `<tr><td colspan="6" class="text-center text-muted">No orders found.</td></tr>`;
         } else {
             orders.forEach(order => {
-            	console.log(order);
                 let itemsHtml = "<ul class='list-unstyled mb-0'>";
                 let totalAmount = 0;
 
@@ -164,7 +165,6 @@ table tbody tr:hover {
                 });
                 itemsHtml += "</ul>";
 
-                // badge color
                 let statusClass = "secondary";
                 if (order.status === "DELIVERED") statusClass = "success";
                 else if (order.status === "PENDING") statusClass = "warning";
@@ -172,14 +172,12 @@ table tbody tr:hover {
                 else if (order.status === "SHIPPED") statusClass = "info";
                 else if (order.status === "PLACED") statusClass = "primary";
 
-                // status cell
                 let statusCell = `
                     <span class="badge bg-${statusClass}" id="badge-${order.orderId}">
                         ${order.status}
                     </span>
                 `;
 
-                // if not cancelled → add dropdown
                 if (order.status !== "CANCELLED") {
                     let statusOptions = ["PLACED", "PENDING", "SHIPPED", "DELIVERED", "CANCELLED"]
                         .map(s => `<option value="${s}" ${s === order.status ? "selected" : ""}>${s}</option>`)
@@ -211,7 +209,6 @@ table tbody tr:hover {
         }
         $("#ordersTable").html(rows);
 
-        // dropdown change → update status
         $(".order-status-dropdown").change(function () {
             const orderId = $(this).data("order-id");
             const newStatus = $(this).val();
@@ -234,10 +231,6 @@ table tbody tr:hover {
         });
     }
 
-
-
-
-    // --- Filters ---
     $("#statusFilter").change(function() {
         const status = $(this).val();
         let filtered = status ? allOrders.filter(o => o.status === status) : allOrders;
@@ -249,55 +242,47 @@ table tbody tr:hover {
         let filtered = keyword ? allOrders.filter(o => o.orderId.toString().includes(keyword)) : allOrders;
         renderOrders(filtered);
     });
-    
-//  // ===== ADDED ORDER SEARCH =====
-// --- Search Orders Button ---
-$("#searchOrdersBtn").on("click", function () {
-    const params = {
-        sellerId: sellerId,
-        orderStatus: $("#statusFilter").val(),   // take from dropdown filter
-        startDate: $("#startDate").val(),
-        endDate: $("#endDate").val()
-    };
 
-    $.ajax({
-        url: `/ecomm.capstone/api/seller/searchOrders`,
-        type: "GET",
-        data: params,
-        success: function (orders) {
-            allOrders = orders;
-            renderOrders(allOrders);
-        },
-        error: function (xhr) {
-            console.error("Order search failed:", xhr.responseText);
-            alert("❌ Order search failed.");
-        }
+    $("#searchOrdersBtn").on("click", function () {
+        const params = {
+            sellerId: sellerId,
+            orderStatus: $("#statusFilter").val(),
+            startDate: $("#startDate").val(),		
+            endDate: $("#endDate").val()
+        };
+
+        $.ajax({
+            url: `/ecomm.capstone/api/seller/searchOrders`,
+            type: "GET",
+            data: params,
+            success: function (orders) {
+                allOrders = orders;
+                renderOrders(allOrders);
+            },
+            error: function (xhr) {
+                console.error("Order search failed:", xhr.responseText);
+                alert("❌ Order search failed.");
+            }
+        });
     });
+
+    // ✅ Download Excel button with filters
+   $("#downloadExcelBtn").on("click", function () {
+    window.location.href = `/ecomm.capstone/seller/orders/excel?sellerId=${sellerId}`;
 });
 
-function formatOrderDate(dateString) {
-    if (!dateString) return "<span class='text-muted'>N/A</span>";
-
-    // Handles both array format [2025, 8, 13, 10, 30] and ISO string
-    let dateObj;
-    if (Array.isArray(dateString)) {
-        dateObj = new Date(dateString[0], dateString[1] - 1, dateString[2], dateString[3], dateString[4]);
-    } else {
-        dateObj = new Date(dateString);
+    function formatOrderDate(dateString) {
+        if (!dateString) return "<span class='text-muted'>N/A</span>";
+        let dateObj;
+        if (Array.isArray(dateString)) {
+            dateObj = new Date(dateString[0], dateString[1] - 1, dateString[2], dateString[3], dateString[4]);
+        } else {
+            dateObj = new Date(dateString);
+        }
+        const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+        return dateObj.toLocaleDateString('en-GB', options);
     }
 
-    const options = { 
-        year: 'numeric', 
-        month: 'short', 
-        day: 'numeric', 
-        hour: '2-digit', 
-        minute: '2-digit' 
-    };
-    return dateObj.toLocaleDateString('en-GB', options);
-}
-	
-
-    // Init
     loadOrders();
 </script>
 
