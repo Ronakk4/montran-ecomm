@@ -14,7 +14,6 @@ public interface ProductDao {
 	Product getProduct(long id);
 	void saveProduct(Product p);
 	void deleteProduct(long id);
-	void updateProduct(ProductInsertDTO p);
 	List<Product> getProductsFromCategory(String category);
 	List<Product> getProductsBySellerId(long sellerId);
 
@@ -23,6 +22,7 @@ public interface ProductDao {
 	List<String> getAllCategories();
 	List<Product> searchProducts(String prodName, String category, Double minPrice, Double maxPrice);
 	boolean existsByProdNameAndSellerId(String prodName, long sellerId);
+	void updateProduct(Product product);
 	
 	
 }

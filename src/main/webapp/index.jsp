@@ -172,7 +172,7 @@
 <!--</section>-->
 
  <section class="women section" id="women">
-            <h2 class="section-title">WOMEN SNEAKERS</h2>
+            <h2 class="section-title">WOMEN</h2>
             <div class="slider-container">
 <!--                <button class="slider-btn prev-btn" onclick="slideProducts('women', -1)">-->
 <!--                    <i class="bx bx-chevron-left"></i>-->
@@ -191,7 +191,7 @@
         
 
  <section class="men section" id="men">
-            <h2 class="section-title">MEN SNEAKERS</h2>
+            <h2 class="section-title">MEN </h2>
             <div class="slider-container">
 <!--                <button class="slider-btn prev-btn" onclick="slideProducts('men', -1)">-->
 <!--                    <i class="bx bx-chevron-left"></i>-->
@@ -365,7 +365,7 @@ async function loadProducts(category, containerId) {
             return `
                 <article class="sneaker">
                     <a href="/ecomm.capstone/app/product-details/\${p.prodId}">
-                        <img src="${(p.images && p.images.length > 0) ? p.images[0] : 'https://i.postimg.cc/3wWGqDYn/women1.png'}" 
+                        <img src="\${(p.images && p.images.length > 0) ? p.images[0] : 'https://i.postimg.cc/3wWGqDYn/women1.png'}" 
                             alt="${p.prodName}" class="sneaker-img">
                         <span class="sneaker-name" style="display:flex; justify-content:center">\${p.prodName}</span>
                         <span class="sneaker-price" style="display:flex; justify-content:center">$\${p.price}</span>

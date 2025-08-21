@@ -3,10 +3,15 @@ package com.capstone.dto;
 import java.time.LocalDateTime;
 
 public class OrderItemDTO {
-	private Long productId;
-	private String productName;
-
-	public String getProductName() {
+    private Long productId;
+    private String productName;
+    private Long sellerId;
+    private int quantity;
+    private double price;
+    private LocalDateTime orderDate;
+    private String sellerName;
+    
+    public String getProductName() {
 		return productName;
 	}
 
@@ -14,12 +19,8 @@ public class OrderItemDTO {
 		this.productName = productName;
 	}
 
-	private Long sellerId;
-	private int quantity;
-	private double price;
-	private LocalDateTime orderDate;
-	private String sellerName;
-
+    
+    	
 	public String getSellerName() {
 		return sellerName;
 	}
