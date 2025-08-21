@@ -9,13 +9,24 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-        .order-card { transition: transform 0.2s; }
-        .order-card:hover { transform: scale(1.02); }
-        .product-image { width: 60px; height: 60px; object-fit: cover; border-radius: 5px; }
+        body { background: linear-gradient(to right, #e3f2fd, #f8f9fa); min-height: 100vh; }
+        .order-card { 
+            transition: transform 0.2s, box-shadow 0.2s; 
+            border-radius: 15px; 
+        }
+        .order-card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        .product-image { width: 60px; height: 60px; object-fit: cover; border-radius: 10px; }
         .product-item { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
+        .btn { border-radius: 10px; }
+        .back-btn { position: absolute; left: 20px; top: 20px; }
+        .page-title { color: #0d6efd; text-shadow: 1px 1px 2px rgba(0,0,0,0.1); }
+        .badge { font-size: 0.85rem; }
     </style>
 </head>
-<body class="container mt-5">
+<body class="container mt-5 position-relative">
 
 <%
     String token = null;
@@ -31,7 +42,10 @@
     }
 %>
 
-<h2 class="mb-4 text-center">My Orders</h2>
+<!-- ✅ Back button -->
+<a href="/ecomm.capstone/" class="btn btn-outline-dark back-btn shadow">&larr; Back</a>
+
+<h2 class="mb-4 text-center fw-bold page-title">📦 My Orders</h2>
 
 <div id="ordersContainer" class="row g-4">
     <!-- Orders will be rendered here dynamically -->
@@ -60,13 +74,13 @@ $(document).ready(function() {
             order.items.forEach(item => {
                 totalAmount += item.price * item.quantity;
                 productsHtml += `
-                    <div class="product-item">
-                        ${item.imageUrl ? `<img src="${item.imageUrl}" class="product-image">` : ""}
+                    <div class="product-item border-bottom pb-2 mb-2">
+                        ${item.imageUrl ? `<img src="${item.imageUrl}" class="product-image shadow-sm border border-2 border-light">` : ""}
                         <div>
-                            <strong>${item.name || "Product name: " + item.productName}</strong><br>
+                            <strong class="text-dark">${item.name || "Product name: " + item.productName}</strong><br>
                             <small class="text-muted">${item.description || ""}</small><br>
-                            <span class="badge bg-light text-dark">x${item.quantity}</span>
-                            <span class="badge bg-light text-dark">x${item.sellerName}</span>
+                            <span class="badge bg-secondary">Qty: ${item.quantity}</span>
+                            <span class="badge bg-info text-dark">Seller: ${item.sellerName}</span>
                             <span class="badge bg-primary ms-1">₹${item.price}</span>
                         </div>
                     </div>
@@ -77,33 +91,39 @@ $(document).ready(function() {
             let statusClass = "secondary";
             switch(order.status) {
                 case "DELIVERED": statusClass = "success"; break;
-                case "PENDING": statusClass = "warning"; break;
+                case "PENDING": statusClass = "warning text-dark"; break;
                 case "CANCELLED": statusClass = "danger"; break;
-                case "SHIPPED": statusClass = "info"; break;
+                case "SHIPPED": statusClass = "info text-dark"; break;
                 case "PLACED": statusClass = "primary"; break;
             }
 
-            // Cancel button only if status is PLACED
+            // Cancel button only if status is PLACED or PENDING
             let cancelButton = '';
             if(order.status === 'PLACED' || order.status==='PENDING') {
-                cancelButton = `<button class="btn btn-danger btn-sm cancel-order-btn mt-2" data-order-id="${order.orderId}">Cancel Order</button>`;
+                cancelButton = `<button class="btn btn-danger btn-sm cancel-order-btn mt-2 w-100 shadow-sm" data-order-id="${order.orderId}">❌ Cancel Order</button>`;
             }
+
+            // ✅ Download PDF button
+            let pdfButton = `<button class="btn btn-success btn-sm mt-2 w-100 download-pdf-btn shadow-sm" data-order-id="${order.orderId}">📄 Download PDF</button>`;
 
             html += `
                 <div class="col-12 col-md-6 col-lg-4">
-                    <div class="card order-card shadow-sm">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <h5 class="card-title mb-0">Order #${order.orderId}</h5>
-                                <span class="badge bg-${statusClass} order-status-badge">${order.status}</span>
+                    <div class="card order-card shadow-sm h-100 border-0">
+                        <div class="card-body d-flex flex-column bg-light">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="card-title mb-0 text-primary">Order #${order.orderId}</h5>
+                                <span class="badge bg-${statusClass} order-status-badge px-3 py-2">${order.status}</span>
                             </div>
-                            <p class="mb-2"><strong>Shipping:</strong> ${order.shippingAddress || "N/A"}</p>
-                            <p class="mb-3"><strong>Total:</strong> ₹${totalAmount.toFixed(2)}</p>
-                            <button class="btn btn-outline-primary btn-sm mb-2 toggle-products-btn">View Products</button>
+                            <p class="mb-2"><strong> Shipping:</strong> ${order.shippingAddress || "N/A"}</p>
+                            <p class="mb-3"><strong> Total:</strong> <span class="text-success fw-bold">₹${totalAmount.toFixed(2)}</span></p>
+                            <button class="btn btn-outline-primary btn-sm mb-2 toggle-products-btn">👀 View Products</button>
                             <div class="products-container d-none">
                                 ${productsHtml}
                             </div>
-                            ${cancelButton}
+                            <div class="mt-auto">
+                                ${cancelButton}
+                                ${pdfButton}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -126,7 +146,7 @@ $(document).ready(function() {
     // Toggle products visibility
     $(document).on("click", ".toggle-products-btn", function() {
         $(this).siblings(".products-container").toggleClass("d-none");
-        $(this).text($(this).text() === "View Products" ? "Hide Products" : "View Products");
+        $(this).text($(this).text() === " View Products" ? " Hide Products" : " View Products");
     });
 
     // Cancel order
@@ -141,14 +161,20 @@ $(document).ready(function() {
             success: function() {
                 btn.closest(".card").find(".order-status-badge")
                    .removeClass()
-                   .addClass("badge bg-danger order-status-badge")
+                   .addClass("badge bg-danger order-status-badge px-3 py-2")
                    .text("CANCELLED");
-                btn.remove(); // remove cancel button after cancellation
+                btn.remove();
             },
             error: function() {
                 alert("Failed to cancel the order.");
             }
         });
+    });
+
+    // ✅ Download PDF
+    $(document).on("click", ".download-pdf-btn", function() {
+        const orderId = $(this).data("order-id");
+        window.location.href = `/ecomm.capstone/buyer/orders/${orderId}/pdf`;
     });
 });
 </script>
