@@ -60,7 +60,7 @@ public class ExportController {
                         ? order.getStatus().replaceAll("\\p{Cntrl}", "")
                         : "";
                 row.createCell(3).setCellValue(status);
-                String  o
+                
 
                 row.createCell(4).setCellValue(order.getTotalAmount());
             }
