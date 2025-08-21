@@ -29,6 +29,7 @@
         <property name="username" value="postgres" />
         <property name="password" value="admin5234" />
 
+
         <property name="initialSize" value="5" />
         <property name="maxTotal" value="20" />
         <property name="maxIdle" value="10" />
