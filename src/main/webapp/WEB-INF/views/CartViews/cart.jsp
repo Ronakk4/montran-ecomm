@@ -1,4 +1,18 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
+<%@ page import="javax.servlet.http.Cookie" %>
+<%
+    // Extract JWT token from cookie
+    Cookie jwtCookie = null;
+    if(request.getCookies() != null){
+        for(Cookie c : request.getCookies()){
+            if("jwtToken".equals(c.getName())){
+                jwtCookie = c;
+                break;
+            }
+        }
+    }
+    String token = jwtCookie != null ? jwtCookie.getValue() : "";
+%>
 <html>
 <head>
   <title>Your Cart</title>
@@ -16,17 +30,23 @@
   <h2 class="mb-3 text-primary">Your Cart</h2>
   <div id="cartTable"></div>
   <div class="mt-3">
-    <a id="checkoutBtn" href="${pageContext.request.contextPath}/app/cart/checkout" 
-       class="btn btn-success">Proceed to Checkout</a>
+    <button id="checkoutBtn" class="btn btn-success">Proceed to Checkout</button>
     <a href="${pageContext.request.contextPath}" class="btn btn-primary">Go To Home</a>
   </div>
 </div>
 
 <script>
 function loadCart() {
-  $.get("${pageContext.request.contextPath}/api/cart", function(data) {
-    renderCart(data);
-    validateCart(data);
+  $.ajax({
+    url: "${pageContext.request.contextPath}/api/cart",
+    type: "GET",
+    headers: { 'Authorization': 'Bearer <%= token %>' },
+    success: function(data) {
+      renderCart(data);
+      validateCart(data);
+      updateTotals(data);
+    },
+    error: function(xhr) { console.error("Error loading cart:", xhr.responseText); }
   });
 }
 
@@ -52,27 +72,25 @@ function renderCart(data) {
 
   $.each(data, function(i, item) {
     var lineTotal = (item.productPrice * item.quantity).toFixed(2);
-
     var disableDecrease = item.quantity <= 1 ? "disabled-btn" : "";
     var disableIncrease = item.quantity >= item.stockQuantity ? "disabled-btn" : "";
-
     var stockError = item.quantity >= item.stockQuantity 
         ? "<small class='stock-msg'>Only " + item.stockQuantity + " in stock</small>" 
         : "";
 
-    html += "<tr>"
+    html += "<tr data-id='"+ item.productId +"'>"
           + "<td>" + item.productName + "</td>"
-          + "<td>" + item.productPrice.toFixed(2) + "</td>"
+          + "<td class='price'>" + item.productPrice.toFixed(2) + "</td>"
           + "<td>"
-              + "<button class='btn btn-sm btn-success " + disableDecrease + "' "
+              + "<button class='btn btn-sm btn-success "+ disableDecrease +"' "
               + "onclick='decrease(" + item.productId + ", " + item.quantity + ")'>-</button>"
             + "</td>"
-          + "<td>" + item.quantity + stockError + "</td>"
+          + "<td class='quantity-cell'>" + item.quantity + stockError + "</td>"
           + "<td>"
-              + "<button class='btn btn-sm btn-success " + disableIncrease + "' "
+              + "<button class='btn btn-sm btn-success "+ disableIncrease +"' "
               + "onclick='increase("+ item.productId + ", " + item.quantity + ", " + item.stockQuantity + ")'>+</button>"
             + "</td>"
-          + "<td>" + lineTotal + "</td>"
+          + "<td class='line-total'>" + lineTotal + "</td>"
           + "<td><button class='btn btn-sm btn-danger' onclick='removeItem(" + item.productId + ")'>Remove</button></td>"
           + "</tr>";
   });
@@ -81,66 +99,61 @@ function renderCart(data) {
   $("#cartTable").html(html);
 }
 
-function validateCart(data) {
-  var invalid = false;
+function updateTotals(data) {
+  let subtotal = 0;
   $.each(data, function(i, item) {
-    if (item.quantity < 1 || item.productPrice < 0) {
-      invalid = true;
-      return false;
-    }
+    subtotal += item.productPrice * item.quantity;
   });
+  $("#checkoutBtn").prop("disabled", subtotal === 0).toggleClass("disabled-btn", subtotal === 0);
+}
 
-  if (invalid || data.length === 0) {
-    $("#checkoutBtn").addClass("disabled-btn").prop("disabled", true);
-  } else {
-    $("#checkoutBtn").removeClass("disabled-btn").prop("disabled", false);
-  }
+function validateCart(data) {
+  let invalid = false;
+  $.each(data, function(i, item) {
+    if(item.quantity < 1 || item.productPrice < 0) invalid = true;
+  });
+  $("#checkoutBtn").prop("disabled", invalid).toggleClass("disabled-btn", invalid);
 }
 
 function removeItem(id) {
   $.ajax({
     url: "${pageContext.request.contextPath}/api/cart?prodId=" + id,
     type: "DELETE",
-    success: function() {
-      loadCart(); 
-    },
-    error: function(xhr) {
-      console.error("Error removing item:", xhr.responseText);
-    }
+    headers: { 'Authorization': 'Bearer <%= token %>' },
+    success: loadCart,
+    error: function(xhr) { console.error("Error removing item:", xhr.responseText); }
   });
 }
 
 function increase(productId, quantity, stockQuantity) {
-  if (quantity >= stockQuantity) return;
-  $.ajax({
-    url: "${pageContext.request.contextPath}/api/cart",
-    type: "PUT",
-    contentType: "application/json",
-    data: JSON.stringify({
-      productId: productId,
-      quantity: quantity + 1
-    }),
-    success: function() { loadCart(); },
-    error: function(xhr) { console.error("Error:", xhr.responseText); }
-  });
+  if(quantity >= stockQuantity) return;
+  updateQuantity(productId, quantity + 1);
 }
 
 function decrease(productId, quantity) {
-  if (quantity <= 1) return;
+  if(quantity <= 1) return;
+  updateQuantity(productId, quantity - 1);
+}
+
+function updateQuantity(productId, quantity) {
   $.ajax({
     url: "${pageContext.request.contextPath}/api/cart",
     type: "PUT",
+    headers: { 'Authorization': 'Bearer <%= token %>' },
     contentType: "application/json",
-    data: JSON.stringify({
-      productId: productId,
-      quantity: quantity - 1
-    }),
-    success: function() { loadCart(); },
-    error: function(xhr) { console.error("Error:", xhr.responseText); }
+    data: JSON.stringify({ productId: productId, quantity: quantity }),
+    success: loadCart,
+    error: function(xhr) { console.error("Error updating quantity:", xhr.responseText); }
   });
 }
 
-$(document).ready(loadCart);
+$(document).ready(function() {
+  loadCart();
+
+  $("#checkoutBtn").click(function() {
+    window.location.href = "${pageContext.request.contextPath}/app/cart/checkout";
+  });
+});
 </script>
 </body>
 </html>

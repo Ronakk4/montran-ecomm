@@ -3,6 +3,7 @@ package com.capstone.controller.seller;
 import com.capstone.dto.ProductDTO;
 import com.capstone.dto.ProductFetchDTO;
 import com.capstone.dto.ProductInsertDTO;
+import com.capstone.model.DeleteProduct;
 import com.capstone.model.OrderHeader;
 import com.capstone.model.OrderItem;
 
@@ -11,6 +12,7 @@ import com.capstone.dto.ProductInsertDTO;
 import com.capstone.dto.SellerOrderDTO;
 
 import com.capstone.model.Product;
+import com.capstone.service.DeleteProductService;
 import com.capstone.service.OrderService;
 import com.capstone.service.ProductService;
 import com.capstone.util.JwtUtil;
@@ -33,6 +35,8 @@ public class SellerApiController {
 
    @Autowired
    private OrderService orderService;
+   @Autowired
+   DeleteProductService deleteProductService;
 
    // ========== PRODUCT APIs ==========
 //   @PostMapping("/products")
@@ -75,7 +79,10 @@ public class SellerApiController {
 
     @DeleteMapping("/products/{id}")
     public String deleteProduct(@PathVariable long id) {
+    	 deleteProductService.saveDeleteProduct(id);
         productService.deleteProduct(id);
+       
+        
         return "Product deleted successfully";
     }
     
@@ -96,6 +103,8 @@ public class SellerApiController {
     	return productService.getAllCategories();
     	
     }
+    
+   
     
     @GetMapping("/searchProducts")
 	public List<Product> searchProducts(@RequestParam(required = false) String prodName,

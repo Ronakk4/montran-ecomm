@@ -1,53 +1,48 @@
 package com.capstone.util;
-import java.security.Key;
-import java.util.Date;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-
+import java.util.Base64;
+import java.util.Date;
+import java.security.Key;
 
 public class JwtUtil {
-	// TODO Auto-generated constructor stub
 
+    // Use a fixed secret key (should be stored securely in production)
+    private static final String SECRET = "ThisIsASecretKeyForJwtSigningAndItShouldBeLongEnough123!";
+    private static final Key key = Keys.hmacShaKeyFor(SECRET.getBytes());
 
-    // Use a secret key (in production, store securely)
-    private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private static final long EXPIRATION_TIME = 1000 * 60 * 30; // 30 minutes
 
-    private static final long EXPIRATION_TIME =  1000*60*30 ; // 1 hour
-
-    public static String generateToken(String username,String userType,Long userId) {
+    public static String generateToken(String username, String userType, Long userId) {
         return Jwts.builder()
-                .setSubject(username) //recognize user
-                .setIssuer("") 
-                .claim("userType", userType)  //type
-                .claim("userId", userId) // Id
+                .setSubject(username)
+                .setIssuer("")
+                .claim("userType", userType)
+                .claim("userId", userId)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(key)
                 .compact();
     }
-    public static String getUsername(String token) {
-        return validateToken(token).getBody().getSubject();
+
+    public static Jws<Claims> validateToken(String token) {
+        return Jwts.parserBuilder()
+                   .setSigningKey(key)
+                   .build()
+                   .parseClaimsJws(token);
     }
 
     public static Long getId(String token) {
-        return validateToken(token).getBody().get("userId",Long.class);
+        return validateToken(token).getBody().get("userId", Long.class);
     }
 
     public static String getUserType(String token) {
         return validateToken(token).getBody().get("userType", String.class);
     }
 
-
-    public static Jws<Claims> validateToken(String token)  throws JwtException{
-    	
-    	return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-    	
+    public static String getUsername(String token) {
+        return validateToken(token).getBody().getSubject();
     }
-    
-    
 }

@@ -13,7 +13,10 @@
         }
     }
     Long userId = jwtToken != null ? JwtUtil.getId(jwtToken.getValue()) : null;
+    String token = jwtToken != null ? jwtToken.getValue() : "";
+    
 %>
+
 <html>
 <head>
     <title>Checkout</title>
@@ -32,75 +35,107 @@
     <h4 class="mt-3">Order Summary</h4>
     <div id="cartSummary" class="p-3 border rounded bg-white shadow-sm"></div>
 
-   <div class="mt-3">
-    <button class="btn btn-success" onclick="placeOrder()">Confirm & Place Order</button>
-    <a href="${pageContext.request.contextPath}/app/cart" class="btn btn-secondary">Back to Cart</a>
-</div>
+    <div class="mt-3">
+        <button id="placeOrderBtn" class="btn btn-success">Confirm & Place Order</button>
+        <a href="${pageContext.request.contextPath}/app/cart" class="btn btn-secondary">Back to Cart</a>
+    </div>
 </div>
 
 <script>
+const token = "<%= jwtToken != null ? jwtToken.getValue() : "" %>";
+let cartItems = [];
+let grandTotal = 0;
+let userID = 0;
 
-let cartItems = [];   // global variable to store items
-let grandTotal = 0;   // global variable for total
-let userID=0;
+// Load User Info
+function loadUser() {
+    const uid = <%= userId != null ? userId : "null" %>;
+    if (!uid) return;
 
-//const token = localStorage.getItem('jwtToken');
-
-function loadCart() {
-    $.get("${pageContext.request.contextPath}/api/cart", function(data) {
-        if (!data || data.length === 0) {
-            $("#cartSummary").html("<div class='alert alert-warning'>Your cart is empty.</div>");
-            cartItems = [];
-            grandTotal = 0;
-            return;
+    $.ajax({
+        url: `${pageContext.request.contextPath}/users/id/${uid}`,
+        type: "GET",
+        headers: { 'Authorization': 'Bearer ' + token },
+        success: function(user) {
+            let html = "<h5>User Details</h5>" +
+                       "<p><b>Username:</b> " + user.name + "</p>" +
+                       "<p><b>Shipping Address:</b> " + user.shippingAddress + "</p>";
+            $("#userInfo").html(html);
+            userID = user.id;
+        },
+        error: function(xhr) {
+            console.error("Error loading user:", xhr.responseText);
+            $("#userInfo").html("<div class='alert alert-danger'>Could not load user info.</div>");
         }
-
-        cartItems = data; // store all items globally
-        grandTotal = 0;
-
-        let html = "<table class='table table-bordered'>" +
-                   "<thead class='table-dark'>" +
-                   "<tr><th>Product</th><th>Quantity</th><th>Price</th><th>Total</th></tr></thead><tbody>";
-
-        $.each(data, function(i, item) {
-            let lineTotal = (item.productPrice * item.quantity).toFixed(2);
-            grandTotal += parseFloat(lineTotal);
-
-            html += "<tr>" +
-                        "<td>" + item.productName + "</td>" +
-                        "<td>" + item.quantity + "</td>" +
-                        "<td>" + item.productPrice + "</td>" +
-                        "<td>" + lineTotal + "</td>" +
-                    "</tr>";
-        });
-
-        html += "<tr><td colspan='3' class='text-end'><b>Grand Total</b></td><td><b>" + grandTotal.toFixed(2) + "</b></td></tr>";
-        html += "</tbody></table>";
-
-        $("#cartSummary").html(html);
     });
 }
 
+// Load Cart & render summary
+function loadCart() {
+    $.ajax({
+        url: `${pageContext.request.contextPath}/api/cart`,
+        type: "GET",
+        headers: { 'Authorization': 'Bearer ' + token },
+        success: function(data) {
+            if (!data || data.length === 0) {
+                $("#cartSummary").html("<div class='alert alert-warning'>Your cart is empty.</div>");
+                cartItems = [];
+                grandTotal = 0;
+                $("#placeOrderBtn").prop("disabled", true).addClass("disabled-btn");
+                return;
+            }
+
+            cartItems = data;
+            grandTotal = 0;
+            let html = "<table class='table table-bordered'>" +
+                       "<thead class='table-dark'><tr><th>Product</th><th>Quantity</th><th>Price</th><th>Total</th></tr></thead><tbody>";
+
+            $.each(data, function(i, item) {
+                const lineTotal = (item.productPrice * item.quantity).toFixed(2);
+                grandTotal += parseFloat(lineTotal);
+
+                html += `<tr>
+                            <td>${item.productName}</td>
+                            <td>${item.quantity}</td>
+                            <td>${item.productPrice.toFixed(2)}</td>
+                            <td>${lineTotal}</td>
+                         </tr>`;
+            });
+
+            html += `<tr><td colspan='3' class='text-end'><b>Grand Total</b></td><td><b>${grandTotal.toFixed(2)}</b></td></tr>`;
+            html += "</tbody></table>";
+
+            $("#cartSummary").html(html);
+            $("#placeOrderBtn").prop("disabled", false).removeClass("disabled-btn");
+        },
+        error: function(xhr) {
+            console.error("Error loading cart:", xhr.responseText);
+            $("#cartSummary").html("<div class='alert alert-danger'>Could not load cart items.</div>");
+        }
+    });
+}
+
+// Place Order
 function placeOrder() {
     if (!cartItems || cartItems.length === 0) {
-        alert("Your cart is empty. Please add items before placing an order.");
+        alert("Your cart is empty. Add items before placing an order.");
         return;
     }
-    
- //  build promises to fetch sellerId for each product
-    const sellerPromises = cartItems.map(item => {
-        return $.get(`${pageContext.request.contextPath}/api/seller/products/\${item.productId}`)
-            .then(product => {
-                return {
-                    productId: item.productId,
-                    sellerId: product.sellerId,   // fetched from backend
-                    quantity: item.quantity,
-                    price: item.productPrice
-                };
-            });
-    });
-    
- //  wait for all seller lookups before placing order
+
+    // Fetch sellerId for each product
+    const sellerPromises = cartItems.map(item =>
+        $.ajax({
+            url: `${pageContext.request.contextPath}/api/seller/products/${item.productId}`,
+            type: "GET",
+            headers: { 'Authorization': 'Bearer ' + token }
+        }).then(product => ({
+            productId: item.productId,
+            sellerId: product.sellerId,
+            quantity: item.quantity,
+            price: item.productPrice
+        }))
+    );
+
     Promise.all(sellerPromises).then(orderItems => {
         const orderData = {
             status: "PENDING",
@@ -109,20 +144,15 @@ function placeOrder() {
             items: orderItems
         };
 
-
         $.ajax({
-            url: "${pageContext.request.contextPath}/buyer/orders",
+            url: `${pageContext.request.contextPath}/buyer/orders`,
             type: "POST",
-<!--            headers: { 'Authorization': 'Bearer ' + token },-->
-			// xhrFields: {
-  			// 	  withCredentials: true              // no need actaully as we it anyways sends cookies as we are on same domain
-			// }
-
+            headers: { 'Authorization': 'Bearer ' + token },
             contentType: "application/json",
             data: JSON.stringify(orderData),
             success: function(response) {
-                alert(response); 
-                window.location.href = "order-success"; 
+                alert("Order placed successfully!");
+                window.location.href = `${pageContext.request.contextPath}/order-success`;
             },
             error: function(xhr) {
                 console.error("Error placing order:", xhr.responseText);
@@ -135,22 +165,12 @@ function placeOrder() {
     });
 }
 
-function loadUser() {
-    const userId = <%= userId != null ? userId : "null" %>;
-    $.get(`${pageContext.request.contextPath}/users/id/\${userId}`, function(user) {
-        let html = "<h5>User Details</h5>" +
-                   "<p><b>Username:</b> " + user.name + "</p>" +
-                   "<p><b>Shipping Address:</b> " + user.shippingAddress + "</p>";
-        $("#userInfo").html(html);
-        userID = user.id;
-    });
-}
-
 $(document).ready(function() {
     loadUser();
     loadCart();
+
+    $("#placeOrderBtn").click(placeOrder);
 });
 </script>
-
 </body>
 </html>

@@ -25,6 +25,8 @@ public class Seller extends User{
 	@JsonIgnore
 	private List<Product> products = new ArrayList<Product>();
 	
+	
+	
 	public Seller() {
 		
 	}

@@ -13,8 +13,11 @@ import org.springframework.stereotype.Service;
 import com.capstone.dao.ProductDao;
 import com.capstone.dto.ProductInsertDTO;
 import com.capstone.exception.DuplicateProductException;
+import com.capstone.exception.ProductNotFoundException;
+import com.capstone.model.DeleteProduct;
 import com.capstone.model.Product;
 import com.capstone.model.Seller;
+import com.capstone.service.DeleteProductService;
 import com.capstone.service.ProductService;
 
 @Service
@@ -25,15 +28,19 @@ public class ProductServiceImpl implements ProductService{
 	
 	@Autowired
 	private SessionFactory sessionFactory;
+	
+	
 
 	
 
 	@Override
 	@Transactional
 	public Product getProduct(long id) {
-		
-		// TODO Auto-generated method stub
-		return productDao.getProduct(id);
+	    Product product = productDao.getProduct(id);
+	    if (product == null) {
+	        throw new ProductNotFoundException("Product not found with ID: " + id);
+	    }
+	    return product;
 	}
 
 	@Override

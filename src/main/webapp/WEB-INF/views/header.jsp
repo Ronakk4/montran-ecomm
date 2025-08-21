@@ -21,6 +21,7 @@
             isLoggedIn = false;
         }
     }
+    String token =  jwtToken!= null ? jwtToken.getValue() : "";
 %>
 
 <header class="l-header">
@@ -44,7 +45,8 @@
                 <li class="nav-item"><a href="#new" class="nav-link">New</a></li>
 
                 <% if(isLoggedIn) { %>
-                    <li class="nav-item"><a href="<%= request.getContextPath() %>/app/buyer/profile" class="nav-link">Profile</a></li>
+    <li><button onclick="loadProfile()">Profile</button>
+<div id="profile-info"></div></li>
                     <li class="nav-item"><a href="<%= request.getContextPath() %>/users/logout" class="nav-link">Logout</a></li>
               		<li class="nav-tem cart-icon"> 
             <a href="${pageContext.request.contextPath}/app/cart" class="nav-link ">
@@ -98,6 +100,36 @@ function loadCategories() {
         $(".dropdown-menu").html(items);
     });
 }
+
+const jwtToken = "<%= jwtToken.getValue() %>";
+console.log("JWT from JSP:", jwtToken);
+
+ function loadProfile() {
+ 
+	   $.ajax({
+           url: "/ecomm.capstone/app/buyer/profile",
+           type: "GET",
+           headers: {
+               "Authorization": "Bearer " + jwtToken
+           },
+           success: function(data) {
+               
+        	   document.open();
+               document.write(data);
+               document.close();
+             
+           },
+           error: function(xhr) {
+               console.error("Profile load failed:", xhr.status, xhr.responseText);
+               alert("Unauthorized! Please log in again.");
+           }
+       });
+ }
+   
+</script>
+
+
+
 
 <!--function loadCategories() {-->
 <!--    const jwtToken = localStorage.getItem("jwtToken"); // Or wherever you're storing it-->

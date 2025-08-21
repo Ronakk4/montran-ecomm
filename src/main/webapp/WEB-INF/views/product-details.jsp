@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page isELIgnored="false"%>
+
+	
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -251,6 +253,9 @@
             url: "http://localhost:8080/ecomm.capstone/api/cart",
             type: "POST",
             contentType: "application/json",
+            headers: {
+                "Authorization": "Bearer <%= token %>"  
+            },
             data: JSON.stringify({
                 productId: prodId,
                 quantity: qty

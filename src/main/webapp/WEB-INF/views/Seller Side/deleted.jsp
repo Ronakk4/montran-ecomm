@@ -1,7 +1,7 @@
-
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="com.capstone.util.JwtUtil" %>
+
 
 <%
     Cookie jwtToken = null;
@@ -20,7 +20,7 @@
 
 <html>
 <head>
-<title>Manage Products</title>
+<title>Deleted Products</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
@@ -44,7 +44,7 @@
         </div>
 
         <a href="products/add-product" class="btn btn-success">+ Add New Product</a>
-         <a href="product/deleted"
+           <a href=`$products/deletd/{sellerId}`
    class="btn btn-success">View Deleted Products</a>
     </div>
 
@@ -62,10 +62,9 @@
             <tr>
                 <th>ID</th>
                 <th class="sortable" onclick="sortTable('name')">Name <span id="sortIcon-name">↕</span></th>
-                <th class="sortable" onclick="sortTable('price')">Price <span id="sortIcon-price">↕</span></th>
-                <th class="sortable" onclick="sortTable('stock')">Stock <span id="sortIcon-stock">↕</span></th>
-                <th>Category</th>
-                <th>Actions</th>
+                <th class="sortable" onclick="sortTable('price')">description <span id="sortIcon-price">↕</span></th>
+                <th class="sortable" onclick="sortTable('stock')">seller id<span id="sortIcon-stock">↕</span></th>
+                
             </tr>
         </thead>
         <tbody id="productsTable"></tbody>
@@ -73,14 +72,14 @@
 
 <script>
     const sellerId = <%= sellerId != null ? sellerId : "null" %>;
-    const apiBase = "http://localhost:8080/ecomm.capstone/api/seller";
+    const apiBase = "http://localhost:8080/ecomm.capstone/deleted";
 
     let products = [];
     let currentSort = { key: null, order: 'asc' };
 
     // Load products
     function loadProducts() {
-        $.get(`${apiBase}/products?sellerId=${sellerId}`, function(data) {
+        $.get(`${apiBase}/${sellerId}`, function(data) {
             products = data;
             renderProducts(products);
         });
@@ -97,13 +96,10 @@
                     <tr>
                         <td>${p.prodId}</td>
                         <td>${p.prodName}</td>
-                        <td>₹${p.price}</td>
-                        <td>${p.stockQuantity}</td>
-                        <td>${p.category}</td>
-                        <td>
-                            <button class="btn btn-warning btn-sm" onclick="editProduct(${p.prodId})">Edit</button>
-                            <button class="btn btn-danger btn-sm" onclick="deleteProduct(${p.prodId})">Delete</button>
-                        </td>
+                        <td>${p.prodDescription}</td>
+                        <td>${p.sellerId}</td>
+                     
+                        
                     </tr>`;
             });
         }
