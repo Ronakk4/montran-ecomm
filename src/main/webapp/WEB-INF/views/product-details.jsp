@@ -156,7 +156,7 @@
 
 	<script>
     let prodId=0;
-    let qty=0;
+    let qty=1;
     
     
     // Step 1: Get product details from the JSP page dynamically
@@ -253,7 +253,7 @@
             contentType: "application/json",
             data: JSON.stringify({
                 productId: prodId,
-                quantity: qty+1
+                quantity: qty
             }),
             success: function(response) {
                 console.log("Cart updated:", response);
@@ -308,6 +308,7 @@
             let currentQty = parseInt(qtyDisplay.textContent);
             if (currentQty < stockQuantity) {
                 qtyDisplay.textContent = currentQty + 1;
+                qty=currentQty+1;
             }
         }
 

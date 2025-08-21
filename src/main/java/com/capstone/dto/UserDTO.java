@@ -5,6 +5,7 @@ public class UserDTO {
     private String email;
     private String password;
     private String role; // optional if you want to switch role (BUYER/SELLER)
+    private String phoneNumber;
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
@@ -17,4 +18,7 @@ public class UserDTO {
 
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
+    
+    public String getPhoneNumber() { return phoneNumber; }
+    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
 }
