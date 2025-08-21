@@ -339,7 +339,7 @@
         });
 
         // Mobile menu toggle
-        document.getElementById('nav-toggle').addEventListener('click', function() {
+        document.getElementById('nav-xtoggle').addEventListener('click', function() {
             document.getElementById('nav-menu').classList.toggle('show');
         });
     </script>

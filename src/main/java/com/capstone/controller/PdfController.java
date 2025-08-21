@@ -43,6 +43,7 @@ public class PdfController {
             // Header
             Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16);
             document.add(new Paragraph("Order #" + order.getOrderId(), titleFont));
+           document.add(new Paragraph("Name : "+order.getBuyerName() ,titleFont ));
             document.add(new Paragraph("Status: " + order.getStatus()));
             document.add(new Paragraph("Date: " + order.getOrderDate()));
             document.add(new Paragraph("Shipping: " + order.getShippingAddress()));
