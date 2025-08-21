@@ -23,6 +23,7 @@ public interface ProductDao {
 	List<Product> searchProducts(String prodName, String category, Double minPrice, Double maxPrice);
 	boolean existsByProdNameAndSellerId(String prodName, long sellerId);
 	void updateProduct(Product product);
-	
+	List<Product> getProductsByPage(int page, int size, String categoryId, String sort);
+	long getProductCount(String categoryId);
 	
 }

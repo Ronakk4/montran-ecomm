@@ -125,4 +125,13 @@ public class ProductServiceImpl implements ProductService{
 	    }
 
 
+	 
+	 public List<Product> getProductsByPage(int page, int size, String category, String sort) {
+	        return productDao.getProductsByPage(page, size, category, sort);
+	    }
+
+	    public long getProductCount(String category) {
+	        return productDao.getProductCount(category);
+	    }
+	    
 }

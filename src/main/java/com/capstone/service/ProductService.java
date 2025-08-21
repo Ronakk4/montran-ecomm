@@ -20,4 +20,6 @@ public interface ProductService {
 	List<Product> getProductsBySellerId(long sellerId);
 	List<String> getAllCategories();
 	List<Product> searchProducts(String prodName, String category, Double minPrice, Double maxPrice);
+	List<Product> getProductsByPage(int page, int size, String categoryId, String sort);
+	long getProductCount(String categoryId);
 }

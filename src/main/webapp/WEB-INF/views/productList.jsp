@@ -215,16 +215,19 @@
 <!--    </script>-->
 
 <script>
-let allProducts = [];
 let currentPage = 1;
-const itemsPerPage = 8; // products per page
+const itemsPerPage = 8;
+let currentCategory = 'all';
+let currentSort = '';
+let reqCategory='';
 
 $(document).ready(function() {
     // 1. Get category from URL
     const urlParams = new URLSearchParams(window.location.search);
-    let category = urlParams.get('category') || 'all';
-    category = category.toLowerCase(); 
-    const displayCategory = category.charAt(0).toUpperCase() + category.slice(1);
+    currentCategory = urlParams.get('category') || 'all';
+    currentCategory = currentCategory.toLowerCase(); 
+    const displayCategory = currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1);
+    reqCategory= displayCategory;
 
     // 2. Update page title + breadcrumb
     const categoryNames = {
@@ -235,161 +238,118 @@ $(document).ready(function() {
         'furniture': "Furniture",
         'all': "All Products"
     };
-    $("#categoryName").text(categoryNames[category]);
-    $("#categoryTitle").text(categoryNames[category]);
-    document.title = categoryNames[category] + " | Ecommerce";
+    $("#categoryName").text(categoryNames[currentCategory]);
+    $("#categoryTitle").text(categoryNames[currentCategory]);
+    document.title = categoryNames[currentCategory] + " | Ecommerce";
 
-    // 3. Fetch products
+    // 3. Load products (server-side paginated)
+    loadProducts(1);
+});
+
+// Fetch products from backend
+function loadProducts(page = 1) {
+	let url = `/ecomm.capstone/products?page=\${page}&size=\${itemsPerPage}&category=\${reqCategory}`;
+	console.log("calling")
+<!--	let url = "http://localhost:8080/ecomm.capstone/products?page=1&size=8&category=Women";-->
+	if (currentSort) url += `&sort=\${currentSort}`;
+
+
     $.ajax({
-        url: '/ecomm.capstone/products/category/' + displayCategory,
+        url: url,
         method: "GET",
-        success: function(products) {
-        	console.log("page", products);
-            allProducts = products;
-            renderProducts(allProducts, currentPage);
+        success: function(data) {
+            // data = { products: [...], total: 100, page: 1, size: 8 }
+            renderProducts(data.products, data.page, data.total);
+            currentPage = data.page;
         },
         error: function(err) {
             console.error("Error loading products:", err);
             $("#productGrid").html("<p>Failed to load products.</p>");
         }
     });
-});
+}
 
-// 4. Render products (with pagination)
-function renderProducts(products, page = 1) {
+// Render products
+function renderProducts(products, page, total) {
     let grid = $("#productGrid");
     grid.empty();
 
-    if (products.length === 0) {
+    if (!products || products.length === 0) {
         grid.append("<p>No products found in this category.</p>");
         return;
     }
 
-    // calculate slice
-    const start = (page - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
-    const paginated = products.slice(start, end);
+    products.forEach(product => {
+    	 let card = `
+             <article class="sneaker">
+         	  <img src="\${(product.images && product.images.length > 0) 
+             ? product.images[0] 
+             : 'https://i.postimg.cc/3wWGqDYn/women1.png'}" 
+    alt="\${product.prodName}" 
+    class="sneaker-img">
+                 <span class="sneaker-name">\${product.prodName}</span>
+                 <span class="sneaker-price">₹\${product.price}</span>
+ <!--               <button class=" add-to-cart-btn button-light">-->
+                <a href="<%= request.getContextPath() %>/app/product-details/\${product.prodId}" 
+                    class="button">
+                    View Details <i class="bx bx-right-arrow-alt button-icon"></i>
+                 </a>
+ <!--               </button>-->
+             </article>
+         `;
+         grid.append(card);
+     });
 
-    // build cards
-    paginated.forEach(product => {
-        let card = `
-            <article class="sneaker">
-        	  <img src="\${(product.images && product.images.length > 0) 
-            ? product.images[0] 
-            : 'https://i.postimg.cc/3wWGqDYn/women1.png'}" 
-   alt="\${product.prodName}" 
-   class="sneaker-img">
-                <span class="sneaker-name">\${product.prodName}</span>
-                <span class="sneaker-price">₹\${product.price}</span>
-<!--               <button class=" add-to-cart-btn button-light">-->
-               <a href="<%= request.getContextPath() %>/app/product-details/\${product.prodId}" 
-                   class="button">
-                   View Details <i class="bx bx-right-arrow-alt button-icon"></i>
-                </a>
-<!--               </button>-->
-            </article>
-        `;
-        grid.append(card);
-    });
-
-    renderPagination(products, page);
+    renderPagination(total, page);
 }
 
-// 5. Render pagination controls
-// 5. Render pagination controls (with dots ... style)
-function renderPagination(products, page) {
-    const totalPages = Math.ceil(products.length / itemsPerPage);
+// Render pagination controls
+function renderPagination(total, page) {
+    const totalPages = Math.ceil(total / itemsPerPage);
     let pagination = $(".pagination-numbers");
     pagination.empty();
 
-    // Helper: add page button
     function addPageButton(i) {
         let btn = $(`<button class="pagination-number">\${i}</button>`);
         if (i === page) btn.addClass("active");
         btn.on("click", function() {
-            currentPage = i;
-            renderProducts(products, currentPage);
+            loadProducts(i);
         });
         pagination.append(btn);
     }
 
-    // Always show first page
     if (totalPages > 0) addPageButton(1);
 
-    // Show dots if needed
-    if (page > 3) {
-        pagination.append(`<span class="pagination-dots">...</span>`);
-    }
+    if (page > 3) pagination.append(`<span class="pagination-dots">...</span>`);
 
-    // Show middle pages (around current)
     let start = Math.max(2, page - 1);
     let end = Math.min(totalPages - 1, page + 1);
-    for (let i = start; i <= end; i++) {
-        addPageButton(i);
-    }
+    for (let i = start; i <= end; i++) addPageButton(i);
 
-    // Show dots before last page if needed
-    if (page < totalPages - 2) {
-        pagination.append(`<span class="pagination-dots">...</span>`);
-    }
+    if (page < totalPages - 2) pagination.append(`<span class="pagination-dots">...</span>`);
 
-    // Always show last page if more than 1
     if (totalPages > 1) addPageButton(totalPages);
 
-    // prev/next buttons
     $(".prev-btn").prop("disabled", page === 1).off("click").on("click", function() {
-        if (currentPage > 1) {
-            currentPage--;
-            renderProducts(products, currentPage);
-        }
+        if (page > 1) loadProducts(page - 1);
     });
 
     $(".next-btn").prop("disabled", page === totalPages).off("click").on("click", function() {
-        if (currentPage < totalPages) {
-            currentPage++;
-            renderProducts(products, currentPage);
-        }
+        if (page < totalPages) loadProducts(page + 1);
     });
 
-    // info text
     let startItem = (page - 1) * itemsPerPage + 1;
-    let endItem = Math.min(page * itemsPerPage, products.length);
-    $(".pagination-info span").text(`Showing \${startItem}-\${endItem} of \${products.length} products`);
+    let endItem = Math.min(page * itemsPerPage, total);
+    $(".pagination-info span").text(`Showing \${startItem}-\${endItem} of \${total} products`);
 }
 
-// 6. Sorting
+// Sorting
 $("#sortSelect").on("change", function() {
-    let sortValue = $(this).val();
-    let sorted = [...allProducts];
-
-    switch(sortValue) {
-        case "price-low":
-            sorted.sort((a, b) => a.price - b.price);
-            break;
-        case "price-high":
-            sorted.sort((a, b) => b.price - a.price);
-            break;
-        case "name":
-            sorted.sort((a, b) => a.prodName.localeCompare(b.prodName));
-            break;
-        case "newest":
-            sorted.sort((a, b) => {
-                // Convert createdAt array to Date object for comparison
-                const dateA = new Date(a.createdAt[0], a.createdAt[1] - 1, a.createdAt[2], a.createdAt[3], a.createdAt[4]);
-                const dateB = new Date(b.createdAt[0], b.createdAt[1] - 1, b.createdAt[2], b.createdAt[3], b.createdAt[4]);
-
-                return dateB - dateA; // Compare descending order (newest first)
-            });
-            break;
-
-        default:
-            sorted = allProducts;
-    }
-
-    currentPage = 1; // reset to page 1
-    renderProducts(sorted, currentPage);
+    currentSort = $(this).val();
+    loadProducts(1);
 });
 </script>
+
 
 </body>
 </html>

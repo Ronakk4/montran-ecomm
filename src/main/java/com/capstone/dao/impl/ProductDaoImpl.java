@@ -3,6 +3,9 @@ package com.capstone.dao.impl;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -22,6 +25,9 @@ import com.capstone.dto.ProductInsertDTO;
 @Repository
 @Transactional
 public class ProductDaoImpl implements ProductDao {
+	
+	@PersistenceContext
+    private EntityManager em;
 
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -155,6 +161,50 @@ public class ProductDaoImpl implements ProductDao {
 	                    .uniqueResult();
 	    return count != null && count > 0;
 	}
+	
+	
+	 public List<Product> getProductsByPage(int page, int size, String category, String sort) {
+	        CriteriaBuilder cb = em.getCriteriaBuilder();
+	        CriteriaQuery<Product> cq = cb.createQuery(Product.class);
+	        Root<Product> root = cq.from(Product.class);
+
+	        // filter by category (case-insensitive match)
+	        if (category != null && !category.equalsIgnoreCase("all")) {
+	            cq.where(cb.equal(cb.lower(root.get("category")), category.toLowerCase()));
+	        }
+
+	        // sorting
+	        if ("price-low".equals(sort)) {
+	            cq.orderBy(cb.asc(root.get("price")));
+	        } else if ("price-high".equals(sort)) {
+	            cq.orderBy(cb.desc(root.get("price")));
+	        } else if ("name".equals(sort)) {
+	            cq.orderBy(cb.asc(root.get("prodName")));
+	        } else if ("newest".equals(sort)) {
+	            cq.orderBy(cb.desc(root.get("createdAt"))); // assumes you have createdAt field
+	        }
+
+	        TypedQuery<Product> query = em.createQuery(cq);
+	        query.setFirstResult((page - 1) * size);
+	        query.setMaxResults(size);
+
+	        return query.getResultList();
+	    }
+
+	    public long getProductCount(String category) {
+	        CriteriaBuilder cb = em.getCriteriaBuilder();
+	        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+	        Root<Product> root = cq.from(Product.class);
+
+	        cq.select(cb.count(root));
+
+	        if (category != null && !category.equalsIgnoreCase("all")) {
+	            cq.where(cb.equal(cb.lower(root.get("category")), category.toLowerCase()));
+	        }
+
+	        return em.createQuery(cq).getSingleResult();
+	    }
+	
 
 	
 
