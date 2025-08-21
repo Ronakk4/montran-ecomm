@@ -119,7 +119,7 @@ public class UserController {
 	        sellerDTO.setShopName(dto.getShopName());
 	        sellerDTO.setShopDescription(dto.getShopDescription());
 	        sellerDTO.setGstNumber(dto.getGstNumber());
-//	        sellerDTO.setPhoneNumber(dto.getPhoneNumber()); 
+	        sellerDTO.setPhoneNumber(dto.getPhoneNumber()); 
 
 	        userService.updateUser(id, sellerDTO);
 

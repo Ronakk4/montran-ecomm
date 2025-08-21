@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
             Seller seller = new Seller(
                 user.getName(), user.getEmail(), hashedPassword,
                 "SELLER", LocalDateTime.now(), LocalDateTime.now(),
-                user.getShopName(), user.getShopDescription(), user.getGstNumber(), user.getPhoneNumber()	
+                user.getShopName(), user.getShopDescription(), user.getGstNumber(), user.getPhoneNumber()
             );
             userDao.saveUser(seller);
 
