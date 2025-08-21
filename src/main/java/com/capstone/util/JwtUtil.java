@@ -21,10 +21,10 @@ public class JwtUtil {
 
     public static String generateToken(String username,String userType,Long userId) {
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(username) //recognize user
                 .setIssuer("") 
-                .claim("userType", userType) 
-                .claim("userId", userId)
+                .claim("userType", userType)  //type
+                .claim("userId", userId) // Id
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(key)

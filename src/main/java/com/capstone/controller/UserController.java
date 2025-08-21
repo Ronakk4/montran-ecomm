@@ -32,7 +32,7 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-
+	
 	@PostMapping
     public String registerUser(@Valid @RequestBody UserRegisterDTO user) {
         userService.registerUser(user);
@@ -57,8 +57,7 @@ public class UserController {
 	        response.addCookie(cookie);
 
 	        
-	        // Redirect based on role
-	       
+	    	       
 	    } else {
 	        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid credentials");
 	    }
@@ -67,15 +66,15 @@ public class UserController {
 	
 	@GetMapping("/logout")
 	public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
-	    // 1. Invalidate session
+
 	    if (request.getSession(false) != null) {
 	        request.getSession().invalidate();
 	    }
 
-	    // 2. Remove JWT cookie
+	   
 	    Cookie cookie = new Cookie("jwtToken", null);
 	    cookie.setHttpOnly(true);
-	    cookie.setPath("/"); // make sure path matches cookie path in login
+	    cookie.setPath("/"); 
 	    cookie.setMaxAge(0); // expire immediately
 	    response.addCookie(cookie);
 
@@ -99,36 +98,35 @@ public class UserController {
 
 	@PutMapping("/{id}")
 	public String updateUser(@PathVariable long id, @RequestBody UpdateUserDTO dto) {
-		if ("BUYER".equalsIgnoreCase(dto.getRole())) {
-			BuyerDTO buyerDTO = new BuyerDTO();
-			buyerDTO.setName(dto.getName());
-			buyerDTO.setEmail(dto.getEmail());
-			
-			buyerDTO.setRole(dto.getRole());
-			if(dto.getPassword()==null || dto.getPassword()=="") {
-				buyerDTO.setPassword("");
-			}
-				buyerDTO.setShippingAddress(dto.getShippingAddress());
-			buyerDTO.setPhoneNumber(dto.getPhoneNumber());
-		
-			
-			userService.updateUser(id, buyerDTO);
-		} else if ("SELLER".equalsIgnoreCase(dto.getRole())) {
-			SellerDTO sellerDTO = new SellerDTO();
-			sellerDTO.setName(dto.getName());
-			sellerDTO.setEmail(dto.getEmail());
-		
-			sellerDTO.setRole(dto.getRole());
-			sellerDTO.setShopName(dto.getShopName());
-			sellerDTO.setShopDescription(dto.getShopDescription());
-			sellerDTO.setGstNumber(dto.getGstNumber());
-			
-			userService.updateUser(id, sellerDTO);
-		} else {
-			throw new RuntimeException("Invalid role. Must be BUYER or SELLER.");
-		}
+	    if ("BUYER".equalsIgnoreCase(dto.getRole())) {
+	        BuyerDTO buyerDTO = new BuyerDTO();
+	        buyerDTO.setName(dto.getName());
+	        buyerDTO.setEmail(dto.getEmail());
+	        buyerDTO.setRole(dto.getRole());
+	        buyerDTO.setPassword(dto.getPassword());   //  service will handle hashing
+	        buyerDTO.setShippingAddress(dto.getShippingAddress());
+	        buyerDTO.setPhoneNumber(dto.getPhoneNumber());
 
-		return "User updated successfully";
+	        userService.updateUser(id, buyerDTO);
+
+	    } else if ("SELLER".equalsIgnoreCase(dto.getRole())) {
+	        SellerDTO sellerDTO = new SellerDTO();
+	        sellerDTO.setName(dto.getName());
+	        sellerDTO.setEmail(dto.getEmail());
+	        sellerDTO.setRole(dto.getRole());
+	        sellerDTO.setPassword(dto.getPassword());
+	        sellerDTO.setShopName(dto.getShopName());
+	        sellerDTO.setShopDescription(dto.getShopDescription());
+	        sellerDTO.setGstNumber(dto.getGstNumber());
+	        sellerDTO.setPhoneNumber(dto.getPhoneNumber()); 
+
+	        userService.updateUser(id, sellerDTO);
+
+	    } else {
+	        throw new RuntimeException("Invalid role. Must be BUYER or SELLER.");
+	    }
+
+	    return "User updated successfully";
 	}
 
 	// @DeleteMapping("/{id}")

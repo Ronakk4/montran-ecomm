@@ -71,7 +71,22 @@ public class CartServiceImpl implements CartService{
 	        dto.setProductPrice(c.getProduct().getPrice());
 	        dto.setQuantity(c.getQuantity());
 	        return dto;
-	    }).collect(Collectors.toList()); // ✅ requires import
+	    }).collect(Collectors.toList()); 
+	    
+//	    List<CartResponseDTO> dtoList = new ArrayList<>();
+//
+//	    for (Cart c : carts) {
+//	        CartResponseDTO dto = new CartResponseDTO();
+//	        dto.setCartId(c.getCartId());
+//	        dto.setProductId(c.getProduct().getProdId());
+//	        dto.setProductName(c.getProduct().getProdName());
+//	        dto.setProductPrice(c.getProduct().getPrice());
+//	        dto.setQuantity(c.getQuantity());
+//	        dtoList.add(dto);
+//	    }
+//
+//	    return dtoList;
+
 	}
 
 	@Override

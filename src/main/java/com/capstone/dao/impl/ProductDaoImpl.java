@@ -63,24 +63,26 @@ public class ProductDaoImpl implements ProductDao {
 	}
 
 	@Override
-	public void updateProduct(ProductInsertDTO p) {
-		Product existingProduct = sessionFactory.getCurrentSession().get(Product.class, p.getProdId());
-		if(existingProduct != null) {
-			existingProduct.setProdName(p.getProdName());
-			existingProduct.setProdDescription(p.getProdDescription());
-			existingProduct.setPrice(p.getPrice());
-			existingProduct.setStockQuantity(p.getStockQuantity());
-			existingProduct.setCategory(p.getCategory());
-			existingProduct.setUpdatedAt(LocalDateTime.now());
-			
-			sessionFactory.getCurrentSession().update(existingProduct);
-		} else {
-			throw new RuntimeException("Product with ID " + p.getProdId() + " not found");
-		}
-		
+	public void updateProduct(Product product) {
+	    Product existingProduct = sessionFactory.getCurrentSession().get(Product.class, product.getProdId());
+	    if (existingProduct != null) {
+	        existingProduct.setProdName(product.getProdName());
+	        existingProduct.setProdDescription(product.getProdDescription());
+	        existingProduct.setPrice(product.getPrice());
+	        existingProduct.setStockQuantity(product.getStockQuantity());
+	        existingProduct.setCategory(product.getCategory());
+	        existingProduct.setUpdatedAt(LocalDateTime.now());
 
-		
+	        if (product.getImages() != null && !product.getImages().isEmpty()) {
+	            existingProduct.setImages(product.getImages());
+	        }
+
+	        sessionFactory.getCurrentSession().update(existingProduct);
+	    } else {
+	        throw new RuntimeException("Product with ID " + product.getProdId() + " not found");
+	    }
 	}
+
 	
 	@Override
     public List<Product> searchProducts(String prodName, String category, Double minPrice, Double maxPrice) {

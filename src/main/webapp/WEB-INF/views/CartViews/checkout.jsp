@@ -44,6 +44,8 @@ let cartItems = [];   // global variable to store items
 let grandTotal = 0;   // global variable for total
 let userID=0;
 
+//const token = localStorage.getItem('jwtToken');
+
 function loadCart() {
     $.get("${pageContext.request.contextPath}/api/cart", function(data) {
         if (!data || data.length === 0) {
@@ -85,7 +87,7 @@ function placeOrder() {
         return;
     }
     
- // Step 1: build promises to fetch sellerId for each product
+ //  build promises to fetch sellerId for each product
     const sellerPromises = cartItems.map(item => {
         return $.get(`${pageContext.request.contextPath}/api/seller/products/\${item.productId}`)
             .then(product => {
@@ -98,7 +100,7 @@ function placeOrder() {
             });
     });
     
- // Step 2: wait for all seller lookups before placing order
+ //  wait for all seller lookups before placing order
     Promise.all(sellerPromises).then(orderItems => {
         const orderData = {
             status: "PENDING",
@@ -111,11 +113,16 @@ function placeOrder() {
         $.ajax({
             url: "${pageContext.request.contextPath}/buyer/orders",
             type: "POST",
+<!--            headers: { 'Authorization': 'Bearer ' + token },-->
+			// xhrFields: {
+  			// 	  withCredentials: true              // no need actaully as we it anyways sends cookies as we are on same domain
+			// }
+
             contentType: "application/json",
             data: JSON.stringify(orderData),
             success: function(response) {
                 alert(response); 
-                window.location.href = "${pageContext.request.contextPath}"; 
+                window.location.href = "order-success"; 
             },
             error: function(xhr) {
                 console.error("Error placing order:", xhr.responseText);

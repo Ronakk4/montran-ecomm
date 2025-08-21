@@ -96,7 +96,7 @@ public class OrderServiceImpl implements OrderService{
 	public List<SellerOrderDTO> getOrdersForSeller(long sellerId) {
         List<OrderItem> orderItems = orderItemDao.getAllOrdersForSeller(sellerId);
 
-        Map<Long, SellerOrderDTO> ordersMap = new HashMap<>();
+        Map<Long, SellerOrderDTO> ordersMap = new HashMap<>();    // to add multiple products of same order which are of particular seller
 
         for (OrderItem item : orderItems) {
             Long orderId = item.getOrderHeader().getOrderId();
@@ -264,6 +264,36 @@ public class OrderServiceImpl implements OrderService{
 
 	    return new ArrayList<>(ordersMap.values());
 	}
+	// OrderServiceImpl.java
+
+	@Override
+	@Transactional
+	public OrderDTO getOrderDTO(long orderId) {
+	    OrderHeader order = orderDao.getOrder(orderId);
+	    if (order == null) return null;
+
+	    OrderDTO dto = new OrderDTO();
+	    dto.setOrderId(order.getOrderId());
+	    dto.setStatus(order.getStatus());
+	    dto.setTotalAmount(order.getTotalAmount());
+	    dto.setShippingAddress(order.getBuyer().getShippingAddress());
+	    dto.setOrderDate(order.getOrderDate());
+
+	    List<OrderItemDTO> items = new ArrayList<>();
+	    for (OrderItem item : order.getItems()) {
+	        OrderItemDTO itemDTO = new OrderItemDTO();
+	        itemDTO.setProductId(item.getProduct().getProdId());
+	        itemDTO.setProductName(item.getProduct().getProdName());
+	        itemDTO.setQuantity(item.getQuantity());
+	        itemDTO.setSellerName(item.getSeller().getName());
+	        itemDTO.setPrice(item.getPrice());
+	        items.add(itemDTO);
+	    }
+	    dto.setItems(items);
+
+	    return dto;
+	}
+
 
 
 }

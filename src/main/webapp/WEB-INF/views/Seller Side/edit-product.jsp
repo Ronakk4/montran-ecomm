@@ -45,32 +45,32 @@
             <div class="invalid-feedback"></div>
         </div>
 
-
 		<div class="mb-3">
-			<label class="form-label">Stock Quantity</label> <input type="number"
-				id="stockQuantity" class="form-control no-spinner" />
+			<label class="form-label">Stock Quantity</label>
+            <input type="number" id="stockQuantity" class="form-control no-spinner" />
 			<div class="invalid-feedback"></div>
 		</div>
 
 		<style>
-		/* Remove increment/decrement arrows for stock input */
-		.no-spinner::-webkit-inner-spin-button, .no-spinner::-webkit-outer-spin-button
-			{
+		.no-spinner::-webkit-inner-spin-button, .no-spinner::-webkit-outer-spin-button {
 			-webkit-appearance: none;
 			margin: 0;
 		}
-		
-		.no-spinner {
-			-moz-appearance: textfield;
-		}
+		.no-spinner { -moz-appearance: textfield; }
 		</style>
-
 
 		<div class="mb-3">
             <label class="form-label">Category</label>
             <select id="categoryDropdown" class="form-select mb-2"></select>
             <input type="text" id="customCategory" class="form-control mt-2" placeholder="Or enter new category" />
             <div class="invalid-feedback"></div>
+        </div>
+
+        <!-- Smart Image Inputs -->
+        <div class="mb-3">
+            <label class="form-label">Product Images (optional, up to 4)</label>
+            <div id="imageInputs"></div>
+            <button type="button" id="addImageBtn" class="btn btn-outline-primary btn-sm">+ Add another image</button>
         </div>
 
         <button type="submit" class="btn btn-primary">Save Changes</button>
@@ -80,31 +80,16 @@
 <script>
     const apiBase = "http://localhost:8080/ecomm.capstone/api/seller";
 	const sellerId = <%= sellerId != null ? sellerId : "null" %>;
-
-    // Get productId from query string (?id=123)
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get("id");
 
-    // === Validation messages (same as addproduct.jsp) ===
     const messages = {
-    prodName: {
-        required: "Product name is required",
-        length: "Product name must be between 3 and 150 characters"
-    },
-    prodDescription: {
-        length: "Description must not exceed 1000 characters"
-    },
-    price: {
-        positive: "Price must be a positive number"
-    },
-    stockQuantity: {
-        min: "Stock quantity must be at least 1"   // ✅ updated message
-    },
-    category: {
-        required: "Please select or enter a category"
-    }
-};
-
+        prodName: { required: "Product name is required", length: "Product name must be between 3 and 150 characters" },
+        prodDescription: { length: "Description must not exceed 1000 characters" },
+        price: { positive: "Price must be a positive number" },
+        stockQuantity: { min: "Stock quantity must be at least 1" },
+        category: { required: "Please select or enter a category" }
+    };
 
     function showError(selector, message) {
         $(selector).addClass("is-invalid");
@@ -115,7 +100,6 @@
         $(selector).siblings(".invalid-feedback").text("");
     }
 
-    // === Field-specific validation ===
     async function validateField(field) {
         const val = $(field).val().trim();
         switch(field.id) {
@@ -123,21 +107,17 @@
                 if (!val) { showError(field, messages.prodName.required); return false; }
                 if (val.length < 3 || val.length > 150) { showError(field, messages.prodName.length); return false; }
                 clearError(field); return true;
-
             case "prodDescription":
                 if (val.length > 1000) { showError(field, messages.prodDescription.length); return false; }
                 clearError(field); return true;
-
             case "price":
                 const price = parseFloat(val);
                 if (isNaN(price) || price <= 0) { showError(field, messages.price.positive); return false; }
                 clearError(field); return true;
-
             case "stockQuantity":
                 const stock = parseInt(val);
                 if (isNaN(stock) || stock <= 0) { showError(field, messages.stockQuantity.min); return false; }
                 clearError(field); return true;
-
             case "categoryDropdown":
             case "customCategory":
                 let category = $("#categoryDropdown").val() || $("#customCategory").val().trim();
@@ -146,13 +126,37 @@
         }
     }
 
-    // Attach real-time validation
     $("#prodName, #prodDescription, #price, #stockQuantity, #categoryDropdown, #customCategory")
-        .on("blur input", function() {
-            validateField(this);
-        });
+        .on("blur input", function() { validateField(this); });
 
-    // Prefill form with product details
+    // Smart image inputs
+    let imageCount = 0;
+    function addImageInput(value = "") {
+        if (imageCount < 4) {
+            imageCount++;
+            $("#imageInputs").append(
+                `<div class="d-flex mb-2 align-items-center">
+                    <input type="url" name="images" class="form-control me-2" 
+                        placeholder="Image link ${imageCount} (optional)" value="${value}" />
+                    <button type="button" class="btn btn-sm btn-danger removeImageBtn">✕</button>
+                </div>`
+            );
+        }
+        if (imageCount === 4) {
+            $("#addImageBtn").prop("disabled", true).text("Maximum 4 images reached");
+        }
+    }
+
+    $(document).on("click", ".removeImageBtn", function() {
+        $(this).parent().remove();
+        imageCount--;
+        if (imageCount < 4) {
+            $("#addImageBtn").prop("disabled", false).text("+ Add another image");
+        }
+    });
+
+    $("#addImageBtn").click(() => addImageInput());
+
     function loadProduct() {
         $.get(`${apiBase}/products/${productId}`, function(p) {
             $("#productId").val(p.id);
@@ -161,27 +165,28 @@
             $("#price").val(p.price);
             $("#stockQuantity").val(p.stockQuantity);
             $("#customCategory").val("");
-
             loadCategories(p.category);
-        });
-    }
 
-    // Load categories into dropdown
-    function loadCategories(selectedCategory) {
-        $.get(`${apiBase}/category`, function(data) {
-            let options = data.map(c => `<option value="${c}">${c}</option>`).join("");
-            $("#categoryDropdown").html(`<option value="">--Select Category--</option>${options}`);
-            if (selectedCategory) {
-                $("#categoryDropdown").val(selectedCategory);
+            // load existing images
+            if (p.images && p.images.length > 0) {
+                p.images.forEach(img => addImageInput(img));
+            } else {
+                addImageInput(); // at least one input
             }
         });
     }
 
-    // Submit update
+    function loadCategories(selectedCategory) {
+        $.get(`${apiBase}/category`, function(data) {
+            let options = data.map(c => `<option value="${c}">${c}</option>`).join("");
+            $("#categoryDropdown").html(`<option value="">--Select Category--</option>${options}`);
+            if (selectedCategory) { $("#categoryDropdown").val(selectedCategory); }
+        });
+    }
+
     $("#editProductForm").submit(async function(e) {
         e.preventDefault();
 
-        // validate all fields
         let valid = true;
         for (const f of ["#prodName","#prodDescription","#price","#stockQuantity","#categoryDropdown"]) {
             const ok = await validateField($(f)[0]);
@@ -191,6 +196,12 @@
 
         const category = $("#customCategory").val().trim() || $("#categoryDropdown").val();
 
+        let images = [];
+        $("input[name='images']").each(function() {
+            let val = $(this).val().trim();
+            if (val) images.push(val);
+        });
+
         const product = {
             id: parseInt($("#productId").val()),
             prodName: $("#prodName").val().trim(),
@@ -198,7 +209,8 @@
             price: parseFloat($("#price").val()),
             stockQuantity: parseInt($("#stockQuantity").val()),
             category: category,
-            sellerId: sellerId
+            sellerId: sellerId,
+            images: images
         };
 
         $.ajax({
@@ -216,7 +228,6 @@
         });
     });
 
-    // Initial load
     loadProduct();
 </script>
 </body>
