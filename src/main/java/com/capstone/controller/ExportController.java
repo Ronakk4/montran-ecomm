@@ -65,7 +65,7 @@ public class ExportController {
                 row.createCell(4).setCellValue(order.getTotalAmount());
             }
 
-            // Set response headers BEFORE writing
+           
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             response.setHeader("Content-Disposition", "attachment; filename=\"orders.xlsx\"");
 
