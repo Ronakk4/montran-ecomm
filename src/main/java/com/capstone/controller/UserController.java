@@ -99,36 +99,35 @@ public class UserController {
 
 	@PutMapping("/{id}")
 	public String updateUser(@PathVariable long id, @RequestBody UpdateUserDTO dto) {
-		if ("BUYER".equalsIgnoreCase(dto.getRole())) {
-			BuyerDTO buyerDTO = new BuyerDTO();
-			buyerDTO.setName(dto.getName());
-			buyerDTO.setEmail(dto.getEmail());
-			
-			buyerDTO.setRole(dto.getRole());
-			if(dto.getPassword()==null || dto.getPassword()=="") {
-				buyerDTO.setPassword("");
-			}
-				buyerDTO.setShippingAddress(dto.getShippingAddress());
-			buyerDTO.setPhoneNumber(dto.getPhoneNumber());
-		
-			
-			userService.updateUser(id, buyerDTO);
-		} else if ("SELLER".equalsIgnoreCase(dto.getRole())) {
-			SellerDTO sellerDTO = new SellerDTO();
-			sellerDTO.setName(dto.getName());
-			sellerDTO.setEmail(dto.getEmail());
-		
-			sellerDTO.setRole(dto.getRole());
-			sellerDTO.setShopName(dto.getShopName());
-			sellerDTO.setShopDescription(dto.getShopDescription());
-			sellerDTO.setGstNumber(dto.getGstNumber());
-			
-			userService.updateUser(id, sellerDTO);
-		} else {
-			throw new RuntimeException("Invalid role. Must be BUYER or SELLER.");
-		}
+	    if ("BUYER".equalsIgnoreCase(dto.getRole())) {
+	        BuyerDTO buyerDTO = new BuyerDTO();
+	        buyerDTO.setName(dto.getName());
+	        buyerDTO.setEmail(dto.getEmail());
+	        buyerDTO.setRole(dto.getRole());
+	        buyerDTO.setPassword(dto.getPassword());   //  service will handle hashing
+	        buyerDTO.setShippingAddress(dto.getShippingAddress());
+	        buyerDTO.setPhoneNumber(dto.getPhoneNumber());
 
-		return "User updated successfully";
+	        userService.updateUser(id, buyerDTO);
+
+	    } else if ("SELLER".equalsIgnoreCase(dto.getRole())) {
+	        SellerDTO sellerDTO = new SellerDTO();
+	        sellerDTO.setName(dto.getName());
+	        sellerDTO.setEmail(dto.getEmail());
+	        sellerDTO.setRole(dto.getRole());
+	        sellerDTO.setPassword(dto.getPassword());
+	        sellerDTO.setShopName(dto.getShopName());
+	        sellerDTO.setShopDescription(dto.getShopDescription());
+	        sellerDTO.setGstNumber(dto.getGstNumber());
+//	        sellerDTO.setPhoneNumber(dto.getPhoneNumber()); 
+
+	        userService.updateUser(id, sellerDTO);
+
+	    } else {
+	        throw new RuntimeException("Invalid role. Must be BUYER or SELLER.");
+	    }
+
+	    return "User updated successfully";
 	}
 
 	// @DeleteMapping("/{id}")

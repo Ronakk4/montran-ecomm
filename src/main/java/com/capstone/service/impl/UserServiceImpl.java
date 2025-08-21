@@ -74,14 +74,22 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void updateUser(Long id, UserDTO dto) {
         User existingUser = userDao.findUserById(id);
+        if (existingUser == null) {
+            throw new RuntimeException("User not found with id " + id);
+        }
 
+        // Common fields
         if (dto.getName() != null) existingUser.setName(dto.getName());
         if (dto.getEmail() != null) existingUser.setEmail(dto.getEmail());
+        if (dto.getRole() != null) existingUser.setRole(dto.getRole());
+//        if (dto.getPhoneNumber() != null) existingUser.setPhoneNumber(dto.getPhoneNumber()); 
+
+        // Password handling 
         if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
             existingUser.setPassword(PasswordUtil.hashPassword(dto.getPassword()));
         }
-        if (dto.getRole() != null) existingUser.setRole(dto.getRole());
 
+        // Role-specific fields
         if (existingUser instanceof Buyer && dto instanceof BuyerDTO) {
             Buyer buyer = (Buyer) existingUser;
             BuyerDTO buyerDTO = (BuyerDTO) dto;
@@ -97,8 +105,10 @@ public class UserServiceImpl implements UserService {
             if (sellerDTO.getGstNumber() != null) seller.setGstNumber(sellerDTO.getGstNumber());
         }
 
+        // Persist changes
         userDao.updateUser(existingUser);
     }
+
 
     @Override
     public User loginUser(LoginRequestDTO user) {
