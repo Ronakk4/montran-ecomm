@@ -115,7 +115,7 @@ public class OrderHeaderDaoImpl implements OrderHeaderDao {
 		                 "FROM order_header oh " +
 		                 "JOIN order_items oi ON oh.orderid = oi.order_id " +
 		                 "WHERE DATE_TRUNC('month', oh.order_date) = DATE_TRUNC('month', CURRENT_DATE) " +
-		                 "AND oi.seller_id = :sellerId")
+		                 "AND oi.seller_id = :sellerId " + "AND oh.status != 'CANCELLED'")
 				.setParameter("sellerId", sellerId)
 				.uniqueResult();
 	}
