@@ -48,13 +48,15 @@ public class UserController {
 	    if (existingUser!=null) {
 	        String token = JwtUtil.generateToken(existingUser.getName(), existingUser.getRole(), existingUser.getId());
 
-          
+	        response.setContentType("application/json");
 	        // Store JWT in HttpOnly cookie (browser-specific)
 	        Cookie cookie = new Cookie("jwtToken", token);
 	        cookie.setHttpOnly(true); 
 	        cookie.setPath("/");      
 	        cookie.setMaxAge(30 * 60 * 1000); 
 	        response.addCookie(cookie);
+	        
+	        response.getWriter().write("{\"token\":\"" + token + "\"}");
 
 	        
 	    	       
