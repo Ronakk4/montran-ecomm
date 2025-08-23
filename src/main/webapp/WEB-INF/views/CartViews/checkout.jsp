@@ -111,7 +111,7 @@ function placeOrder() {
 
 
         $.ajax({
-            url: "${pageContext.request.contextPath}/buyer/orders",
+            url: "${pageContext.request.contextPath}/api/buyer/orders",
             type: "POST",
 <!--            headers: { 'Authorization': 'Bearer ' + token },-->
 			// xhrFields: {

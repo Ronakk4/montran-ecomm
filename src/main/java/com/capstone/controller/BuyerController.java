@@ -14,7 +14,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 @RestController
-@RequestMapping("/buyer")
+@RequestMapping("/api/buyer")
 public class BuyerController {
 
     @Autowired

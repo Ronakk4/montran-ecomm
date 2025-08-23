@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class BuyerViewController {
 	 @GetMapping("/")
 	    public String dashboard() {
-	        return "buyer-dashboard"; 
+	        return "buyer-dashboard";
 	    }
 	  @GetMapping("/orders")
 	  public String orders() {
