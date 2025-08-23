@@ -134,7 +134,7 @@ $(document).ready(function() {
     }
 
     function loadOrders() {
-        $.get(`/ecomm.capstone/buyer/orders?buyerId=${buyerId}`, function(data) {
+        $.get(`/ecomm.capstone/api/buyer/orders?buyerId=${buyerId}`, function(data) {
             renderOrders(data);
         }).fail(function() {
             $("#ordersContainer").html('<div class="col-12 text-center text-danger">Failed to load orders.</div>');
@@ -156,7 +156,7 @@ $(document).ready(function() {
         if(!confirm("Are you sure you want to cancel this order?")) return;
 
         $.ajax({
-            url: `/ecomm.capstone/buyer/orders/${orderId}/`,
+            url: `/ecomm.capstone/api/buyer/orders/${orderId}/`,
             type: "PUT",
             success: function() {
                 btn.closest(".card").find(".order-status-badge")
@@ -174,7 +174,7 @@ $(document).ready(function() {
     // ✅ Download PDF
     $(document).on("click", ".download-pdf-btn", function() {
         const orderId = $(this).data("order-id");
-        window.location.href = `/ecomm.capstone/buyer/orders/${orderId}/pdf`;
+        window.location.href = `/ecomm.capstone/api/buyer/orders/${orderId}/pdf`;
     });
 });
 </script>

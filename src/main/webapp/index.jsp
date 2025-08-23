@@ -376,7 +376,7 @@ async function loadProducts(category, containerId) {
         }).join('');
 
     } catch (err) {
-        console.error("Failed to load products:", err);
+        console.error("Please login first: ", err);
     }
 }
 
@@ -414,7 +414,7 @@ function addToCart(productId, quantity) {
         },
         error: function(xhr) {
             console.error("Error:", xhr.responseText);
-            alert("Failed to add product to cart");
+            alert("Please login first");
         }
     });
 }

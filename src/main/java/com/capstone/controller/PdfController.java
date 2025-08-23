@@ -20,7 +20,7 @@ public class PdfController {
     @Autowired
     private OrderService orderService;
 
-    @GetMapping("/buyer/orders/{orderId}/pdf")
+    @GetMapping("api/buyer/orders/{orderId}/pdf")
     public void downloadOrderPdf(@PathVariable("orderId") Long orderId,
                                  HttpServletResponse response) {
         response.setContentType("application/pdf");
