@@ -1,6 +1,30 @@
 <%@page import="com.capstone.util.JwtUtil"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
+<%
+    Cookie jwtCookie = null;
+    if(request.getCookies() != null) {
+        for(Cookie c : request.getCookies()) {
+            if("jwtToken".equals(c.getName())) {
+                jwtCookie = c;
+                break;
+            }
+        }
+    }
+    boolean isLoggedIn = (jwtCookie != null);
+    Long userId = null;
+    String tokenValue = null;
+    if (isLoggedIn) {
+        try {
+            userId = JwtUtil.getId(jwtCookie.getValue());
+            tokenValue = jwtCookie.getValue();
+        } catch (Exception e) {
+            // expired or invalid token
+            isLoggedIn = false;
+        }
+    }
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,6 +53,7 @@
 <body class="container mt-5 position-relative">
 
 <%
+    // Get buyerId and token again for use in JavaScript
     String token = null;
     if (request.getCookies() != null) {
         for (Cookie c : request.getCookies()) {
@@ -54,6 +79,7 @@
 <script>
 $(document).ready(function() {
     const buyerId = <%= buyerId != null ? buyerId : "null" %>;
+    const jwtToken = "<%= token != null ? token : "" %>";
 
     if (!buyerId) {
         $("#ordersContainer").html('<div class="col-12 text-center text-muted">Please log in to view your orders.</div>');
@@ -134,10 +160,20 @@ $(document).ready(function() {
     }
 
     function loadOrders() {
-        $.get(`/ecomm.capstone/api/buyer/orders?buyerId=${buyerId}`, function(data) {
-            renderOrders(data);
-        }).fail(function() {
-            $("#ordersContainer").html('<div class="col-12 text-center text-danger">Failed to load orders.</div>');
+        $.ajax({
+            url: `/ecomm.capstone/api/buyer/orders?buyerId=${buyerId}`,
+            type: "GET",
+            headers: {
+                "Authorization": "Bearer " + jwtToken
+            },
+            success: function(data) {
+                renderOrders(data);
+            },
+            error: function() {
+                $("#ordersContainer").html(
+                    '<div class="col-12 text-center text-danger">Failed to load orders.</div>'
+                );
+            }
         });
     }
 
@@ -146,7 +182,7 @@ $(document).ready(function() {
     // Toggle products visibility
     $(document).on("click", ".toggle-products-btn", function() {
         $(this).siblings(".products-container").toggleClass("d-none");
-        $(this).text($(this).text() === " View Products" ? " Hide Products" : " View Products");
+        $(this).text($(this).text().includes("View") ? "🙈 Hide Products" : "👀 View Products");
     });
 
     // Cancel order
@@ -158,6 +194,9 @@ $(document).ready(function() {
         $.ajax({
             url: `/ecomm.capstone/api/buyer/orders/${orderId}/`,
             type: "PUT",
+            headers: {
+                "Authorization": "Bearer " + jwtToken
+            },
             success: function() {
                 btn.closest(".card").find(".order-status-badge")
                    .removeClass()
@@ -173,10 +212,26 @@ $(document).ready(function() {
 
     // ✅ Download PDF
     $(document).on("click", ".download-pdf-btn", function() {
-        const orderId = $(this).data("order-id");
-        window.location.href = `/ecomm.capstone/api/buyer/orders/${orderId}/pdf`;
+    	 const orderId = $(this).data("order-id");
+    	   $.ajax({
+    	        url: `/ecomm.capstone/buyer/orders/${orderId}/pdf`,
+    	        type: "GET",
+    	        
+    	       // xhrFields: { responseType: "blob" }, // backend returns PDF as blob
+    	        headers: {
+    	            "Authorization": "Bearer " + jwtToken   // reuse the same jwtToken you declared earlier
+    	        },
+    	        success: function (data) {
+    	        	 window.location.href = `/ecomm.capstone/buyer/orders/${orderId}/pdf`;
+    			
+    	        },
+    	        error: function () {
+    	            alert("Failed to download PDF.");
+    	        }
+    	    });
     });
 });
+
 </script>
 
 </body>

@@ -14,6 +14,7 @@
         }
     }
     Long sellerId = jwtToken != null ? JwtUtil.getId(jwtToken.getValue()) : null;
+    String token=jwtToken != null ? jwtToken.getValue() : null;
 %>
 
 <html>
@@ -136,12 +137,32 @@ table tbody tr:hover {
 	<script>
     const sellerId = <%= sellerId != null ? sellerId : "null" %>;
     let allOrders = [];
+    const jwtToken = "<%= token != null ? token : "" %>";
+    $.ajaxSetup({
+        beforeSend: function(xhr) {
+            if (jwtToken) {
+                xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
+            }
+        }
+    });
 
-    function loadOrders() {
-        $.get(`/ecomm.capstone/api/seller/orders?sellerId=${sellerId}`, function(data) {
-            allOrders = data;
-            renderOrders(allOrders);
-        });
+
+    function loadOrders() {	
+    	$.ajax({
+    	    url: `/ecomm.capstone/api/seller/orders?sellerId=${sellerId}`,
+    	    type: "GET",
+    	    headers: {
+    	        "Authorization": "Bearer " + jwtToken
+    	    },
+    	    success: function (data) {
+    	        allOrders = data;
+    	        renderOrders(allOrders);
+    	    },
+    	    error: function (xhr) {
+    	        alert("❌ Failed to load orders: " + xhr.responseText);
+    	    }
+    	});
+
     }
 
     function renderOrders(orders) {
@@ -255,6 +276,7 @@ table tbody tr:hover {
             url: `/ecomm.capstone/api/seller/searchOrders`,
             type: "GET",
             data: params,
+            
             success: function (orders) {
                 allOrders = orders;
                 renderOrders(allOrders);

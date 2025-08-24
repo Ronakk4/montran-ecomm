@@ -43,6 +43,16 @@
 let cartItems = [];   // global variable to store items
 let grandTotal = 0;   // global variable for total
 let userID=0;
+if (jwtToken && jwtToken !== "null") {
+    $.ajaxSetup({
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
+        }
+    });
+} else {
+    alert("Session expired. Please login again.");
+    window.location.href = "/ecomm.capstone/login.jsp"; // redirect if no token
+}
 
 //const token = localStorage.getItem('jwtToken');
 
