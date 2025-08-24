@@ -16,71 +16,86 @@ public class JWTAuthenticationFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-        throws IOException, ServletException {
+            throws IOException, ServletException {
 
-      HttpServletRequest req = (HttpServletRequest) request;
-      HttpServletResponse res = (HttpServletResponse) response;
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse res = (HttpServletResponse) response;
 
-      // These endpoints are not mapped to this filter anyway, but harmless to allow:
-      String servletPath = req.getServletPath(); // NO context path here
+        String servletPath = req.getServletPath();
 
-      if ("/login".equals(servletPath) || "/register".equals(servletPath) ) {
-        chain.doFilter(request, response);
-        return;
-      }
 
-      // Since this filter is mapped ONLY to /app/buyer/* and /app/seller/*,
-      // we can just validate the token and check role
-      String token = null;
-      Cookie[] cookies = req.getCookies();
-      if (cookies != null) {
-        for (Cookie c : cookies) {
-          if ("jwtToken".equals(c.getName())) {
-            token = c.getValue();
-            break;
-          }
-        }
-      }
+if ("/api/seller/category".equals(servletPath) ||
+    servletPath.startsWith("/api/seller/category/")) {
+    chain.doFilter(request, response);
+    return;
+}
 
-      if (token == null || token.isEmpty()) {
-        res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing token");
-        return;
-      }
+        String token = null;
+        boolean isApiRequest = servletPath.startsWith("/api/");
 
-      try {
-        Claims claims = JwtUtil.validateToken(token).getBody();
-        String userType = claims.get("userType", String.class); // exact type
-        Long userId = claims.get("userId", Long.class);
-        String sub=claims.getSubject();
+        // 🔹 If API request → must use Authorization header only
+        if (isApiRequest) {
+            String authHeader = req.getHeader("Authorization");
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                token = authHeader.substring(7); // strip "Bearer "
+            }
+        } else {
+            // 🔹 For page navigation (/app/...) → header OR cookie
+            String authHeader = req.getHeader("Authorization");
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                token = authHeader.substring(7);
+            }
 
-        req.setAttribute("userId", userId);
-        req.setAttribute("userType", userType);
-
-        boolean buyerArea  = servletPath.startsWith("/app/buyer");
-        boolean sellerArea = servletPath.startsWith("/app/seller");
-
-        if (buyerArea  && !"buyer".equalsIgnoreCase(userType)) {
-          res.sendError(HttpServletResponse.SC_FORBIDDEN, "Only buyers can access this resource");
-          return;
-        }
-        if (sellerArea && !"seller".equalsIgnoreCase(userType)) {
-          res.sendError(HttpServletResponse.SC_FORBIDDEN, "Only sellers can access this resource");
-          return;
+            if (token == null || token.isEmpty()) {
+                Cookie[] cookies = req.getCookies();
+                if (cookies != null) {
+                    for (Cookie c : cookies) {
+                        if ("jwtToken".equals(c.getName())) {
+                            token = c.getValue();
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
-        // OK
-        chain.doFilter(request, response);
+        // 🔹 Reject if no token
+        if (token == null || token.isEmpty()) {
+            res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing token");
+            return;
+        }
 
-      } catch (Exception ex) {
-        res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or expired token");
-      }
+        try {
+            Claims claims = JwtUtil.validateToken(token).getBody();
+            String userType = claims.get("userType", String.class);
+            Long userId = claims.get("userId", Long.class);
+
+            // Set attributes for downstream usage
+            req.setAttribute("userId", userId);
+            req.setAttribute("userType", userType);
+
+            // ✅ Restrict access based on role
+            boolean buyerArea = servletPath.startsWith("/app/buyer");
+            boolean sellerArea = servletPath.startsWith("/app/seller");
+
+            if (buyerArea && !"buyer".equalsIgnoreCase(userType)) {
+                res.sendError(HttpServletResponse.SC_FORBIDDEN, "Only buyers can access this resource");
+                return;
+            }
+            if (sellerArea && !"seller".equalsIgnoreCase(userType)) {
+                res.sendError(HttpServletResponse.SC_FORBIDDEN, "Only sellers can access this resource");
+                return;
+            }
+
+            chain.doFilter(request, response);
+
+        } catch (Exception ex) {
+            res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or expired token");
+        }
     }
-  
-
 
     @Override
     public void destroy() {
         // cleanup
     }
 }
-
