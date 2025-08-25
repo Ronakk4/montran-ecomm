@@ -28,8 +28,7 @@ import com.capstone.dto.ProductInsertDTO;
 @Transactional
 public class ProductDaoImpl implements ProductDao {
 	
-	// @PersistenceContext
-    // private EntityManager em;
+
 
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -165,47 +164,49 @@ public class ProductDaoImpl implements ProductDao {
 	}
 	
 	
-	 public List<Product> getProductsByPage(int page, int size, String category, String sort) {
-	        CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
-	        CriteriaQuery<Product> cq = cb.createQuery(Product.class);
-	        Root<Product> root = cq.from(Product.class);
+	public List<Product> getProductsByPage(int page, int size, String category, String sort) {
+	    CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
+	    CriteriaQuery<Product> cq = cb.createQuery(Product.class);
+	    Root<Product> root = cq.from(Product.class);
 
-	        // filter by category (case-insensitive match)
-	        if (category != null && !category.equalsIgnoreCase("all")) {
-	            cq.where(cb.equal(cb.lower(root.get("category")), category.toLowerCase()));
-	        }
-
-	        // sorting
-	        if ("price-low".equals(sort)) {
-	            cq.orderBy(cb.asc(root.get("price")));
-	        } else if ("price-high".equals(sort)) {
-	            cq.orderBy(cb.desc(root.get("price")));
-	        } else if ("name".equals(sort)) {
-	            cq.orderBy(cb.asc(root.get("prodName")));
-	        } else if ("newest".equals(sort)) {
-	            cq.orderBy(cb.desc(root.get("createdAt"))); // assumes you have createdAt field
-	        }
-
-	        TypedQuery<Product> query = cb.createQuery(cq);
-	        query.setFirstResult((page - 1) * size);
-	        query.setMaxResults(size);
-
-	        return query.getResultList();
+	    // filter by category (case-insensitive match)
+	    if (category != null && !category.equalsIgnoreCase("all")) {
+	        cq.where(cb.equal(cb.lower(root.get("category")), category.toLowerCase()));
 	    }
 
-	    public long getProductCount(String category) {
-	        CriteriaBuilder cb = cb.getCriteriaBuilder();
-	        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-	        Root<Product> root = cq.from(Product.class);
-
-	        cq.select(cb.count(root));
-
-	        if (category != null && !category.equalsIgnoreCase("all")) {
-	            cq.where(cb.equal(cb.lower(root.get("category")), category.toLowerCase()));
-	        }
-
-	        return em.createQuery(cq).getSingleResult();
+	    // sorting
+	    if ("price-low".equals(sort)) {
+	        cq.orderBy(cb.asc(root.get("price")));
+	    } else if ("price-high".equals(sort)) {
+	        cq.orderBy(cb.desc(root.get("price")));
+	    } else if ("name".equals(sort)) {
+	        cq.orderBy(cb.asc(root.get("prodName")));
+	    } else if ("newest".equals(sort)) {
+	        cq.orderBy(cb.desc(root.get("createdAt"))); // assumes field exists
 	    }
+
+	    return sessionFactory.getCurrentSession()
+	            .createQuery(cq)
+	            .setFirstResult((page - 1) * size)
+	            .setMaxResults(size)
+	            .getResultList();
+	}
+
+	public long getProductCount(String category) {
+	    CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
+	    CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+	    Root<Product> root = cq.from(Product.class);
+
+	    cq.select(cb.count(root));
+
+	    if (category != null && !category.equalsIgnoreCase("all")) {
+	        cq.where(cb.equal(cb.lower(root.get("category")), category.toLowerCase()));
+	    }
+
+	    return sessionFactory.getCurrentSession()
+	            .createQuery(cq)
+	            .getSingleResult();
+	}
 
 		@Override
 		public void saveProductToHistory(ProductHistory ph) {

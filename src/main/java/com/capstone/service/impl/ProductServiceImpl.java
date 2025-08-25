@@ -16,7 +16,7 @@ import com.capstone.exception.DuplicateProductException;
 import com.capstone.exception.ProductNotFoundException;
 import com.capstone.model.Product;
 import com.capstone.model.Seller;
-// import com.capstone.model.ProductHistory;
+ import com.capstone.model.ProductHistory;
 import com.capstone.service.ProductService;
 
 @Service
