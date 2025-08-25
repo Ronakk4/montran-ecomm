@@ -29,7 +29,7 @@
     $('#checkoutForm').submit(function(e){
         e.preventDefault();
         $.ajax({
-            url: '/ecomm.capstone/buyer/orders',
+            url: '/ecomm.capstone/api/buyer/orders',
             method: 'POST',
             headers: { 'Authorization': 'Bearer ' + token },
             contentType: 'application/json',

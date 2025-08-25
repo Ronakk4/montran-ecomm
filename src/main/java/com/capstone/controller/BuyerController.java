@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/buyer")
+@RequestMapping("/api/buyer")
 public class BuyerController {
 
     @Autowired

@@ -18,7 +18,7 @@
     const orderId = new URLSearchParams(window.location.search).get('id');
 
     $.ajax({
-        url: `/ecomm.capstone/buyer/orders/${orderId}`,
+        url: `/ecomm.capstone/api/buyer/orders/${orderId}`,
         headers: { 'Authorization': 'Bearer ' + token },
         success: function(order) {
             $('#orderInfo').html(`
