@@ -13,6 +13,7 @@
         }
     }
     Long sellerId = jwtToken != null ? JwtUtil.getId(jwtToken.getValue()) : null;
+    String token=jwtToken!=null?jwtToken.getValue():null;
 %>
 <html>
 <head>
@@ -82,6 +83,21 @@
 	const sellerId = <%= sellerId != null ? sellerId : "null" %>;
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get("id");
+    
+    
+  const jwtToken = "<%= token %>";   // pass token into JS
+    
+    if (jwtToken && jwtToken !== "null") {
+        $.ajaxSetup({
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
+            }
+        });
+    } else {
+        alert("Session expired. Please login again.");
+        window.location.href = "/ecomm.capstone/login.jsp"; // redirect if no token
+    }
+
 
     const messages = {
         prodName: { required: "Product name is required", length: "Product name must be between 3 and 150 characters" },

@@ -1,4 +1,18 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
+
+<%
+Cookie jwtToken = null;
+Cookie[] cookies = request.getCookies();
+if (cookies != null) {
+    for (Cookie cookie : cookies) {
+        if ("jwtToken".equals(cookie.getName())) {
+            jwtToken = cookie;
+            break;
+        }
+    }
+}
+String token = jwtToken != null ? jwtToken.getValue() : null;
+%>	
 <html>
 <head>
   <title>Your Cart</title>
@@ -23,6 +37,15 @@
 </div>
 
 <script>
+
+const jwtToken = "<%= token %>";
+if (jwtToken && jwtToken !== "null") {
+	  $.ajaxSetup({
+	    beforeSend: function(xhr) {
+	      xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
+	    }
+	  });
+	}
 function loadCart() {
   $.get("${pageContext.request.contextPath}/api/cart", function(data) {
     renderCart(data);

@@ -29,6 +29,11 @@
         <property name="username" value="postgres" />
         <property name="password" value="admin5234" />
 
+<<<<<<< HEAD
+=======
+        <property name="password" value="montran123" />
+ 
+>>>>>>> 7d2f57efe56eef11ee0b31a25b97878245ef8b26
 
         <property name="initialSize" value="5" />
         <property name="maxTotal" value="20" />
