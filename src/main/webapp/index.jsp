@@ -329,6 +329,14 @@
 <script>
 
 
+const jwtToken = "<%= token != null ? token : "" %>";
+$.ajaxSetup({
+    beforeSend: function(xhr) {
+        if (jwtToken) {
+            xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
+        }
+    }
+});
 async function loadProducts(category, containerId) {
     try {
         console.log("Fetching category raw:", JSON.stringify(category));
@@ -376,7 +384,7 @@ async function loadProducts(category, containerId) {
         }).join('');
 
     } catch (err) {
-        console.error("Failed to load products:", err);
+        console.error("Please login first: ", err);
     }
 }
 
@@ -414,7 +422,7 @@ function addToCart(productId, quantity) {
         },
         error: function(xhr) {
             console.error("Error:", xhr.responseText);
-            alert("Failed to add product to cart");
+            alert("Please login first");
         }
     });
 }

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page isELIgnored="false"%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -158,6 +159,15 @@
     let prodId=0;
     let qty=1;
     
+    
+    const jwtToken = "<%= token != null ? token : "" %>";
+    $.ajaxSetup({
+        beforeSend: function(xhr) {
+            if (jwtToken) {
+                xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
+            }
+        }
+    });
     
     // Step 1: Get product details from the JSP page dynamically
 

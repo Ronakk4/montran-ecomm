@@ -41,7 +41,7 @@ public class UserController {
 
 	@PostMapping("/login")
 	public void loginUser(@RequestBody LoginRequestDTO user, 
-	                      HttpServletResponse response) throws IOException {
+	                      HttpServletResponse response,HttpServletRequest req) throws IOException {
   
 
 		User existingUser = userService.loginUser(user);
@@ -55,6 +55,7 @@ public class UserController {
 	        cookie.setPath("/");      
 	        cookie.setMaxAge(30 * 60 * 1000); 
 	        response.addCookie(cookie);
+	        response.sendRedirect(req.getContextPath() + "/");
 
 	        
 	    	       
@@ -89,7 +90,7 @@ public class UserController {
 	}
 	
 	@PutMapping("/changepassword")
-	public String updatePassword( @RequestBody ChangePasswordDTO changePasswordDTO) {
+	public String updatePassword(@Valid @RequestBody ChangePasswordDTO changePasswordDTO) {
 		if(userService.changePassword(changePasswordDTO.getNewPassword(),changePasswordDTO.getOldPassword(),changePasswordDTO.getId()))
 		return "password changed successfully";
 		return "password cannot be changed";

@@ -19,6 +19,9 @@ import com.capstone.dao.ProductDao;
 import com.capstone.dto.OrderDTO;
 import com.capstone.dto.OrderItemDTO;
 import com.capstone.dto.SellerOrderDTO;
+import com.capstone.exception.OutOfStockException;
+import com.capstone.exception.ProductNotFoundException;
+import com.capstone.exception.UserNotFoundException;
 import com.capstone.model.Buyer;
 import com.capstone.model.CartItem;
 import com.capstone.model.OrderHeader;
@@ -57,7 +60,7 @@ public class OrderServiceImpl implements OrderService{
 
 	@Override
 	@Transactional
-	public void saveOrder(OrderDTO order) {
+	public void saveOrder(OrderDTO order) throws UserNotFoundException,ProductNotFoundException,OutOfStockException{
 	    Buyer buyer = sessionFactory.getCurrentSession().get(Buyer.class, order.getBuyerId());
 
 	    // create OrderHeader
@@ -72,6 +75,23 @@ public class OrderServiceImpl implements OrderService{
 	        Product product = sessionFactory.getCurrentSession().get(Product.class, itemOrder.getProductId());
 	        Seller seller = sessionFactory.getCurrentSession().get(Seller.class, itemOrder.getSellerId());
 
+	        // ===== Validating product and seller existence =====
+	        if (product == null) {
+	            throw new ProductNotFoundException("Product not found with ID: " + itemOrder.getProductId());
+	        }
+
+	        if (seller == null) {
+	            throw new UserNotFoundException("Seller not found with ID: " + itemOrder.getSellerId());
+	        }
+
+	        // ===== Check stock availability =====
+	        if (product.getStockQuantity() < itemOrder.getQuantity()) {
+	            throw new OutOfStockException(
+	                "Product '" + product.getProdName() + "' is out of stock or insufficient quantity available."
+	            );
+	        }
+
+	        // ===== Create and populate OrderItem =====
 	        OrderItem orderItem = new OrderItem();
 	        orderItem.setOrderHeader(oh); // associate with order
 	        orderItem.setProduct(product);
@@ -274,6 +294,7 @@ public class OrderServiceImpl implements OrderService{
 
 	    OrderDTO dto = new OrderDTO();
 	    dto.setOrderId(order.getOrderId());
+	    dto.setBuyerName(order.getBuyer().getName());
 	    dto.setStatus(order.getStatus());
 	    dto.setTotalAmount(order.getTotalAmount());
 	    dto.setShippingAddress(order.getBuyer().getShippingAddress());

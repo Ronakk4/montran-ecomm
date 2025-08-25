@@ -52,6 +52,7 @@ public class UserServiceImpl implements UserService {
         // Hash the password before saving
         String hashedPassword = PasswordUtil.hashPassword(user.getPassword());
 
+
         if ("SELLER".equalsIgnoreCase(user.getRole())) {
             Seller seller = new Seller(
                 user.getName(), user.getEmail(), hashedPassword,
@@ -68,6 +69,7 @@ public class UserServiceImpl implements UserService {
             );
             userDao.saveUser(buyer);
         }
+        
     }
 
     @Override
@@ -75,7 +77,7 @@ public class UserServiceImpl implements UserService {
     public void updateUser(Long id, UserDTO dto) {
         User existingUser = userDao.findUserById(id);
         if (existingUser == null) {
-            throw new RuntimeException("User not found with id " + id);
+            throw new UserNotFoundException("User not found with id " + id);
         }
 
         // Common fields

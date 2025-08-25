@@ -13,6 +13,7 @@
         }
     }
     Long userId = jwtToken != null ? JwtUtil.getId(jwtToken.getValue()) : null;
+    String token = jwtToken != null ? jwtToken.getValue() : null;
 %>
 <html>
 <head>
@@ -43,6 +44,17 @@
 let cartItems = [];   // global variable to store items
 let grandTotal = 0;   // global variable for total
 let userID=0;
+const jwtToken = "<%= token != null ? token : "" %>";
+if (jwtToken && jwtToken !== "null") {
+    $.ajaxSetup({
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
+        }
+    });
+} else {
+    alert("Session expired. Please login again.");
+    window.location.href = "/ecomm.capstone/login.jsp"; // redirect if no token
+}
 
 //const token = localStorage.getItem('jwtToken');
 
@@ -111,7 +123,7 @@ function placeOrder() {
 
 
         $.ajax({
-            url: "${pageContext.request.contextPath}/buyer/orders",
+            url: "${pageContext.request.contextPath}/api/buyer/orders",
             type: "POST",
 <!--            headers: { 'Authorization': 'Bearer ' + token },-->
 			// xhrFields: {

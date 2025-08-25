@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.capstone.dao.ProductDao;
 import com.capstone.dto.ProductInsertDTO;
 import com.capstone.exception.DuplicateProductException;
+import com.capstone.exception.ProductNotFoundException;
 import com.capstone.model.Product;
 import com.capstone.model.Seller;
 import com.capstone.service.ProductService;
@@ -23,22 +24,19 @@ public class ProductServiceImpl implements ProductService{
 	@Autowired
 	private ProductDao productDao;
 	
-	@Autowired
-	private SessionFactory sessionFactory;
-
-	
-
 	@Override
 	@Transactional
 	public Product getProduct(long id) {
-		
-		// TODO Auto-generated method stub
-		return productDao.getProduct(id);
+	    Product product = productDao.getProduct(id);
+	    if (product == null) {
+	        throw new ProductNotFoundException("Product not found with ID: " + id);
+	    }
+	    return product;
 	}
 
 	@Override
 	@Transactional
-	public void saveProduct(ProductInsertDTO p) throws DuplicateProductException {
+	public void saveProduct(@Valid ProductInsertDTO p) throws DuplicateProductException {
 	    // Check if seller already has product with same name
 	    if (productDao.existsByProdNameAndSellerId(p.getProdName(), p.getSellerId())) {
 	        throw new DuplicateProductException(
@@ -76,6 +74,9 @@ public class ProductServiceImpl implements ProductService{
 	@Transactional
 	public void deleteProduct(long id) {
 		// TODO Auto-generated method stub
+		Product p = productDao.getProduct(id);
+		ProductInsertDTO p2 = new ProductInsertDTO(p.getProdName(),p.getProdDescription(),p.getPrice(),p.getStockQuantity()
+				,p.getCategory(),p.getCreatedAt(),p.getUpdatedAt(),p.getSeller().getId(),p.getImages());
 		productDao.deleteProduct(id);
 		
 	}

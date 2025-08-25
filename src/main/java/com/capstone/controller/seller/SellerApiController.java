@@ -1,19 +1,12 @@
 package com.capstone.controller.seller;
 
-import com.capstone.dto.ProductDTO;
 import com.capstone.dto.ProductFetchDTO;
 import com.capstone.dto.ProductInsertDTO;
-import com.capstone.model.OrderHeader;
-import com.capstone.model.OrderItem;
-
-
-import com.capstone.dto.ProductInsertDTO;
 import com.capstone.dto.SellerOrderDTO;
-
+import com.capstone.dto.SellerOrderDTO;
 import com.capstone.model.Product;
 import com.capstone.service.OrderService;
 import com.capstone.service.ProductService;
-import com.capstone.util.JwtUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -45,12 +38,11 @@ public class SellerApiController {
     @PostMapping("/products")
     public String addProduct(@Valid @RequestBody ProductInsertDTO product, HttpSession session) {
     	
-    	
-        
         productService.saveProduct(product);
         return "Product added successfully";
     }
 
+   
 
    @GetMapping("/products")
    public List<Product> getProductsForSeller(@RequestParam("sellerId") long sellerId) {

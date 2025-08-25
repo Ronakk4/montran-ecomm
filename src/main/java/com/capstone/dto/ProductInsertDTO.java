@@ -1,18 +1,40 @@
-				package com.capstone.dto;
+package com.capstone.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
+
 public class ProductInsertDTO {
-    private long prodId;
+	
+	private long prodId;
+	
+	@NotBlank(message = "Product name is required")
+    @Size(min = 3, max = 150, message = "Product name must be between 3 and 150 characters")
     private String prodName;
+
+    @Size(max = 1000, message = "Description must not exceed 1000 characters")
     private String prodDescription;
+
+    @Positive(message="Price must be a positive number")
     private Double price;
+
+    @Min(value = 1, message="Stock quantity must be at least 1")
     private int stockQuantity;
+
+    @NotBlank(message="Category is required")
     private String category;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    @Positive(message="Seller ID must be valid")
     private long sellerId;
+
+    
 
     // ✅ new field
     private List<String> images;

@@ -14,6 +14,7 @@ if (cookies != null) {
     }
 }
 Long sellerId = jwtToken != null ? JwtUtil.getId(jwtToken.getValue()) : null;
+String token = jwtToken != null ? jwtToken.getValue() : null;
 %>
 
 <html>
@@ -21,6 +22,15 @@ Long sellerId = jwtToken != null ? JwtUtil.getId(jwtToken.getValue()) : null;
     <title>Add New Product</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+        }
+    </style>
 </head>
 <body class="container mt-4">
 
@@ -74,6 +84,17 @@ Long sellerId = jwtToken != null ? JwtUtil.getId(jwtToken.getValue()) : null;
 <script>
 const sellerId = <%= sellerId != null ? sellerId : "null" %>;
 const apiBase = "http://localhost:8080/ecomm.capstone/api/seller";
+const jwtToken = "<%= token %>";   // pass token into JS
+if (jwtToken && jwtToken !== "null") {
+    $.ajaxSetup({
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
+        }
+    });
+} else {
+    alert("Session expired. Please login again.");
+    window.location.href = "/ecomm.capstone/login.jsp"; // redirect if no token
+}
 
 // Load categories
 function loadCategories() {
