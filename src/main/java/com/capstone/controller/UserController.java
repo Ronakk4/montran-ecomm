@@ -90,7 +90,7 @@ public class UserController {
 	}
 	
 	@PutMapping("/changepassword")
-	public String updatePassword( @RequestBody ChangePasswordDTO changePasswordDTO) {
+	public String updatePassword(@Valid @RequestBody ChangePasswordDTO changePasswordDTO) {
 		if(userService.changePassword(changePasswordDTO.getNewPassword(),changePasswordDTO.getOldPassword(),changePasswordDTO.getId()))
 		return "password changed successfully";
 		return "password cannot be changed";
