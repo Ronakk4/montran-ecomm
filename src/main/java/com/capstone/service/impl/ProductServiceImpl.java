@@ -25,11 +25,6 @@ public class ProductServiceImpl implements ProductService{
 	@Autowired
 	private ProductDao productDao;
 	
-	@Autowired
-	private SessionFactory sessionFactory;
-
-	
-
 	@Override
 	@Transactional
 	public Product getProduct(long id) {
@@ -42,7 +37,7 @@ public class ProductServiceImpl implements ProductService{
 
 	@Override
 	@Transactional
-	public void saveProduct(ProductInsertDTO p) throws DuplicateProductException {
+	public void saveProduct(@Valid ProductInsertDTO p) throws DuplicateProductException {
 	    // Check if seller already has product with same name
 	    if (productDao.existsByProdNameAndSellerId(p.getProdName(), p.getSellerId())) {
 	        throw new DuplicateProductException(

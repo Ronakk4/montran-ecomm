@@ -13,6 +13,7 @@
         }
     }
     Long userId = jwtToken != null ? JwtUtil.getId(jwtToken.getValue()) : null;
+    String token = jwtToken != null ? jwtToken.getValue() : null;
 %>
 <html>
 <head>
@@ -43,6 +44,7 @@
 let cartItems = [];   // global variable to store items
 let grandTotal = 0;   // global variable for total
 let userID=0;
+const jwtToken = "<%= token != null ? token : "" %>";
 if (jwtToken && jwtToken !== "null") {
     $.ajaxSetup({
         beforeSend: function (xhr) {
