@@ -3,10 +3,13 @@ package com.capstone.config;
 import com.capstone.filter.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.OrRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -14,30 +17,55 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http
             .csrf().disable()
             .authorizeRequests()
-                // ✅ allow static resources
+                // Public resources
                 .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**").permitAll()
-
-                // ✅ homepage + login + users (prefix matching)
+                // Public pages
                 .antMatchers("/", "/index/**", "/home/**", "/app/login/**", "/users/**").permitAll()
-
-                // ✅ public APIs
+                // Public APIs
                 .antMatchers("/api/seller/category/**").permitAll()
-
-                // ✅ buyer area
+                .antMatchers("/app/seller-login/**").permitAll()
+                .antMatchers("/app/register/**").permitAll()
+               .antMatchers("/app/registerseller/**").permitAll()
+                // Buyer area
                 .antMatchers("/app/buyer/**").hasAuthority("buyer")
-
-                // ✅ seller area
+                // Seller area
                 .antMatchers("/app/seller/**").hasAuthority("seller")
-
-                // ✅ everything else requires authentication
+                // All others require authentication
                 .anyRequest().authenticated()
             .and()
-            // add JWT filter
-            .addFilterBefore(new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+            // Add JWT filter before UsernamePasswordAuthenticationFilter
+            .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        JwtAuthenticationFilter filter = new JwtAuthenticationFilter();
+
+        // Configure public URLs to skip
+        RequestMatcher publicUrls = new OrRequestMatcher(
+            new AntPathRequestMatcher("/"),
+            new AntPathRequestMatcher("/index/**"),
+            new AntPathRequestMatcher("/home/**"),
+            new AntPathRequestMatcher("/app/login/**"),
+            new AntPathRequestMatcher("/users/**"),
+            new AntPathRequestMatcher("/api/seller/category/**"),
+            new AntPathRequestMatcher("/resources/**"),
+            new AntPathRequestMatcher("/static/**"),
+            new AntPathRequestMatcher("/css/**"),
+            new AntPathRequestMatcher("/js/**"),
+            new AntPathRequestMatcher("/images/**"),
+            new AntPathRequestMatcher("/app/seller-login/**"),
+            new AntPathRequestMatcher("/app/register/**"),
+            new AntPathRequestMatcher("/app/registerseller/**")
+        );	
+
+        filter.setSkipUrls(publicUrls);
+        return filter;
     }
 }
