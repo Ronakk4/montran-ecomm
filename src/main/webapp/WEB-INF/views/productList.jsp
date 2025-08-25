@@ -1,6 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+
+    Long sellerId = jwtToken != null ? JwtUtil.getId(jwtToken.getValue()) : null;
+    String token=jwtToken != null ? jwtToken.getValue() : null;
+    
+%>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -220,6 +226,15 @@ const itemsPerPage = 8;
 let currentCategory = 'all';
 let currentSort = '';
 let reqCategory='';
+
+const jwtToken = "<%= token != null ? token : "" %>";
+$.ajaxSetup({
+    beforeSend: function(xhr) {
+        if (jwtToken) {
+            xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
+        }
+    }
+});
 
 $(document).ready(function() {
     // 1. Get category from URL
