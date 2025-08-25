@@ -2,14 +2,30 @@ package com.capstone.dto;
 
 import java.time.LocalDateTime;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+
 public class OrderItemDTO {
-    private Long productId;
-    private String productName;
-    private Long sellerId;
-    private int quantity;
-    private double price;
-    private LocalDateTime orderDate;
+	private String productName;
+
     private String sellerName;
+
+    @NotNull(message = "Product ID is required")
+    private Long productId;
+
+    @NotNull(message = "Seller ID is required")
+    private Long sellerId;
+
+    @Positive(message = "Order Items quantity must be positive")
+    private int quantity;
+
+    @Positive(message = "Price must be positive")
+    private double price;
+
+    
+    private LocalDateTime orderDate;
+
+    
     
     public String getProductName() {
 		return productName;

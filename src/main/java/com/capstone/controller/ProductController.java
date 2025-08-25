@@ -24,5 +24,7 @@ public class ProductController {
 		return productService.getProductsFromCategory(category);
 		
 	}
+	
+	
 
 }

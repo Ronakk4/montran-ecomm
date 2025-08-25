@@ -45,12 +45,11 @@ public class SellerApiController {
     @PostMapping("/products")
     public String addProduct(@Valid @RequestBody ProductInsertDTO product, HttpSession session) {
     	
-    	
-        
         productService.saveProduct(product);
         return "Product added successfully";
     }
 
+   
 
    @GetMapping("/products")
    public List<Product> getProductsForSeller(@RequestParam("sellerId") long sellerId) {
