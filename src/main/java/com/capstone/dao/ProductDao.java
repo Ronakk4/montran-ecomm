@@ -6,6 +6,7 @@ import com.capstone.dto.ProductDTO;
 import com.capstone.dto.ProductInsertDTO;
 
 import com.capstone.model.Product;
+import com.capstone.model.ProductHistory;
 import com.capstone.model.Seller;
 
 public interface ProductDao {
@@ -26,4 +27,6 @@ public interface ProductDao {
 	List<Product> getProductsByPage(int page, int size, String categoryId, String sort);
 	long getProductCount(String categoryId);
 	
+	void saveProductToHistory(ProductHistory ph);
+	List<ProductHistory> getDeletedProducts();
 }

@@ -11,6 +11,7 @@ import com.capstone.dto.ProductInsertDTO;
 import com.capstone.dto.SellerOrderDTO;
 
 import com.capstone.model.Product;
+// import com.capstone.model.ProductHistory;
 import com.capstone.service.OrderService;
 import com.capstone.service.ProductService;
 import com.capstone.util.JwtUtil;
@@ -120,6 +121,9 @@ public class SellerApiController {
         return orderService.getMonthlySalesAndRevenue(sellerId);
     }
 	
-	
+	@GetMapping("/getDeletedProducts")
+	public List<ProductHistory> getDeletedProducts(){
+		return productService.getDeletedProducts();
+	}
 
 }

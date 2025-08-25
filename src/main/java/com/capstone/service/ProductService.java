@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import com.capstone.dto.ProductInsertDTO;
 import com.capstone.model.Product;
+import com.capstone.model.ProductHistory;
 
 public interface ProductService {
 //	List<Product> getAllProducts();
@@ -22,4 +23,5 @@ public interface ProductService {
 	List<Product> searchProducts(String prodName, String category, Double minPrice, Double maxPrice);
 	List<Product> getProductsByPage(int page, int size, String categoryId, String sort);
 	long getProductCount(String categoryId);
+	List<ProductHistory> getDeletedProducts();
 }

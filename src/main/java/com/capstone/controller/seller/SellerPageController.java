@@ -41,6 +41,11 @@ public class SellerPageController {
     	return "Seller Side/add-product"; // /WEB-INF/views/Seller Side/products.jsp
     }
     
+    @GetMapping("/products/deleted-product")
+    public String deleteProductPage() {
+    	return "Seller Side/product-deleted"; // /WEB-INF/views/Seller Side/products.jsp
+    }
+    
     @GetMapping("/products/edit-product")
     public String editProductPage(@RequestParam long id,  Model model) {
     	model.addAttribute("productId", id);

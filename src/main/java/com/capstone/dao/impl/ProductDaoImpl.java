@@ -8,6 +8,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.From;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.capstone.model.Product;
+import com.capstone.model.ProductHistory;
 import com.capstone.model.Seller;
 import com.capstone.dao.ProductDao;
 import com.capstone.dto.ProductInsertDTO;
@@ -26,8 +28,8 @@ import com.capstone.dto.ProductInsertDTO;
 @Transactional
 public class ProductDaoImpl implements ProductDao {
 	
-	@PersistenceContext
-    private EntityManager em;
+	// @PersistenceContext
+    // private EntityManager em;
 
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -164,7 +166,7 @@ public class ProductDaoImpl implements ProductDao {
 	
 	
 	 public List<Product> getProductsByPage(int page, int size, String category, String sort) {
-	        CriteriaBuilder cb = em.getCriteriaBuilder();
+	        CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
 	        CriteriaQuery<Product> cq = cb.createQuery(Product.class);
 	        Root<Product> root = cq.from(Product.class);
 
@@ -184,7 +186,7 @@ public class ProductDaoImpl implements ProductDao {
 	            cq.orderBy(cb.desc(root.get("createdAt"))); // assumes you have createdAt field
 	        }
 
-	        TypedQuery<Product> query = em.createQuery(cq);
+	        TypedQuery<Product> query = cb.createQuery(cq);
 	        query.setFirstResult((page - 1) * size);
 	        query.setMaxResults(size);
 
@@ -192,7 +194,7 @@ public class ProductDaoImpl implements ProductDao {
 	    }
 
 	    public long getProductCount(String category) {
-	        CriteriaBuilder cb = em.getCriteriaBuilder();
+	        CriteriaBuilder cb = cb.getCriteriaBuilder();
 	        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
 	        Root<Product> root = cq.from(Product.class);
 
@@ -204,6 +206,19 @@ public class ProductDaoImpl implements ProductDao {
 
 	        return em.createQuery(cq).getSingleResult();
 	    }
+
+		@Override
+		public void saveProductToHistory(ProductHistory ph) {
+			// TODO Auto-generated method stub
+			sessionFactory.getCurrentSession().save(ph);
+			
+		}
+
+		@Override
+		public List<ProductHistory> getDeletedProducts() {
+			// TODO Auto-generated method stub
+			return sessionFactory.getCurrentSession().createQuery("from ProductHistory", ProductHistory.class ).list();
+		}
 	
 
 	

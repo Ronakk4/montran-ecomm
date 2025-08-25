@@ -43,6 +43,7 @@
         </div>
 
         <a href="products/add-product" class="btn btn-success">+ Add New Product</a>
+        <a href="products/deleted-product" class="btn btn-success">- View Deleted Product</a>
     </div>
 
     <!-- Category Filter -->

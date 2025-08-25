@@ -15,6 +15,7 @@ import com.capstone.dto.ProductInsertDTO;
 import com.capstone.exception.DuplicateProductException;
 import com.capstone.model.Product;
 import com.capstone.model.Seller;
+// import com.capstone.model.ProductHistory;
 import com.capstone.service.ProductService;
 
 @Service
@@ -76,8 +77,20 @@ public class ProductServiceImpl implements ProductService{
 	@Transactional
 	public void deleteProduct(long id) {
 		// TODO Auto-generated method stub
+		ProductHistory ph = new ProductHistory();
+		Product p = productDao.getProduct(id);
+		ph.setProdId(p.getProdId());
+		ph.setProdName(p.getProdName());
+		ph.setProdDescription(p.getProdDescription());
+		ph.setPrice(p.getPrice());
+		ph.setStockQuantity(p.getStockQuantity());
+		ph.setCategory(p.getCategory());
+		ph.setCreatedAt(p.getCreatedAt());
+		ph.setUpdatedAt(p.getUpdatedAt());
+		ph.setImages(p.getImages());
+//		Product productDeleted = productDao.getProduct(id);
+		productDao.saveProductToHistory(ph);
 		productDao.deleteProduct(id);
-		
 	}
 	
 	@Override
@@ -99,7 +112,12 @@ public class ProductServiceImpl implements ProductService{
 	    productDao.updateProduct(product);
 	}
 
-
+	@Override
+	public List<ProductHistory> getDeletedProducts(){
+		return productDao.getDeletedProducts();
+//		return null;
+		
+	}
 
 
 	@Override
@@ -133,5 +151,7 @@ public class ProductServiceImpl implements ProductService{
 	    public long getProductCount(String category) {
 	        return productDao.getProductCount(category);
 	    }
+	    
+	    
 	    
 }
