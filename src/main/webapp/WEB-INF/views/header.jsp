@@ -21,6 +21,7 @@
             isLoggedIn = false;
         }
     }
+    String token = jwtToken != null ? jwtToken.getValue() : null;
 %>
 
 <header class="l-header">
