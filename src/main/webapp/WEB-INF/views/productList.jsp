@@ -1,6 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%
+    Cookie jwtToken = null;
+    Cookie[] cookies = request.getCookies();
+    if (cookies != null) {
+        for (Cookie cookie : cookies) {
+            if ("jwtToken".equals(cookie.getName())) {
+                jwtToken = cookie;
+                break;
+            }
+        }
+    }
+    Long sellerId = jwtToken != null ? JwtUtil.getId(jwtToken.getValue()) : null;
+    String token=jwtToken != null ? jwtToken.getValue() : null;
+    
+%>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -218,6 +234,15 @@
 let allProducts = [];
 let currentPage = 1;
 const itemsPerPage = 8; // products per page
+
+const jwtToken = "<%= token != null ? token : "" %>";
+$.ajaxSetup({
+    beforeSend: function(xhr) {
+        if (jwtToken) {
+            xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
+        }
+    }
+});
 
 $(document).ready(function() {
     // 1. Get category from URL

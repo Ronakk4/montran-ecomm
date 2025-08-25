@@ -329,6 +329,14 @@
 <script>
 
 
+const jwtToken = "<%= token != null ? token : "" %>";
+$.ajaxSetup({
+    beforeSend: function(xhr) {
+        if (jwtToken) {
+            xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
+        }
+    }
+});
 async function loadProducts(category, containerId) {
     try {
         console.log("Fetching category raw:", JSON.stringify(category));
