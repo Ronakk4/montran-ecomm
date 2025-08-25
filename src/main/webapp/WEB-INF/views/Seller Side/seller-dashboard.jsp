@@ -163,103 +163,107 @@ body {
 	</div>
 
 	<!-- AJAX -->
-	<script>
-	
-	history.pushState(null, null, location.href);
+<script>
+    const jwtToken = "<%= jwtToken != null ? jwtToken.getValue() : "" %>";
+
+    // Add JWT to all AJAX requests
+    $.ajaxSetup({
+        beforeSend: function(xhr) {
+            if (jwtToken) {
+                xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
+            }
+        }
+    });
+
+    history.pushState(null, null, location.href);
     window.onpopstate = function () {
         window.location.href = '<%=request.getContextPath()%>/'; // home page
     };
-    
-        $(document).ready(function() {
-            const apiBase = "http://localhost:8080/ecomm.capstone/api/seller";
-            const sellerId = <%= sellerId != null ? sellerId : "null" %>;
 
-            // Fetch Products
-            $.get(`${apiBase}/products?sellerId=${sellerId}`, function(products) {
-                let list = $("#productList");
-                list.empty();
-                $("#totalProducts").text(products.length);
+    $(document).ready(function() {
+        const apiBase = "http://localhost:8080/ecomm.capstone/api/seller";
+        const sellerId = <%= sellerId != null ? sellerId : "null" %>;
 
-                if (products.length === 0) {
-                    list.append("<div class='col-12 text-center text-muted'>No products found.</div>");
-                } else {
-                    products.forEach(p => {
-                        list.append(`
-                            <div class="col-md-4">
-                        		<div class="stat-card text-start border rounded p-3 shadow-sm">
-                        	    <h5 class="mb-2">${p.prodName}</h5>
-                        	    <p class="mb-1 text-muted">Stock: ${p.stockQuantity}</p>
-                        	    <p class="mb-3 fw-semibold">₹${p.price}</p>
+        // Fetch Products
+        $.get(`${apiBase}/products?sellerId=${sellerId}`, function(products) {
+            let list = $("#productList");
+            list.empty();
+            $("#totalProducts").text(products.length);
 
-                        	</div>
-
+            if (products.length === 0) {
+                list.append("<div class='col-12 text-center text-muted'>No products found.</div>");
+            } else {
+                products.forEach(p => {
+                    list.append(`
+                        <div class="col-md-4">
+                            <div class="stat-card text-start border rounded p-3 shadow-sm">
+                                <h5 class="mb-2">${p.prodName}</h5>
+                                <p class="mb-1 text-muted">Stock: ${p.stockQuantity}</p>
+                                <p class="mb-3 fw-semibold">₹${p.price}</p>
                             </div>
-                        `);
-                    });
-                }
-            });
-
-         // Fetch Orders (Dashboard Preview)
-            $.get(`${apiBase}/orders?sellerId=${sellerId}`, function(orders) {
-                let table = $("#ordersTable");
-                table.empty();
-                $("#totalOrders").text(orders.length);
-
-                if (orders.length === 0) {
-                    table.append("<tr><td colspan='5' class='text-center text-muted'>No orders yet.</td></tr>");
-                } else {
-                    orders.slice(0, 5).forEach(order => {
-                        let statusClass = "secondary";
-                        if (order.status === "DELIVERED") statusClass = "success";
-                        else if (order.status === "PENDING") statusClass = "warning";
-                        else if (order.status === "CANCELLED") statusClass = "danger";
-                        else if (order.status === "SHIPPED") statusClass = "info";
-                        else if (order.status === "PLACED") statusClass = "primary";
-
-                        // show first product from order for preview
-                        let firstItem = order.items.length > 0 ? order.items[0] : null;
-
-                        table.append(`
-                            <tr class="align-middle">
-                                <td><strong>#${order.orderId}</strong></td>
-                                <td>📍 ${order.shippingAddress || "<span class='text-muted'>N/A</span>"}</td>
-                                <td>${firstItem ? "Product ID: " + firstItem.productId : "-"}</td>
-                                <td>${firstItem ? firstItem.quantity : "-"}</td>
-                                <td><span class="badge bg-${statusClass}">${order.status}</span></td>
-                            </tr>
-                        `);
-                    });
-                }
-            });
-         // Fetch Analytics (Total Sales + Revenue This Month)
-            $.get(`${apiBase}/analytics?sellerId=${sellerId}`, function(data) {
-                if (data) {
-                    $("#totalSales").text(data.totalSales || 0);
-                    $("#monthlyRevenue").text("₹" + (data.totalRevenue ? data.totalRevenue.toFixed(2) : "0.00"));
-                }
-            });
-
-         
+                        </div>
+                    `);
+                });
+            }
         });
-        
-     
 
-     // Delete product
-        function deleteProduct(id) {
-            $.ajax({
-                url: `http://localhost:8080/ecomm.capstone/api/seller/products/${id}`,
-                method: "DELETE",
-                success: function() {
-                    alert("Deleted!");
-                    loadProducts();
-                },
-                error: function(xhr) {
-                    alert("Error: " + xhr.responseText);
-                }
-            });
-        }
-    </script>
+        // Fetch Orders (Dashboard Preview)
+        $.get(`${apiBase}/orders?sellerId=${sellerId}`, function(orders) {
+            let table = $("#ordersTable");
+            table.empty();
+            $("#totalOrders").text(orders.length);
+
+            if (orders.length === 0) {
+                table.append("<tr><td colspan='5' class='text-center text-muted'>No orders yet.</td></tr>");
+            } else {
+                orders.slice(0, 5).forEach(order => {
+                    let statusClass = "secondary";
+                    if (order.status === "DELIVERED") statusClass = "success";
+                    else if (order.status === "PENDING") statusClass = "warning";
+                    else if (order.status === "CANCELLED") statusClass = "danger";
+                    else if (order.status === "SHIPPED") statusClass = "info";
+                    else if (order.status === "PLACED") statusClass = "primary";
+
+                    let firstItem = order.items.length > 0 ? order.items[0] : null;
+
+                    table.append(`
+                        <tr class="align-middle">
+                            <td><strong>#${order.orderId}</strong></td>
+                            <td>📍 ${order.shippingAddress || "<span class='text-muted'>N/A</span>"}</td>
+                            <td>${firstItem ? "Product ID: " + firstItem.productId : "-"}</td>
+                            <td>${firstItem ? firstItem.quantity : "-"}</td>
+                            <td><span class="badge bg-${statusClass}">${order.status}</span></td>
+                        </tr>
+                    `);
+                });
+            }
+        });
+
+        // Fetch Analytics
+        $.get(`${apiBase}/analytics?sellerId=${sellerId}`, function(data) {
+            if (data) {
+                $("#totalSales").text(data.totalSales || 0);
+                $("#monthlyRevenue").text("₹" + (data.totalRevenue ? data.totalRevenue.toFixed(2) : "0.00"));
+            }
+        });
+    });
+
+    // Delete product
+    function deleteProduct(id) {
+        $.ajax({
+            url: `http://localhost:8080/ecomm.capstone/api/seller/products/${id}`,
+            method: "DELETE",
+            success: function() {
+                alert("Deleted!");
+                loadProducts();
+            },
+            error: function(xhr) {
+                alert("Error: " + xhr.responseText);
+            }
+        });
+    }
+</script>
+
 
 </body>
 </html>
-

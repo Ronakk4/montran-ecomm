@@ -376,7 +376,7 @@ async function loadProducts(category, containerId) {
         }).join('');
 
     } catch (err) {
-        console.error("Failed to load products:", err);
+        console.error("Please login first: ", err);
     }
 }
 

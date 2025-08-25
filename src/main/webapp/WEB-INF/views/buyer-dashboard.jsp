@@ -17,7 +17,7 @@
     const buyerId = localStorage.getItem('userId');
 
     $.ajax({
-        url: `/ecomm.capstone/buyer/orders?buyerId=${buyerId}`,
+        url: `/ecomm.capstone/api/buyer/orders?buyerId=${buyerId}`,
         headers: { 'Authorization': 'Bearer ' + token },
         success: function(data) {
             $('#stats').append(`<p>Total Orders: ${data.length}</p>`);

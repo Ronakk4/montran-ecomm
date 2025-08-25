@@ -15,6 +15,7 @@
     }
     
     Long sellerId = jwtToken != null ? JwtUtil.getId(jwtToken.getValue()) : null;
+    String token=jwtToken!=null?jwtToken.getValue():null;	
 %>
 
 <html>
@@ -72,6 +73,18 @@
 <script>
     const sellerId = <%= sellerId != null ? sellerId : "null" %>;
     const apiBase = "http://localhost:8080/ecomm.capstone/api/seller";
+    const jwtToken = "<%= token %>";   // pass token into JS
+    
+    if (jwtToken && jwtToken !== "null") {
+        $.ajaxSetup({
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
+            }
+        });
+    } else {
+        alert("Session expired. Please login again.");
+        window.location.href = "/ecomm.capstone/login.jsp"; // redirect if no token
+    }
 
     let products = [];
     let currentSort = { key: null, order: 'asc' };
