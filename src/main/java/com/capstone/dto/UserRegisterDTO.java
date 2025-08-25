@@ -1,18 +1,35 @@
 package com.capstone.dto;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 public class UserRegisterDTO {
+	@NotBlank(message = "Name is required")
     private String name;
+
+    @Email(message = "Email should be valid")
+    @NotBlank(message = "Email is required")
     private String email;
+
+    @Size(min = 8, message = "Password must be at least 8 characters")
+    @Pattern(
+        regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
+        message = "Password must contain uppercase, lowercase, number, and special character"
+    )
     private String password;
+
+    @NotBlank(message = "Role is required")
     private String role; // "SELLER" or "BUYER"
-    
-    // Seller-specific
+
     private String shopName;
     private String shopDescription;
     private String gstNumber;
-    
-    // Buyer-specific
+
     private String shippingAddress;
+
+    @NotBlank(message = "Phone number is required")
     private String phoneNumber;
     
 	public String getName() {
