@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 import com.capstone.model.Product;
 import com.capstone.model.Seller;
 import com.capstone.dao.ProductDao;
-import com.capstone.dto.ProductInsertDTO;
+
 
 
 @Repository
@@ -25,6 +25,7 @@ public class ProductDaoImpl implements ProductDao {
 
 	@Autowired
 	private SessionFactory sessionFactory;
+	
 
 //	@Override
 //	public List<Product> getAllProducts() {
@@ -61,6 +62,8 @@ public class ProductDaoImpl implements ProductDao {
 	        .executeUpdate();
 
 	}
+	
+
 
 	@Override
 	public void updateProduct(Product product) {

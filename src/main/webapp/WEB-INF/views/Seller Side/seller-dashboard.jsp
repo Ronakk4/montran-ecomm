@@ -86,6 +86,7 @@ body {
 	<div class="top-bar">
 		<span class="username">👤 <%= jwtToken != null ? JwtUtil.getUsername(jwtToken.getValue()) : "Guest" %></span>
 		<a href="profile" class="btn btn-outline-secondary btn-sm me-2">Profile</a>
+		<a href="product-history" class="btn btn-outline-secondary btn-sm me-2">History</a>
 
 <%-- 		<a href=<%=request.getContextPath()%> class="btn btn-danger btn-sm">Logout</a> --%>
 		<button class="btn btn-danger btn-sm"

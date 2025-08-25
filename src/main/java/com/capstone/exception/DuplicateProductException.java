@@ -5,3 +5,4 @@ public class DuplicateProductException extends RuntimeException {
         super(message);
     }
 }
+

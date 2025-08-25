@@ -21,6 +21,11 @@ public class SellerPageController {
         return "Seller Side/seller-dashboard";
     }
     
+    @GetMapping("/product-history")
+    public String productHistoryPage() {
+    	return "Seller Side/seller-product-history";
+    }
+    
     @GetMapping("/profile")
     public String profile(HttpServletResponse response) {
     	// Prevent caching

@@ -1,19 +1,19 @@
 package com.capstone.controller.seller;
 
-import com.capstone.dto.ProductDTO;
+
 import com.capstone.dto.ProductFetchDTO;
 import com.capstone.dto.ProductInsertDTO;
-import com.capstone.model.OrderHeader;
-import com.capstone.model.OrderItem;
 
 
-import com.capstone.dto.ProductInsertDTO;
+
 import com.capstone.dto.SellerOrderDTO;
 
 import com.capstone.model.Product;
+import com.capstone.model.ProductHistory;
 import com.capstone.service.OrderService;
+import com.capstone.service.ProductHistoryService;
 import com.capstone.service.ProductService;
-import com.capstone.util.JwtUtil;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +33,9 @@ public class SellerApiController {
 
    @Autowired
    private OrderService orderService;
+   
+   @Autowired
+   private ProductHistoryService productHistrHistoryService;
 
    // ========== PRODUCT APIs ==========
 //   @PostMapping("/products")
@@ -77,6 +80,11 @@ public class SellerApiController {
     public String deleteProduct(@PathVariable long id) {
         productService.deleteProduct(id);
         return "Product deleted successfully";
+    }
+    
+    @GetMapping("/product-history")
+    public List<ProductHistory> getProductHistory(){
+    	return productHistrHistoryService.getProductHistory();
     }
     
     // ========== ORDER APIs ==========
