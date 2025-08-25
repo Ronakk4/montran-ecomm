@@ -34,7 +34,7 @@
 	                // Buyer area
 	                .antMatchers("/app/buyer/**").hasAuthority("buyer")
 	                // Seller area
-	                .antMatchers("/api/cart/**").hasAuthority("buyer")
+	                .antMatchers("/api/cart","/api/cart/**").permitAll()
 	                .antMatchers("/app/seller/**").hasAuthority("seller")
 	                .antMatchers("/app/product-details/**").permitAll()
 	                // All others require authentication
@@ -68,9 +68,13 @@
 	            new AntPathRequestMatcher("/app/registerseller/**"),
 	            new AntPathRequestMatcher("/app/product-list"),          // exact path
 	            new AntPathRequestMatcher("/app/product-list/**"),
-	            new AntPathRequestMatcher("/"),
+	          
 	            // subpaths
-	            new AntPathRequestMatcher("/app/product-details/**")
+	            new AntPathRequestMatcher("/app/product-details/**"),
+	           
+	            new AntPathRequestMatcher("/api/cart"),
+	            new AntPathRequestMatcher("/api/cart/**"),
+	            new AntPathRequestMatcher("/api/cart/")
 	           
 	        );  
 	
