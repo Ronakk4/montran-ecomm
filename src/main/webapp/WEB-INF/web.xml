@@ -1,9 +1,31 @@
 <!DOCTYPE web-app PUBLIC
  "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd" >
+ "http://java.sun.com/dtd/web-app_2_3.dtd">
 
 <web-app>
-  <display-name>Archetype Created Web Application</display-name>
+    <display-name>Capstone Web Application</display-name>
+
+    <!-- Root Context: loads Spring Security + App Config -->
+    <context-param>
+        <param-name>contextClass</param-name>
+        <param-value>
+            org.springframework.web.context.support.AnnotationConfigWebApplicationContext
+        </param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            com.capstone.config.SecurityConfig
+        </param-value>
+    </context-param>
+
+    <!-- Bootstrap Spring Context -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <!-- DispatcherServlet (Spring MVC controllers) -->
     <servlet>
         <servlet-name>dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -14,32 +36,20 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
-   <servlet-mapping>
-    <servlet-name>dispatcher</servlet-name>
-    <url-pattern>/</url-pattern>
-</servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
 
+    <!-- Spring Security Filter Chain -->
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
 
-
-<filter>
-  <filter-name>JWTAuthenticationFilter</filter-name>
-  <filter-class>com.capstone.filter.JWTAuthenticationFilter</filter-class>
-</filter>
-
-<filter-mapping>
-  <filter-name>JWTAuthenticationFilter</filter-name>
-  <url-pattern>/app/buyer/*</url-pattern>
-</filter-mapping>
-<filter-mapping>
-  <filter-name>JWTAuthenticationFilter</filter-name>
-  <url-pattern>/app/seller/*</url-pattern>
-</filter-mapping>
-
-<filter-mapping>
-    <filter-name>JWTAuthenticationFilter</filter-name>
-    <url-pattern>/api/*</url-pattern>   
-</filter-mapping>
-
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/app/*</url-pattern>
+    </filter-mapping>
 
 </web-app>
-
