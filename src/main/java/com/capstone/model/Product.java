@@ -31,20 +31,15 @@ public class Product {
 	private long prodId;
 	
 	@Column(name = "name")
-	@NotBlank(message = "Product name is required")
-	@Size(min=3,max=150,message= "Product name must be between 3 and 150 characters")
 	private String prodName;
 	
 	@Column(name = "description")
-	@Size(max=1000,message="Description must not exceed 1000 characters")
 	private String prodDescription;
 	
 	@Column
-	@Positive(message="Price must be a positive number")
 	private Double price;
 	
 	@Column(name="stock_quantity")
-	@Min(value=0,message="Product not available in stock")
 	private int stockQuantity;
 	
 	@Column

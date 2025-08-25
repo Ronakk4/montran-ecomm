@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/buyer")
@@ -34,7 +35,7 @@ public class BuyerController {
 
 
     @PostMapping("/orders")
-    public String placeOrder(@RequestBody OrderDTO orderHeader) {
+    public String placeOrder(@Valid @RequestBody OrderDTO orderHeader) {
         orderService.saveOrder(orderHeader);
         return "Order placed successfully";
     }
