@@ -28,6 +28,23 @@ public class ProductController {
 		
 	}
 	
-	
+	 @GetMapping
+	 public Map<String, Object> getProducts(
+	            @RequestParam(defaultValue = "1") int page,
+	            @RequestParam(defaultValue = "8") int size,
+	            @RequestParam(defaultValue = "all") String category,
+	            @RequestParam(required = false) String sort) {
+
+	        List<Product> products = productService.getProductsByPage(page, size, category, sort);
+	        long total = productService.getProductCount(category);
+
+	        Map<String, Object> response = new HashMap<>();
+	        response.put("products", products);
+	        response.put("total", total);
+	        response.put("page", page);
+	        response.put("size", size);
+
+	        return response;
+	    }
 
 }
