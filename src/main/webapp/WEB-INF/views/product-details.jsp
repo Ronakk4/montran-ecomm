@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page isELIgnored="false"%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -159,6 +160,15 @@
     let qty=1;
     
     
+    const jwtToken = "<%= token != null ? token : "" %>";
+    $.ajaxSetup({
+        beforeSend: function(xhr) {
+            if (jwtToken) {
+                xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
+            }
+        }
+    });
+    
     // Step 1: Get product details from the JSP page dynamically
 
       let  stockQuantity="${product.stockQuantity}"  // Stock quantity as a number
@@ -261,7 +271,7 @@
             },
             error: function(xhr) {
                 console.error("Error:", xhr.responseText);
-                alert("Please login first");
+                alert("Failed to add product to cart");
             }
         });
     }
@@ -339,7 +349,7 @@
         });
 
         // Mobile menu toggle
-        document.getElementById('nav-xtoggle').addEventListener('click', function() {
+        document.getElementById('nav-toggle').addEventListener('click', function() {
             document.getElementById('nav-menu').classList.toggle('show');
         });
     </script>
