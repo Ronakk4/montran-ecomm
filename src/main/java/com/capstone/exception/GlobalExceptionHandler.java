@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 	@ExceptionHandler(UserNotFoundException.class)
@@ -32,16 +33,21 @@ public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<Map<String, Object>> handleValidationExceptions(MethodArgumentNotValidException ex) {
-	    System.out.println("[EX-HANDLER] " + ex.getClass().getSimpleName() + ": " + ex.getMessage());
-
 	    Map<String, List<String>> fieldErrors = new HashMap<>();
+	    List<String> allMessages = new ArrayList<>();
+
 	    ex.getBindingResult().getFieldErrors().forEach(error -> {
 	        String field = error.getField();
 	        String message = error.getDefaultMessage();
-
+	        allMessages.add(message);
 	        fieldErrors.computeIfAbsent(field, k -> new ArrayList<>()).add(message);
 	    });
 
+	    // Clean log for STS console
+	    String combinedMessage = String.join(". ", allMessages) + ".";
+	    System.out.println("[EX-HANDLER] " + ex.getClass().getSimpleName() + ": " + combinedMessage);
+
+	    // Structured response for Postman
 	    Map<String, Object> errorBody = new HashMap<>();
 	    errorBody.put("status", "error");
 	    errorBody.put("message", "Validation failed");

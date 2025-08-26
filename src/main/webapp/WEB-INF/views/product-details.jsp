@@ -271,7 +271,7 @@
             },
             error: function(xhr) {
                 console.error("Error:", xhr.responseText);
-                alert("Failed to add product to cart");
+                alert("Please login first");
             }
         });
     }
