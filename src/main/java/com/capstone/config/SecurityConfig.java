@@ -1,66 +1,93 @@
-//package com.capstone.config;
-//
-//import com.capstone.filter.JwtAuthenticationFilter;
-//import com.capstone.security.CustomUserDetailsService;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.context.annotation.*;
-//import org.springframework.security.authentication.AuthenticationManager;
-//import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-//import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-//import org.springframework.security.config.annotation.web.*;
-//import org.springframework.security.config.http.SessionCreationPolicy;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-//import org.springframework.security.crypto.password.PasswordEncoder;
-//import org.springframework.security.web.SecurityFilterChain;
-//import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-//import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-//
-//@Configuration
-//@EnableWebSecurity
-//public class SecurityConfig {
-//
-//    @Autowired
-//    private CustomUserDetailsService customUserDetailsService;
-//
-//    @Autowired
-//    private JwtAuthenticationFilter jwtAuthenticationFilter;
-//
-//    // Password encoder bean (if you already have one in XML remove or keep only one)
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
-//
-//    // DaoAuthenticationProvider will be picked up by AuthenticationConfiguration
-//    @Bean
-//    public DaoAuthenticationProvider daoAuthenticationProvider() {
-//        DaoAuthenticationProvider p = new DaoAuthenticationProvider();
-//        p.setUserDetailsService(customUserDetailsService);
-//        p.setPasswordEncoder(passwordEncoder());
-//        return p;
-//    }
-//
-//    // AuthenticationManager from AuthenticationConfiguration
-//    @Bean
-//    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-//        return authConfig.getAuthenticationManager();
-//    }
-//
-//    // Security filter chain
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http
-//            .csrf().disable()
-//            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//            .authorizeRequests(authorize -> authorize
-//                .antMatchers("/auth/login", "/auth/register", "/public/**").permitAll()
-//                .anyRequest().authenticated()
-//            );
-//
-//        // add JWT filter before UsernamePasswordAuthenticationFilter
-//        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-//
-//        return http.build();
-//    }
-//}
+package com.capstone.config;
+
+import com.capstone.filter.JwtAuthenticationFilter;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.OrRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf().disable()
+            .authorizeRequests()
+                // static resources
+                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**").permitAll()
+
+                // root and jsp landing pages
+                .antMatchers("/", "/*.jsp").permitAll()
+
+                // all InitialController endpoints (public)
+                .antMatchers(
+                        "/app/login/**",
+                        "/app/home/**",
+                        "/app/register/**",
+                        "/app/registerseller/**",
+                        "/app/seller-login/**",
+                        "/app/login/products/**",
+                        "/app/orders/**",
+                        "/app/product-details/**",
+                        "/app/product-list/**"
+                ).permitAll()
+
+                // public APIs
+                .antMatchers("/api/seller/category/**", "/users/**").permitAll()
+
+                // buyer area
+                .antMatchers("/app/buyer/**").hasAuthority("buyer")
+
+                // seller area
+                .antMatchers("/app/seller/**").hasAuthority("seller")
+
+                // everything else requires authentication
+                .anyRequest().authenticated()
+            .and()
+            // add JWT filter
+            .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        JwtAuthenticationFilter filter = new JwtAuthenticationFilter();
+
+        // configure public URLs to skip JWT filter
+        RequestMatcher publicUrls = new OrRequestMatcher(
+            new AntPathRequestMatcher("/"),
+            new AntPathRequestMatcher("/*.jsp"),
+            new AntPathRequestMatcher("/resources/**"),
+            new AntPathRequestMatcher("/static/**"),
+            new AntPathRequestMatcher("/css/**"),
+            new AntPathRequestMatcher("/js/**"),
+            new AntPathRequestMatcher("/images/**"),
+
+            // controller mappings
+            new AntPathRequestMatcher("/app/login/**"),
+            new AntPathRequestMatcher("/app/home/**"),
+            new AntPathRequestMatcher("/app/register/**"),
+            new AntPathRequestMatcher("/app/registerseller/**"),
+            new AntPathRequestMatcher("/app/seller-login/**"),
+            new AntPathRequestMatcher("/app/login/products/**"),
+            new AntPathRequestMatcher("/app/orders/**"),
+            new AntPathRequestMatcher("/app/product-details/**"),
+            new AntPathRequestMatcher("/app/product-list/**"),
+
+            // APIs
+            new AntPathRequestMatcher("/api/seller/category/**"),
+            new AntPathRequestMatcher("/users/**")
+        );
+
+        filter.setSkipUrls(publicUrls);
+        return filter;
+    }
+}

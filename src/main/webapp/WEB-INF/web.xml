@@ -3,42 +3,54 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-  <display-name>Archetype Created Web Application</display-name>
-    <servlet>
-        <servlet-name>dispatcher</servlet-name>
-        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-        <init-param>
-            <param-name>contextConfigLocation</param-name>
-            <param-value>/WEB-INF/dispatcher-servlet.xml</param-value>
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
+	<display-name>Archetype Created Web Application</display-name>
+	<servlet>
+		<servlet-name>dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/dispatcher-servlet.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
 
-   <servlet-mapping>
-    <servlet-name>dispatcher</servlet-name>
-    <url-pattern>/</url-pattern>
-</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
 
 
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
 
-<filter>
-  <filter-name>JWTAuthenticationFilter</filter-name>
-  <filter-class>com.capstone.filter.JWTAuthenticationFilter</filter-class>
-</filter>
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+<!-- 		<url-pattern>/app/*</url-pattern> -->
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 
-<filter-mapping>
-  <filter-name>JWTAuthenticationFilter</filter-name>
-  <url-pattern>/app/buyer/*</url-pattern>
-</filter-mapping>
-<filter-mapping>
-  <filter-name>JWTAuthenticationFilter</filter-name>
-  <url-pattern>/app/seller/*</url-pattern>
-</filter-mapping>
+	<filter>
+		<filter-name>JWTAuthenticationFilter</filter-name>
+		<filter-class>com.capstone.filter.JwtAuthenticationFilter</filter-class>
+	</filter>
 
-<filter-mapping>
-    <filter-name>JWTAuthenticationFilter</filter-name>
-    <url-pattern>/api/*</url-pattern>   
-</filter-mapping>
+	<filter-mapping>
+		<filter-name>JWTAuthenticationFilter</filter-name>
+		<url-pattern>/app/buyer/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>JWTAuthenticationFilter</filter-name>
+		<url-pattern>/app/seller/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>JWTAuthenticationFilter</filter-name>
+		<url-pattern>/api/*</url-pattern>
+	</filter-mapping>
+
 
 
 </web-app>
