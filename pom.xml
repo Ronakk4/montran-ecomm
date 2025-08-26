@@ -83,14 +83,14 @@
             <version>6.2.1</version>
         </dependency>
 
-        <!-- Hibernate ORM -->
+       
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>${hibernate.version}</version>
         </dependency>
 
-        <!-- Hibernate Types (Postgres JSON/Array support) -->
+        
         <dependency>
             <groupId>com.vladmihalcea</groupId>
             <artifactId>hibernate-types-52</artifactId>
@@ -110,22 +110,22 @@
             <artifactId>javax.persistence-api</artifactId>
             <version>2.2</version>
         </dependency>
-
-        <!-- PostgreSQL Driver -->
+	
+	        <!-- PostgreSQL Driver -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.7.3</version>
         </dependency>
 
-        <!-- Commons DBCP2 -->
+   
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-dbcp2</artifactId>
             <version>2.9.0</version>
         </dependency>
 
-        <!-- Jackson -->
+  
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -144,7 +144,7 @@
             <version>${jstl.version}</version>
         </dependency>
 
-        <!-- Servlet API -->
+     
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -171,14 +171,14 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Logging -->
+      
         <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
             <version>1.2</version>
         </dependency>
 
-        <!-- PDF -->
+        
          <dependency>
 	    <groupId>com.itextpdf</groupId>
 	    <artifactId>itextpdf</artifactId>
