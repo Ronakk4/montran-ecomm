@@ -13,6 +13,7 @@ public interface UserService {
 	User loginUser(LoginRequestDTO u);
 	void registerUser(@Valid UserRegisterDTO user);
 	//void changePassword(@Valid String newPassword, long id);
-	boolean changePassword(String newPassword, String oldPassword, long id);	
+	boolean changePassword(String newPassword, String oldPassword, long id);
+	User findUserByEmail(String email);	
 
 }

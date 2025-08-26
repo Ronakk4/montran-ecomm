@@ -45,7 +45,10 @@
                 <li class="nav-item"><a href="#new" class="nav-link">New</a></li>
 
                 <% if(isLoggedIn) { %>
-                    <li class="nav-item"><a href="<%= request.getContextPath() %>/app/buyer/profile" class="nav-link">Profile</a></li>
+<!--                    <li class="nav-item"><a href="<%= request.getContextPath() %>/app/buyer/profile" class="nav-link">Profile</a></li>-->
+                   <li class="nav-item">
+    <a href="#" class="nav-link ajax-link" data-url="<%= request.getContextPath() %>/app/buyer/profile">Profile</a>
+</li>
                     <li class="nav-item"><a href="<%= request.getContextPath() %>/users/logout" class="nav-link">Logout</a></li>
               		<li class="nav-tem cart-icon"> 
             <a href="${pageContext.request.contextPath}/app/cart" class="nav-link ">
@@ -99,6 +102,28 @@ function loadCategories() {
         $(".dropdown-menu").html(items);
     });
 }
+const jwtToken2 = "<%= token %>";
+if (jwtToken2 && jwtToken2 !== "null") {
+	  $.ajaxSetup({
+	    beforeSend: function(xhr) {
+	      xhr.setRequestHeader("Authorization", "Bearer " + jwtToken2);
+	    }
+	  });
+	}
+
+$(document).on("click", ".ajax-link", function(e) {
+    e.preventDefault();
+    const url = $(this).data("url");
+
+    $.get(url, function(html) {
+        history.pushState({}, "", url); // update URL
+        document.open();
+        document.write(html);
+        document.close();
+    }).fail(function() {
+        alert("Unauthorized or error loading page");
+    });
+});
 
 <!--function loadCategories() {-->
 <!--    const jwtToken = localStorage.getItem("jwtToken"); // Or wherever you're storing it-->

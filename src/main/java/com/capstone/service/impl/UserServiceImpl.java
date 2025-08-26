@@ -126,6 +126,11 @@ public class UserServiceImpl implements UserService {
             return null;
         }
     }
+    
+    @Override
+    public User findUserByEmail(String email) {
+    	return userDao.findUserByEmail(email.trim());
+    }
 
     @Override
     public boolean changePassword(String newPassword, String oldPassword, long id) {

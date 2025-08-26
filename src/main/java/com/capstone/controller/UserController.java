@@ -23,6 +23,9 @@ import javax.servlet.http.HttpServletResponse;
 
  
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
  
 @RestController
@@ -33,36 +36,75 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private AuthenticationManager authenticationManager;
+	
 	@PostMapping
     public String registerUser(@Valid @RequestBody UserRegisterDTO user) {
         userService.registerUser(user);
         return "User registered successfully";
     }
 
+//	@PostMapping("/login")
+//	public void loginUser(@RequestBody LoginRequestDTO user, 
+//	                      HttpServletResponse response,HttpServletRequest req) throws IOException {
+//  
+//
+//		User existingUser = userService.loginUser(user);
+//	    if (existingUser!=null) {
+//	        String token = JwtUtil.generateToken(existingUser.getName(), existingUser.getRole(), existingUser.getId());
+//
+//          
+//	        // Store JWT in HttpOnly cookie (browser-specific)
+//	        Cookie cookie = new Cookie("jwtToken", token);
+//	        cookie.setHttpOnly(true); 
+//	        cookie.setPath("/");      
+//	        cookie.setMaxAge(30 * 60 * 1000); 
+//	        response.addCookie(cookie);
+//	        response.sendRedirect(req.getContextPath() + "/");
+//
+//	        
+//	    	       
+//	    } else {
+//	        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid credentials");
+//	    }
+//	}
+	
+
 	@PostMapping("/login")
-	public void loginUser(@RequestBody LoginRequestDTO user, 
-	                      HttpServletResponse response,HttpServletRequest req) throws IOException {
-  
+	public void loginUser(@RequestBody LoginRequestDTO user,
+	                      HttpServletResponse response,
+	                      HttpServletRequest req) throws IOException {
 
-		User existingUser = userService.loginUser(user);
-	    if (existingUser!=null) {
-	        String token = JwtUtil.generateToken(existingUser.getName(), existingUser.getRole(), existingUser.getId());
+	    try {
+	        Authentication authentication = authenticationManager.authenticate(
+	            new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
+	        );
 
-          
-	        // Store JWT in HttpOnly cookie (browser-specific)
+	        org.springframework.security.core.userdetails.User principal =
+	                (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
+
+	        // Fetch user from DB to get exact role
+	        User existingUser = userService.findUserByEmail(user.getEmail());
+	        String role = existingUser.getRole().toUpperCase(); // BUYER / SELLER
+
+	        // Generate JWT with clean role
+	        String token = JwtUtil.generateToken(principal.getUsername(), role, existingUser.getId());
+
+	        // Store JWT in cookie
 	        Cookie cookie = new Cookie("jwtToken", token);
-	        cookie.setHttpOnly(true); 
-	        cookie.setPath("/");      
-	        cookie.setMaxAge(30 * 60 * 1000); 
+	        cookie.setHttpOnly(true);
+	        cookie.setPath("/");
+	        cookie.setMaxAge(30 * 60); // 30 minutes
 	        response.addCookie(cookie);
-	        response.sendRedirect(req.getContextPath() + "/");
 
-	        
-	    	       
-	    } else {
+	        response.sendRedirect(req.getContextPath() + "/");
+	    } catch (Exception e) {
 	        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid credentials");
 	    }
 	}
+
+
 	
 	
 	@GetMapping("/logout")
