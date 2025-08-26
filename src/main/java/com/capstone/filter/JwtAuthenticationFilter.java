@@ -28,16 +28,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse res,
                                     FilterChain chain) throws ServletException, IOException {
 
-        // Skip public URLs
+        String servletPath = req.getServletPath();
+
+        // ✅ Check skipUrls first
         if (skipUrls != null && skipUrls.matches(req)) {
             chain.doFilter(req, res);
             return;
         }
 
         String token = null;
-        boolean isApiRequest = req.getServletPath().startsWith("/api/");
+        boolean isApiRequest = servletPath.startsWith("/api/");
 
-        // Extract token
         if (isApiRequest) {
             String authHeader = req.getHeader("Authorization");
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
@@ -58,7 +59,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         if (token == null) {
-            res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing token");
+            // ✅ Let Spring Security handle permitAll instead of forcing 401
+            chain.doFilter(req, res);
             return;
         }
 
@@ -73,15 +75,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                             null,
                             Collections.singleton(() -> userType.toLowerCase())
                     );
-            SecurityContextHolder.getContext().setAuthentication(authentication);
 
+            SecurityContextHolder.getContext().setAuthentication(authentication);
             req.setAttribute("userType", userType);
             req.setAttribute("userId", userId);
-            req.setAttribute("buyerId", userId); 
 
             chain.doFilter(req, res);
         } catch (Exception ex) {
             res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or expired token");
         }
     }
+
 }
