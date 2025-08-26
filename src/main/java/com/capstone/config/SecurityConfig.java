@@ -36,7 +36,8 @@ public class SecurityConfig {
                         "/app/login/products/**",
                         "/app/orders/**",
                         "/app/product-details/**",
-                        "/app/product-list/**"
+                        "/app/product-list/**","/app/product-list",
+                        "/products/category/**"
                 ).permitAll()
 
                 // public APIs
@@ -81,9 +82,12 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/app/orders/**"),
             new AntPathRequestMatcher("/app/product-details/**"),
             new AntPathRequestMatcher("/app/product-list/**"),
+            new AntPathRequestMatcher("/app/product-list"),
+            
 
             // APIs
             new AntPathRequestMatcher("/api/seller/category/**"),
+            new AntPathRequestMatcher("/products/category/**"),
             new AntPathRequestMatcher("/users/**")
         );
 
