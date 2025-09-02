@@ -2,8 +2,8 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
-    Long sellerId = jwtToken != null ? JwtUtil.getId(jwtToken.getValue()) : null;
-    String token=jwtToken != null ? jwtToken.getValue() : null;
+<!--    Long sellerId = jwtToken != null ? JwtUtil.getId(jwtToken.getValue()) : null;-->
+<!--    String token=jwtToken != null ? jwtToken.getValue() : null;-->
     
 %>
 
@@ -58,7 +58,7 @@
         <section class="breadcrumb section">
             <div class="breadcrumb-container bd-grid">
                 <nav class="breadcrumb-nav">
-                    <a href="index.html" class="breadcrumb-link">Home</a>
+                    <a href="http://localhost:8080/ecomm.capstone/" class="breadcrumb-link">Home</a>
                     <span class="breadcrumb-separator">/</span>
                     <span class="breadcrumb-current" id="categoryName">Products</span>
                 </nav>

@@ -37,7 +37,7 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	@Transactional
 	public void saveProduct(@Valid ProductInsertDTO p) throws DuplicateProductException {
-	    // Check if seller already has product with same name
+	    // Checks if seller already has product with same name
 	    if (productDao.existsByProdNameAndSellerId(p.getProdName(), p.getSellerId())) {
 	        throw new DuplicateProductException(
 	            "Product '" + p.getProdName() + "' already exists for seller ID " + p.getSellerId()

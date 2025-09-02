@@ -105,7 +105,6 @@ public class OrderHeaderDaoImpl implements OrderHeaderDao {
 	}
 
 
-
 	
 	@Override
 	public Object[] getMonthlySalesAndRevenue(long sellerId) {
