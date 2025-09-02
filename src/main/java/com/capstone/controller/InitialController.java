@@ -51,10 +51,10 @@ public class InitialController {
         return "orders";
     }
 
-    @GetMapping("/dashboard")
-    public String dashboardPage() {
-        return "dashboard";
-    }
+//    @GetMapping("/dashboard")
+//    public String dashboardPage() {
+//        return "dashboard";
+//    }
     
     
     @GetMapping("/product-details")
