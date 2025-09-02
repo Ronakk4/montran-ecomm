@@ -89,85 +89,112 @@ POST http://localhost:8080/ecomm.capstone/users
 Content-Type: application/json
 
 {
-    "role": "buyer",
-    "firstName": "John",
-    "lastName": "Doe",
-    "email": "john.doe@example.com",
-    "password": "Password@123",
-    "address": "123 Main St, Anytown"
+  "name": "Harsh Singh",
+  "email": "hsingh@example.com",
+  "password": "Harsh@2025",
+  "role": "BUYER",
+  "shippingAddress": "123 adarsh nagar, goregaon east, 2345",
+  "phoneNumber": "9302827890"
 }
 ```
 
-### **2. Register a Seller**
+### **2. Update a User**
+```json
+PUT http://localhost:8080/ecomm.capstone/users
+Content-Type: application/json
+
+{
+  "email": "akash2.buyer@example.com",
+  "password": "akyAa@123",
+  "role": "BUYER",
+  "shippingAddress": "123 Main St, City, State 12345",
+  "phoneNumber": "+1931951890"
+}
+```
+
+### **3. Register a Seller**
 ```json
 POST http://localhost:8080/ecomm.capstone/users
 Content-Type: application/json
 
 {
-    "role": "seller",
-    "firstName": "Jane",
-    "lastName": "Smith",
-    "email": "jane.smith@example.com",
-    "password": "Password@123",
-    "companyName": "Tech Emporium",
-    "address": "456 Business Blvd, Anytown"
+  "name": "Shivam Singh",
+  "email": "ssingh@example.com",
+  "password": "Shivam@2025",
+  "role": "SELLER",
+  "phoneNumber": "9302827890",
+  "shopName": "Shivam's Emporium",
+  "shopDescription": "A curated selection of tech gadgets and accessories",
+  "gstNumber": "27ABCDE1234F1Z5"
 }
 ```
 
-### **3. User Login**
+### **4. User Login**
 ```json
 POST http://localhost:8080/ecomm.capstone/users/login
 Content-Type: application/json
 
 {
-    "email": "john.doe@example.com",
-    "password": "Password@123"
+  "email": "ansh.shah@example.com",
+  "password": "Ansh@2025"
 }
 ```
 **Expected Response:**
 ```json
 {
-    "token": "eyJhbGciOiJIUzI1NiJ9...",
-    "message": "Login successful"
+  "token": "eyJhbGciOiJIUzI1NiJ9...",
+  "message": "Login successful"
 }
 ```
 
-### **4. Add a Product (Seller)**
+### **5. Add a Product (Seller)**
 ```json
 POST http://localhost:8080/ecomm.capstone/api/seller/products
 Content-Type: application/json
 Authorization: Bearer {SELLER_JWT_TOKEN}
 
 {
-    "name": "Laptop",
-    "description": "Powerful laptop for all your needs.",
-    "price": 1200.00,
-    "stockQuantity": 50,
-    "category": "Electronics"
+  "prodName": "Titan watch",
+  "prodDescription": "Latest digital branded costly watch with advanced features",
+  "price": 2299.99,
+  "stockQuantity": 50,
+  "category": "Electronics",
+  "sellerId": 5,
+  "images": [
+    "https://example.com/iphone1.jpg",
+    "https://example.com/iphone2.jpg"
+  ]
 }
 ```
 
-### **5. Add to Cart (Buyer)**
+### **6. Place an Order (Buyer)**
 ```json
-POST http://localhost:8080/ecomm.capstone/api/cart
+POST http://localhost:8080/ecomm.capstone/api/buyer/orders
 Content-Type: application/json
 Authorization: Bearer {BUYER_JWT_TOKEN}
 
 {
-    "productId": 1,
-    "quantity": 2
+  "status": "PENDING",
+  "totalAmount": 109.99,
+  "buyerId": 23,
+  "items": [
+    {
+      "productId": 14.9,
+      "sellerId": 17,
+      "quantity": 1,
+      "price": 108.99
+    }
+  ]
 }
 ```
 
-### **6. Get Monthly Sales Analytics (Seller)**
+### **7. Get All Orders for a Buyer**
 ```json
-GET http://localhost:8080/ecomm.capstone/api/seller/analytics
+GET http://localhost:8080/ecomm.capstone/api/buyer/orders?buyerId=23
 Content-Type: application/json
-Authorization: Bearer {SELLER_JWT_TOKEN}
+Authorization: Bearer {BUYER_JWT_TOKEN}
 ```
-
----
-
+--- 
 ## **Validation & Exception Handling**  
 
 ### **Bean Validation Annotations**
