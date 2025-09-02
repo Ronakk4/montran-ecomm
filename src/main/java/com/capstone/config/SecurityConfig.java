@@ -41,7 +41,7 @@ public class SecurityConfig {
                 ).permitAll()
 
                 // public APIs
-                .antMatchers("/api/seller/category/**", "/users/**").permitAll()
+                .antMatchers("/api/seller/category/**", "/users/login","/users/logout","/users/").permitAll()
 
                 // buyer area
                 .antMatchers("/app/buyer/**").hasAuthority("buyer")
@@ -88,7 +88,9 @@ public class SecurityConfig {
             // APIs
             new AntPathRequestMatcher("/api/seller/category/**"),
             new AntPathRequestMatcher("/products/category/**"),
-            new AntPathRequestMatcher("/users/**")
+            new AntPathRequestMatcher("/users/login"),
+            new AntPathRequestMatcher("/users/logout"),
+            new AntPathRequestMatcher("/users/")
         );
 
         filter.setSkipUrls(publicUrls);

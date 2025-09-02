@@ -7,8 +7,11 @@ import com.capstone.dto.SellerOrderDTO;
 import com.capstone.model.Product;
 import com.capstone.service.OrderService;
 import com.capstone.service.ProductService;
+import com.capstone.validation.CreateGroup;
+import com.capstone.validation.UpdateGroup;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,7 +39,7 @@ public class SellerApiController {
 
     // ========== PRODUCT APIs ==========
     @PostMapping("/products")
-    public String addProduct(@Valid @RequestBody ProductInsertDTO product, HttpSession session) {
+    public String addProduct(@Validated(CreateGroup.class) @RequestBody ProductInsertDTO product, HttpSession session) {
     	
         productService.saveProduct(product);
         return "Product added successfully";
@@ -58,7 +61,7 @@ public class SellerApiController {
 
 
     @PutMapping("/products/{id}")
-    public String updateProduct(@PathVariable long id, @Valid @RequestBody ProductInsertDTO product) {
+    public String updateProduct(@PathVariable long id, @Validated(UpdateGroup.class) @RequestBody ProductInsertDTO product) {
     	product.setProdId(id);
         productService.updateProduct(product);
         System.out.println(product);

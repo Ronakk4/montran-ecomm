@@ -16,6 +16,7 @@ public class InitialController {
         return "login";
     }
     
+    
     @GetMapping("/home")
     public String homePage() {
     	return "home";

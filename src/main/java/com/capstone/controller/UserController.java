@@ -12,6 +12,8 @@ import com.capstone.dto.UserRegisterDTO;
 import com.capstone.model.User;
 import com.capstone.service.UserService;
 import com.capstone.util.JwtUtil;
+import com.capstone.validation.CreateGroup;
+import com.capstone.validation.UpdateGroup;
 
 import java.io.IOException;
 import java.util.Map;
@@ -23,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 
  
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
  
 @RestController
@@ -34,7 +37,7 @@ public class UserController {
 	private UserService userService;
 	
 	@PostMapping
-    public String registerUser(@Valid @RequestBody UserRegisterDTO user) {
+    public String registerUser(@Validated(CreateGroup.class) @RequestBody UserRegisterDTO user) {
         userService.registerUser(user);
         return "User registered successfully";
     }
@@ -98,7 +101,7 @@ public class UserController {
 	}
 
 	@PutMapping("/{id}")
-	public String updateUser(@PathVariable long id, @RequestBody UpdateUserDTO dto) {
+	public String updateUser(@PathVariable long id,@Validated(UpdateGroup.class) @RequestBody UserRegisterDTO dto) {
 	    if ("BUYER".equalsIgnoreCase(dto.getRole())) {
 	        BuyerDTO buyerDTO = new BuyerDTO();
 	        buyerDTO.setName(dto.getName());
@@ -144,4 +147,5 @@ public class UserController {
 
 	}
 
+	
 }

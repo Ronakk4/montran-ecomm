@@ -46,6 +46,7 @@ public class UserDaoImpl implements UserDao{
 		// TODO Auto-generated method stub
 		Query <User> query = sessionFactory.getCurrentSession().createQuery("from User where email= :email", User.class);
 		query.setParameter("email",email);
+		
 		return query.uniqueResult();
 	}
 
@@ -75,11 +76,9 @@ public class UserDaoImpl implements UserDao{
 	
 	public String getPassword(long id) {
 		return sessionFactory.getCurrentSession().createQuery("select password from User where id=:id").setParameter("id", id).uniqueResult().toString();
+		
 	}
 
-	
-
-	
-
+		
 	
 }
